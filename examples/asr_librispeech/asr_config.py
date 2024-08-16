@@ -26,6 +26,9 @@ class ModelConfig:
     encoder_type: str = field(default="finetune", metadata={
         "help": "whether model is only pretrained or finetuned, used for models such as hubert"
     })
+    dual_encoder: bool = field(default=False, metadata={
+        "help": "whether to use a dual encoder setup"
+    })
 
 @dataclass
 class PeftConfig:

@@ -27,6 +27,13 @@ def model_factory(train_config, model_config, **kwargs):
     # llm
     llm = setup_llm(train_config, model_config, **kwargs)
 
+    # j: Check if dual encoder is enabled
+    if model_config.dual_encoder:
+        # Set up the second encoder
+        encoder2 = setup_encoder(train_config, model_config, **kwargs)
+    else:
+        encoder2 = None
+
     # projector
     encoder_projector = setup_encoder_projector(
         train_config, model_config, **kwargs
