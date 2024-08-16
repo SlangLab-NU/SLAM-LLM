@@ -1,6 +1,50 @@
 import torch
 import torch.nn as nn
 
+#j: add dual encoder projector
+class EncoderProjectorDualConcat(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.k = config.encoder_projector_ds_rate
+        self.encoder_dim1 = config.encoder_dim  # Dimension of first encoder
+        self.encoder_dim2 = config.encoder2_dim  # Dimension of second encoder
+        self.llm_dim = config.llm_dim
+
+        # Calculate the combined dimension after concatenation
+        combined_dim = (self.encoder_dim1 + self.encoder_dim2) * self.k
+
+        # Define the layers for projection
+        self.linear1 = nn.Linear(combined_dim, 2048)
+        self.relu = nn.ReLU()
+        self.linear2 = nn.Linear(2048, self.llm_dim)
+
+    def forward(self, x):
+        # # x1 and x2 should be of size [batch_size, seq_len, dim1] and [batch_size, seq_len, dim2]
+        # batch_size, seq_len1, dim1 = x1.size()
+        # batch_size, seq_len2, dim2 = x2.size()
+        
+        # # Concatenate the two encoder outputs along the last dimension
+        # x = torch.cat((x1, x2), dim=-1)
+        batch_size, seq_len, dim = x.size()
+        # Calculate the new sequence length after removing excess frames
+        num_frames_to_discard = x.size(1) % self.k
+        if num_frames_to_discard > 0:
+            x = x[:, :-num_frames_to_discard, :]
+
+        # Update seq_len after discarding frames
+        seq_len = x.size(1)
+
+        # Downsample the sequence
+        x = x.contiguous()
+        x = x.view(batch_size, seq_len // self.k, -1)
+
+        # Apply the linear layers with ReLU activation in between
+        x = self.linear1(x)
+        x = self.relu(x)
+        x = self.linear2(x)
+
+        return x
+
 
 class EncoderProjectorConcat(nn.Module):
     def __init__(self, config):

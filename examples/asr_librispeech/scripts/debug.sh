@@ -39,6 +39,7 @@ val_data_path=${run_dir}/data/${test_speaker}_validation.jsonl
 
 output_dir=${run_dir}/out/TinyLlama-1.1B-Chat-v1.0-librispeech-linear-steplrwarmupkeep1e-4-wavlm-$(date +"%Y%m%d")/${test_speaker}
 
+# test dual
 hydra_args="
 hydra.run.dir=$output_dir \
 ++model_config.llm_name=vicuna-7b-v1.5 \
@@ -50,7 +51,7 @@ hydra.run.dir=$output_dir \
 ++model_config.encoder_projector_ds_rate=5 \
 ++model_config.encoder_path=$speech_encoder_path \
 ++model_config.encoder_dim=1024 \
-++model_config.encoder_projector=linear \
+++model_config.encoder_projector=dual \
 ++model_config.dual_encoder=true \
 ++dataset_config.dataset=speech_dataset \
 ++dataset_config.train_data_path=$train_data_path \

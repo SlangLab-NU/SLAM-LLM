@@ -18,6 +18,14 @@ def model_factory(train_config, model_config, **kwargs):
 
     encoder = setup_encoder(train_config, model_config, **kwargs)
 
+    # j: Check if dual encoder is enabled
+    if model_config.dual_encoder:
+        # Set up the second encoder
+        from slam_llm.models.encoder import Wav2PhonemeEncoder
+        encoder2 = Wav2PhonemeEncoder.load(model_config)
+    else:
+        encoder2 = None
+
     # llm
     llm = setup_llm(train_config, model_config, **kwargs)
 
@@ -32,6 +40,7 @@ def model_factory(train_config, model_config, **kwargs):
         tokenizer,
         train_config,
         model_config,
+        encoder2=encoder2,  # j: Pass the second encoder to the model
         **kwargs,
     )
 
@@ -64,6 +73,7 @@ class slam_model_asr(slam_model):
         tokenizer,
         train_config,
         model_config,
+        encoder2=None,
         **kwargs,
     ):
         super().__init__(
@@ -73,6 +83,7 @@ class slam_model_asr(slam_model):
             tokenizer,
             train_config,
             model_config,
+            encoder2,
             **kwargs,
         )
 

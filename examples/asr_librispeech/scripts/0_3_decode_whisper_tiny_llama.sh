@@ -38,7 +38,7 @@ python $code_dir/inference_asr_batch.py \
         --config-path "conf" \
         --config-name "prompt.yaml" \
         hydra.run.dir=$ckpt_path \
-        ++model_config.llm_name="vicuna-7b-v1.5" \
+        ++model_config.llm_name="tinyllama" \
         ++model_config.llm_path=$llm_path \
         ++model_config.llm_dim=2048 \
         ++model_config.encoder_name=whisper \

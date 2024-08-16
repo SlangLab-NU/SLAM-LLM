@@ -4,9 +4,8 @@
 #SBATCH -p gpu
 #SBATCH --gres=gpu:v100-sxm2:1
 #SBATCH --time=08:00:00
-#SBATCH --output=/work/van-speech-nlp/jindaznb/jslpnb/log/%j.output
-#SBATCH --error=/work/van-speech-nlp/jindaznb/jslpnb/log/%j.error 
-
+#SBATCH --output=log/%j.output
+#SBATCH --error=log/%j.error
 
 # export PYTHONPATH=/root/whisper:$PYTHONPATH
 # export PYTHONPATH=/root/fairseq:$PYTHONPATH
@@ -26,33 +25,34 @@ source activate /work/van-speech-nlp/jindaznb/slamenv/
 
 
 
-test_speaker="M05"
+test_speaker="M03"
 
 run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
 cd $run_dir
 code_dir=examples/asr_librispeech
 
-speech_encoder_name="wav2p"
 speech_encoder_path=${run_dir}/models/WavLM-Large.pt
-llm_path=${run_dir}/models/vicuna-7b-v1.5
+llm_path=${run_dir}/models/TinyLlama-1.1B-Chat-v1.0
 
 train_data_path=${run_dir}/data/${test_speaker}_train.jsonl
 val_data_path=${run_dir}/data/${test_speaker}_validation.jsonl
 
-output_dir=${run_dir}/out/TinyLlama-1.1B-Chat-v1.0-librispeech-linear-steplrwarmupkeep1e-4-${speech_encoder_name}-$(date +"%Y%m%d")/${test_speaker}
+output_dir=${run_dir}/out/TinyLlama-1.1B-Chat-v1.0-librispeech-linear-steplrwarmupkeep1e-4-wavlm-$(date +"%Y%m%d")/${test_speaker}
 
+# test dual
 hydra_args="
 hydra.run.dir=$output_dir \
-++model_config.llm_name=vicuna-7b-v1.5 \
+++model_config.llm_name="tinyllama" \
 ++model_config.llm_path=$llm_path \
-++model_config.llm_dim=4096 \
-++model_config.encoder_name=wav2p \
+++model_config.llm_dim=2048 \
+++model_config.encoder_name=wavlm \
 ++model_config.normalize=true \
 ++dataset_config.normalize=true \
 ++model_config.encoder_projector_ds_rate=5 \
 ++model_config.encoder_path=$speech_encoder_path \
 ++model_config.encoder_dim=1024 \
-++model_config.encoder_projector=linear \
+++model_config.encoder_projector=dual \
+++model_config.dual_encoder=true \
 ++dataset_config.dataset=speech_dataset \
 ++dataset_config.train_data_path=$train_data_path \
 ++dataset_config.val_data_path=$val_data_path \

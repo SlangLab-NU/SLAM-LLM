@@ -18,7 +18,7 @@ class ModelConfig:
     encoder_path: Optional[str] = None
     encoder_dim: int = 1280
     encoder_projector: str = "linear"
-    encoder_projector_ds_rate: int = 5
+    encoder_projector_ds_rate: int = 5 # downsample rate
     modal: str = "audio"
     normalize: Optional[bool] = field(default=False, metadata={
         "help": "whether input is normalized, used for models such as wavlm"
@@ -26,9 +26,12 @@ class ModelConfig:
     encoder_type: str = field(default="finetune", metadata={
         "help": "whether model is only pretrained or finetuned, used for models such as hubert"
     })
+
+    # j: add dual encoder configuration
     dual_encoder: bool = field(default=False, metadata={
         "help": "whether to use a dual encoder setup"
     })
+    encoder2_dim: int = 1024
 
 @dataclass
 class PeftConfig:

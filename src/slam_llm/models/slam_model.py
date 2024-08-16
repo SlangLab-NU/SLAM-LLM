@@ -27,13 +27,6 @@ def model_factory(train_config, model_config, **kwargs):
     # llm
     llm = setup_llm(train_config, model_config, **kwargs)
 
-    # j: Check if dual encoder is enabled
-    if model_config.dual_encoder:
-        # Set up the second encoder
-        encoder2 = setup_encoder(train_config, model_config, **kwargs)
-    else:
-        encoder2 = None
-
     # projector
     encoder_projector = setup_encoder_projector(
         train_config, model_config, **kwargs
@@ -236,6 +229,10 @@ def setup_encoder_projector(train_config, model_config, **kwargs):
     elif model_config.encoder_projector == "q-former":
         from slam_llm.models.projector import EncoderProjectorQFormer
         encoder_projector = EncoderProjectorQFormer(model_config)
+    # j: add dual projector
+    elif model_config.encoder_projector == "dual":
+        from slam_llm.models.projector import EncoderProjectorDualConcat
+        encoder_projector = EncoderProjectorDualConcat(model_config)
     else:
         return None
     print_module_size(encoder_projector, model_config.encoder_projector, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
@@ -251,11 +248,14 @@ class slam_model(nn.Module):
         tokenizer, 
         train_config, 
         model_config, 
+        encoder2=None,  # j: New parameter for the second encoder
         **kwargs
     ):
         super().__init__()
         # modality encoder 
         self.encoder = encoder
+        # j: Optional second encoder
+        self.encoder2 = encoder2
 
         # llm
         self.llm = llm
@@ -349,13 +349,23 @@ class slam_model(nn.Module):
                 encoder_outs = self.encoder.extract_features(audio, padding_mask = None) # MusicFM doesn't support padding mask
             # j: add encoder_out with extracted feature
             if self.model_config.encoder_name == 'wav2p': # [batch_size, seq_len, dim]
-                encoder_outs = self.encoder.extract_features(audio)            
+                encoder_outs = self.encoder.extract_features(audio)
+
+            # j: concat embeddings
+            if self.encoder2 is not None:
+                # Forward pass through the second encoder
+                encoder_outs2 = self.encoder2.extract_features(audio)
+                # Concatenate outputs from both encoders
+                encoder_outs = torch.cat((encoder_outs, encoder_outs2), dim=-1)
                 
             if self.model_config.encoder_projector == "q-former":
                 encoder_outs = self.encoder_projector(encoder_outs, audio_mel_post_mask)
             if self.model_config.encoder_projector == "linear":
                 encoder_outs = self.encoder_projector(encoder_outs)
             if self.model_config.encoder_projector == "cov1d-linear": 
+                encoder_outs = self.encoder_projector(encoder_outs) 
+            # j: add dual encoder_out
+            if self.model_config.encoder_projector == "dual": 
                 encoder_outs = self.encoder_projector(encoder_outs) 
 
         if instruct_ids is not None:
