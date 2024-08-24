@@ -78,7 +78,7 @@ hydra.run.dir=$output_dir \
 
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
-    python -m debugpy --listen 5678 --wait-for-client $code_dir/finetune_asr.py \
+    python $code_dir/finetune_asr.py \
         --config-path "conf" \
         --config-name "prompt.yaml" \
         $hydra_args

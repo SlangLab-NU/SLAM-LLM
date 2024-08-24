@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH -N 1
-#SBATCH -c 12
+#SBATCH -c 3
 #SBATCH -p gpu
-#SBATCH --gres=gpu:a100:1   
+#SBATCH --gres=gpu:v100-sxm2:1
 #SBATCH --time=08:00:00
 #SBATCH --output=/work/van-speech-nlp/jindaznb/jslpnb/log/%j.output
 #SBATCH --error=/work/van-speech-nlp/jindaznb/jslpnb/log/%j.error
@@ -26,35 +26,35 @@ module load ffmpeg/20190305
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 
 
-identifier="ami_dual_100h_llama7b"
+identifier="ami_w2v2_phi2"
+echo "Identifier: $identifier"
 
 run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
 cd $run_dir
 code_dir=examples/asr_librispeech
 
 speech_encoder_path=${run_dir}/models/WavLM-Large.pt
-llm_path=${run_dir}/models/Llama-2-7b-chat-hf
+llm_path=${run_dir}/models/phi-2
 
 train_data_path=${run_dir}/data/ami-10h/ami_train.jsonl
 val_data_path=${run_dir}/data/ami-10h/ami_validation.jsonl
 
 
 
-output_dir=${run_dir}/out/train/${identifier}
-# test dual
+output_dir=${run_dir}/out/${identifier}
+
 hydra_args="
 hydra.run.dir=$output_dir \
-++model_config.llm_name="llama" \
+++model_config.llm_name="phi2" \
 ++model_config.llm_path=$llm_path \
-++model_config.llm_dim=4096 \
-++model_config.encoder_name=wavlm \
+++model_config.llm_dim=2560 \
+++model_config.encoder_name=wav2vec2 \
 ++model_config.normalize=true \
 ++dataset_config.normalize=true \
 ++model_config.encoder_projector_ds_rate=5 \
 ++model_config.encoder_path=$speech_encoder_path \
 ++model_config.encoder_dim=1024 \
-++model_config.encoder_projector=dual \
-++model_config.dual_encoder=true \
+++model_config.encoder_projector=linear \
 ++dataset_config.dataset=speech_dataset \
 ++dataset_config.train_data_path=$train_data_path \
 ++dataset_config.val_data_path=$val_data_path \
@@ -78,7 +78,7 @@ hydra.run.dir=$output_dir \
 
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
-    python -m debugpy --listen 5678 --wait-for-client $code_dir/finetune_asr.py \
+    python $code_dir/finetune_asr.py \
         --config-path "conf" \
         --config-name "prompt.yaml" \
         $hydra_args
