@@ -129,9 +129,9 @@ class FSDPConfig:
 
 @dataclass
 class LogConfig:
-    use_wandb: bool = False # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
+    use_wandb: bool = True # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
     wandb_dir: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"
-    wandb_entity_name: str = "SLAM-LLM"
+    wandb_entity_name: str = "jindaz"
     wandb_project_name: str = "SLAM-LLM"
     wandb_exp_name: str = "exp_name"
     log_file: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"

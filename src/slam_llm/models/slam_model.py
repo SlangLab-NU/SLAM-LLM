@@ -96,13 +96,10 @@ def setup_encoder(train_config, model_config, **kwargs):
             from slam_llm.models.encoder import MusicFMEncoder
             encoder = MusicFMEncoder.load(model_config)
         # j: add new encoder for wav2phoneme
-        if encoder_name == "wav2p":
-            from slam_llm.models.encoder import Wav2PhonemeEncoder
-            encoder = Wav2PhonemeEncoder.load(model_config)
-        # j: add new encoder for wav2vec2
-        if encoder_name == "wav2vec2":
+        if encoder_name == "w2v2":
             from slam_llm.models.encoder import Wav2Vec2Encoder
             encoder = Wav2Vec2Encoder.load(model_config)
+
         
 
         if "llama" in encoder_name.lower():
@@ -352,10 +349,8 @@ class slam_model(nn.Module):
             if self.model_config.encoder_name == 'musicfm':
                 encoder_outs = self.encoder.extract_features(audio, padding_mask = None) # MusicFM doesn't support padding mask
             # j: add encoder_out with extracted feature
-            if self.model_config.encoder_name == 'wav2p': # [batch_size, seq_len, dim]
-                encoder_outs = self.encoder.extract_features(audio)
-            if self.model_config.encoder_name == 'wav2vec2': # [batch_size, seq_len, dim]
-                encoder_outs = self.encoder.extract_features(audio)
+            if self.model_config.encoder_name == 'w2v2': # [batch_size, seq_len, dim]
+                encoder_outs = self.encoder.extract_features(audio, audio_mel_post_mask)
 
             # j: concat embeddings
             if self.encoder2 is not None:

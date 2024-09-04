@@ -21,8 +21,8 @@ def model_factory(train_config, model_config, **kwargs):
     # j: Check if dual encoder is enabled
     if model_config.dual_encoder:
         # Set up the second encoder
-        from slam_llm.models.encoder import Wav2PhonemeEncoder
-        encoder2 = Wav2PhonemeEncoder.load(model_config)
+        from slam_llm.models.encoder import Wav2Vec2Encoder
+        encoder2 = Wav2Vec2Encoder.load(model_config)
     else:
         encoder2 = None
 
