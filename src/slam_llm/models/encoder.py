@@ -161,46 +161,22 @@ class MusicFMEncoder(nn.Module):
 
 
 # j: add a new encoder
-class Wav2PhonemeEncoder(nn.Module):
-    def __init__(self, config, model, feature_extractor):
-        super().__init__()
-        self.config = config
-        self.model = model
-        self.feature_extractor = feature_extractor
-
-    @classmethod
-    def load(cls, model_config):
-        from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
-        # Load the feature extractor and model
-        feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained("vitouphy/wav2vec2-xls-r-300m-timit-phoneme")
-        model = Wav2Vec2Model.from_pretrained("vitouphy/wav2vec2-xls-r-300m-timit-phoneme")
-        return cls(model_config, model, feature_extractor)
-
-    def extract_features(self, audio_input):
-        # Pass the processed inputs through the Wav2Vec2 model
-        outputs = self.model(audio_input)
-        # Return the last hidden state as the extracted features
-        return outputs.last_hidden_state
-
-
-# j: add a new encoder for wav2vec2
 class Wav2Vec2Encoder(nn.Module):
-    def __init__(self, config, model, feature_extractor):
+    def __init__(self, config, model):
         super().__init__()
         self.config = config
         self.model = model
-        self.feature_extractor = feature_extractor
 
     @classmethod
     def load(cls, model_config):
-        from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
+        from transformers import Wav2Vec2Model
         # Load the feature extractor and model
-        feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained("facebook/wav2vec2-large-xlsr-53")
-        model = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-large-xlsr-53")
-        return cls(model_config, model, feature_extractor)
+        model = Wav2Vec2Model.from_pretrained(model_config.encoder_path)
+        return cls(model_config, model)
 
-    def extract_features(self, audio_input):
+    def extract_features(self, audio_input, attention_mask):
         # Pass the processed inputs through the Wav2Vec2 model
-        outputs = self.model(audio_input)
+        outputs = self.model(audio_input, attention_mask=attention_mask)
         # Return the last hidden state as the extracted features
         return outputs.last_hidden_state
+
