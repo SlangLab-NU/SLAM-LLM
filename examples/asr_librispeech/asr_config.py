@@ -32,6 +32,7 @@ class ModelConfig:
         "help": "whether to use a dual encoder setup"
     })
     encoder2_dim: int = 1024
+    encoder2_path: Optional[str] = None # j: update second encoder path
 
 @dataclass
 class PeftConfig:
@@ -90,6 +91,7 @@ class TrainConfig:
         "help": "whether to freeze llm when finetuning, should be true when use peft finetuning"
     })
     freeze_encoder:bool = False
+    freeze_encoder2:bool = False #j: update freeze encoder2
 
 @dataclass
 class DataConfig:
@@ -131,7 +133,7 @@ class FSDPConfig:
 class LogConfig:
     use_wandb: bool = True # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
     wandb_dir: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"
-    wandb_entity_name: str = "jindaz"
+    wandb_entity_name: str = "jindaz-work"
     wandb_project_name: str = "SLAM-LLM"
     wandb_exp_name: str = "exp_name"
     log_file: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"

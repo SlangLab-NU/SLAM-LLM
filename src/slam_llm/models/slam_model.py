@@ -323,6 +323,8 @@ class slam_model(nn.Module):
         if audio_mel is not None or audio is not None or visual is not None:
             if self.train_config.freeze_encoder: # freeze encoder
                 self.encoder.eval()
+            if self.train_config.freeze_encoder2: # freeze encoder2
+                self.encoder2.eval()
 
             if self.model_config.encoder_name == "whisper":
                 encoder_outs = self.encoder.extract_variable_length_features(audio_mel.permute(0, 2, 1)) # bs*seq*dim
@@ -350,7 +352,7 @@ class slam_model(nn.Module):
                 encoder_outs = self.encoder.extract_features(audio, padding_mask = None) # MusicFM doesn't support padding mask
             # j: add encoder_out with extracted feature
             if self.model_config.encoder_name == 'w2v2': # [batch_size, seq_len, dim]
-                encoder_outs = self.encoder.extract_features(audio, audio_mel_post_mask)
+                encoder_outs = self.encoder.extract_features(source=audio, attention_mask=audio_mel_post_mask)
 
             # j: concat embeddings
             if self.encoder2 is not None:
