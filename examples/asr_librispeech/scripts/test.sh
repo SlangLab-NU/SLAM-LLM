@@ -24,6 +24,7 @@ code_dir=examples/asr_librispeech
 
 encoder_name=w2v2
 encoder_dim=1024
+input_type=raw
 speech_encoder_path=facebook/wav2vec2-large-xlsr-53
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
@@ -37,6 +38,12 @@ encoder_projector=linear
 data=ami-10h
 identifier=${data}_${encoder_name}_${llm_name}_${encoder_projector}
 echo "Identifier: $identifier"
+
+# auto find checkpoint
+output_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/${identifier}
+latest_ckpt_folder=$(ls -l "$output_dir" | grep "asr_epoch" | sort -V | tail -1 | awk '{print $9}')
+ckpt_path=$output_dir/$latest_ckpt_folder
+echo "Latest file: $ckpt_path"
 
 train_data_path=${run_dir}/data/ami-10h/ami_train.jsonl
 val_data_path=${run_dir}/data/ami-10h/ami_validation.jsonl
@@ -65,9 +72,9 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++dataset_config.dataset=speech_dataset \
         ++dataset_config.train_data_path=$train_data_path \
         ++dataset_config.val_data_path=$val_data_path \
-        ++dataset_config.input_type=raw \
+        ++dataset_config.input_type=$input_type \
         ++train_config.model_name=asr \
-        ++train_config.num_epochs=3 \
+        ++train_config.num_epochs=10 \
         ++train_config.freeze_encoder=true \
         ++train_config.freeze_llm=true \
         ++train_config.batching_strategy=custom \
@@ -80,5 +87,6 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.num_workers_dataloader=1 \
         ++train_config.output_dir=$output_dir \
         ++train_config.use_fp16=true \
+        ++ckpt_path=$ckpt_path/model.pt \
         ++metric=acc
 fi

@@ -1,11 +1,14 @@
-#!/bin/bash
+#!/bin/bash -l
 #SBATCH -N 1
-#SBATCH -c 3
+#SBATCH -c 12
 #SBATCH -p gpu
-#SBATCH --gres=gpu:v100-sxm2:1
+#SBATCH --gres=gpu:v100-sxm2:1   # --gres=gpu:t4:1
 #SBATCH --time=08:00:00
-#SBATCH --output=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.output
-#SBATCH --error=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.error
+#SBATCH --output=log/%j.output
+#SBATCH --error=log/%j.error
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=jindaznb@gmail.com
+
 # export PYTHONPATH=/root/whisper:$PYTHONPATH
 export CUDA_VISIBLE_DEVICES=0
 export TOKENIZERS_PARALLELISM=false
@@ -30,9 +33,9 @@ speech_encoder_path=${run_dir}/models/WavLM-Large.pt
 speech_encoder2_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
-llm_name=phi-2
-llm_dim=2560
-llm_path=${run_dir}/models/${llm_name}
+llm_name=TinyLlama
+llm_dim=2048
+llm_path=${run_dir}/models/TinyLlama-1.1B-Chat-v1.0
 echo "llm_path: $llm_path"
 dual_encoder=true
 encoder_projector=dual
@@ -45,6 +48,7 @@ train_data_path=${run_dir}/data/ami-10h/ami_train.jsonl
 val_data_path=${run_dir}/data/ami-10h/ami_validation.jsonl
 
 output_dir=${run_dir}/out/train/${identifier}
+echo "output_dir: $output_dir"
 
 
 
@@ -62,6 +66,7 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++dataset_config.normalize=true \
         ++model_config.encoder_projector_ds_rate=5 \
         ++model_config.encoder_path=$speech_encoder_path \
+        ++model_config.encoder2_path=$speech_encoder2_path \
         ++model_config.encoder_dim=$encoder_dim \
         ++model_config.encoder_projector=$encoder_projector \
         ++model_config.dual_encoder=$dual_encoder \
@@ -72,6 +77,7 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.model_name=asr \
         ++train_config.num_epochs=3 \
         ++train_config.freeze_encoder=$freeze_encoder \
+        ++train_config.freeze_encoder2=$freeze_encoder2 \
         ++train_config.freeze_llm=true \
         ++train_config.batching_strategy=custom \
         ++train_config.warmup_steps=1000 \

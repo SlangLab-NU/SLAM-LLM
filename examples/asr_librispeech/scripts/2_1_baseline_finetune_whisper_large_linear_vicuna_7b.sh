@@ -5,8 +5,8 @@
 #SBATCH --gres=gpu:a100:1   
 #SBATCH --constraint=a100@80g
 #SBATCH --time=08:00:00
-#SBATCH --output=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.output
-#SBATCH --error=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.error
+#SBATCH --output=log/%j.output
+#SBATCH --error=log/%j.error
 
 # export PYTHONPATH=/root/whisper:$PYTHONPATH
 export PYTHONPATH=/root/fairseq:$PYTHONPATH

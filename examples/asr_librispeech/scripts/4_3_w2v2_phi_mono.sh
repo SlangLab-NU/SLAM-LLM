@@ -1,12 +1,16 @@
-#!/bin/bash
+#!/bin/bash -l
 #SBATCH -N 1
-#SBATCH -c 3
+#SBATCH -c 12
 #SBATCH -p gpu
-#SBATCH --gres=gpu:v100-sxm2:1
+#SBATCH --gres=gpu:v100-sxm2:1   # --gres=gpu:t4:1
 #SBATCH --time=08:00:00
-#SBATCH --output=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.output
-#SBATCH --error=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.error
+#SBATCH --output=log/%j.output
+#SBATCH --error=log/%j.error
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=jindaznb@gmail.com
+
 # export PYTHONPATH=/root/whisper:$PYTHONPATH
+
 export CUDA_VISIBLE_DEVICES=0
 export TOKENIZERS_PARALLELISM=false
 # export CUDA_LAUNCH_BLOCKING=1
@@ -28,9 +32,9 @@ freeze_encoder=false
 speech_encoder_path=facebook/wav2vec2-large-xlsr-53
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
-llm_name=phi-2
-llm_dim=2560
-llm_path=${run_dir}/models/${llm_name}
+llm_name=TinyLlama
+llm_dim=2048
+llm_path=${run_dir}/models/TinyLlama-1.1B-Chat-v1.0
 echo "llm_path: $llm_path"
 dual_encoder=false
 encoder_projector=linear
@@ -81,5 +85,6 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.num_workers_dataloader=1 \
         ++train_config.output_dir=$output_dir \
         ++train_config.use_fp16=true \
+        ++log_config.wandb_exp_name=$identifier \
         ++metric=acc
 fi

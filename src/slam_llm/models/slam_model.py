@@ -64,6 +64,39 @@ def setup_tokenizer(train_config, model_config, **kwargs):
         tokenizer.pad_token_id = tokenizer.eos_token_id
     return tokenizer
 
+def get_encoder_instance(encoder_name, model_config):
+    if encoder_name == "whisper" or encoder_name == "qwen-audio":
+        from slam_llm.models.encoder import WhisperWrappedEncoder
+        return WhisperWrappedEncoder.load(model_config)
+    elif encoder_name == "beats":
+        from slam_llm.models.encoder import BEATsEncoder
+        return BEATsEncoder.load(model_config)
+    elif encoder_name == "eat":
+        from slam_llm.models.encoder import EATEncoder
+        return EATEncoder.load(model_config)
+    elif encoder_name == "SpatialAST":
+        from slam_llm.models.encoder import SpatialASTEncoder
+        return SpatialASTEncoder.load(model_config)
+    elif encoder_name == "wavlm":
+        from slam_llm.models.encoder import WavLMEncoder
+        return WavLMEncoder.load(model_config)
+    elif encoder_name == "av_hubert":
+        from slam_llm.models.encoder import AVHubertEncoder
+        return AVHubertEncoder.load(model_config)
+    elif encoder_name == "hubert":
+        from slam_llm.models.encoder import HubertEncoder
+        return HubertEncoder.load(model_config)
+    elif encoder_name == "musicfm":
+        from slam_llm.models.encoder import MusicFMEncoder
+        return MusicFMEncoder.load(model_config)
+    elif encoder_name == "w2v2":
+        from slam_llm.models.encoder import Wav2Vec2Encoder
+        return Wav2Vec2Encoder.load(model_config)
+    elif "llama" in encoder_name.lower():
+        from slam_llm.models.encoder import HfTextEncoder
+        return HfTextEncoder.load(model_config)
+    else:
+        return None
 
 def setup_encoder(train_config, model_config, **kwargs):
     encoder_list = model_config.encoder_name.split(",") if model_config.encoder_name else []
@@ -71,40 +104,8 @@ def setup_encoder(train_config, model_config, **kwargs):
         return None
     if len(encoder_list) == 1:
         encoder_name = encoder_list[0]
-        if encoder_name == "whisper" or encoder_name == "qwen-audio":
-            from slam_llm.models.encoder import WhisperWrappedEncoder
-            encoder = WhisperWrappedEncoder.load(model_config)
-        if encoder_name == "beats": 
-            from slam_llm.models.encoder import BEATsEncoder
-            encoder = BEATsEncoder.load(model_config)
-        if encoder_name == "eat":
-            from slam_llm.models.encoder import EATEncoder
-            encoder = EATEncoder.load(model_config)
-        if encoder_name == "SpatialAST":
-            from slam_llm.models.encoder import SpatialASTEncoder
-            encoder = SpatialASTEncoder.load(model_config)
-        if encoder_name == "wavlm":
-            from slam_llm.models.encoder import WavLMEncoder
-            encoder = WavLMEncoder.load(model_config)
-        if encoder_name == "av_hubert":
-            from slam_llm.models.encoder import AVHubertEncoder
-            encoder = AVHubertEncoder.load(model_config)
-        if encoder_name == "hubert":
-            from slam_llm.models.encoder import HubertEncoder
-            encoder = HubertEncoder.load(model_config)
-        if encoder_name == "musicfm":
-            from slam_llm.models.encoder import MusicFMEncoder
-            encoder = MusicFMEncoder.load(model_config)
-        # j: add new encoder for wav2phoneme
-        if encoder_name == "w2v2":
-            from slam_llm.models.encoder import Wav2Vec2Encoder
-            encoder = Wav2Vec2Encoder.load(model_config)
-
+        encoder = get_encoder_instance(encoder_name, model_config)
         
-
-        if "llama" in encoder_name.lower():
-            from slam_llm.models.encoder import HfTextEncoder
-            encoder = HfTextEncoder.load(model_config)
     print_module_size(encoder, encoder_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
 
     if train_config.freeze_encoder:
@@ -357,7 +358,7 @@ class slam_model(nn.Module):
             # j: concat embeddings
             if self.encoder2 is not None:
                 # Forward pass through the second encoder
-                encoder_outs2 = self.encoder2.extract_features(audio)
+                encoder_outs2 = self.encoder2.extract_features(source=audio, attention_mask=audio_mel_post_mask)
                 # Concatenate outputs from both encoders
                 encoder_outs = torch.cat((encoder_outs, encoder_outs2), dim=-1)
                 

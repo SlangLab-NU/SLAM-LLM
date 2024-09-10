@@ -1,11 +1,13 @@
-#!/bin/bash
+#!/bin/bash -l
 #SBATCH -N 1
-#SBATCH -c 3
+#SBATCH -c 12
 #SBATCH -p gpu
-#SBATCH --gres=gpu:v100-sxm2:1
+#SBATCH --gres=gpu:v100-sxm2:1   # --gres=gpu:t4:1
 #SBATCH --time=08:00:00
-#SBATCH --output=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.output
-#SBATCH --error=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/log/%j.error
+#SBATCH --output=log/%j.output
+#SBATCH --error=log/%j.error
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=jindaznb@gmail.com
 
 #export PYTHONPATH=/root/whisper:$PYTHONPATH
 export CUDA_VISIBLE_DEVICES=0
