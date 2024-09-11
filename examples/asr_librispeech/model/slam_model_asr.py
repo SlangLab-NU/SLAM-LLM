@@ -5,6 +5,7 @@ from slam_llm.models.slam_model import (
     slam_model,
     setup_tokenizer,
     setup_encoder,
+    setup_encoder2,
     setup_encoder_projector,
     setup_llm,
 )
@@ -21,8 +22,7 @@ def model_factory(train_config, model_config, **kwargs):
     # j: Check if dual encoder is enabled
     if model_config.dual_encoder:
         # Set up the second encoder
-        from slam_llm.models.encoder import Wav2Vec2Encoder
-        encoder2 = Wav2Vec2Encoder.load(model_config)
+        encoder2 = setup_encoder2(train_config, model_config, **kwargs)
     else:
         encoder2 = None
 

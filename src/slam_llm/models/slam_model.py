@@ -105,7 +105,7 @@ def setup_encoder(train_config, model_config, **kwargs):
     if len(encoder_list) == 1:
         encoder_name = encoder_list[0]
         encoder = get_encoder_instance(encoder_name, model_config)
-        
+
     print_module_size(encoder, encoder_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
 
     if train_config.freeze_encoder:
@@ -115,6 +115,22 @@ def setup_encoder(train_config, model_config, **kwargs):
     print_module_size(encoder, encoder_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
 
     return encoder
+
+def setup_encoder2(train_config, model_config, **kwargs):
+    encoder_list = model_config.encoder2_name.split(",") if model_config.encoder2_name else []
+
+    encoder2_name = encoder_list[0]
+    encoder2 = get_encoder_instance(encoder2_name, model_config)
+        
+    print_module_size(encoder2, encoder2_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
+
+    if train_config.freeze_encoder2:
+        for name, param in encoder2.named_parameters(): 
+            param.requires_grad = False
+        encoder2.eval()
+    print_module_size(encoder2, encoder2_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
+
+    return encoder2
 
 def setup_llm(train_config, model_config, **kwargs):
     from pkg_resources import packaging

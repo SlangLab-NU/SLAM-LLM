@@ -13,12 +13,15 @@ class ModelConfig:
     llm_path: str = "PATH/to/LLAMA/7B"
     llm_type: str = "decoder_only"
     llm_dim: int = 4096
+
     encoder_name: Optional[str] = None
     encoder_ds_rate: int = 2
     encoder_path: Optional[str] = None
     encoder_dim: int = 1280
+    
     encoder_projector: str = "linear"
     encoder_projector_ds_rate: int = 5 # downsample rate
+
     modal: str = "audio"
     normalize: Optional[bool] = field(default=False, metadata={
         "help": "whether input is normalized, used for models such as wavlm"
@@ -31,6 +34,7 @@ class ModelConfig:
     dual_encoder: bool = field(default=False, metadata={
         "help": "whether to use a dual encoder setup"
     })
+    encoder2_name: Optional[str] = None
     encoder2_dim: int = 1024
     encoder2_path: Optional[str] = None # j: update second encoder path
 

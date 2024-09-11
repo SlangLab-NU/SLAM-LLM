@@ -28,8 +28,10 @@ encoder_name=wavlm
 encoder_dim=1024
 input_type=raw
 freeze_encoder=true
-freeze_encoder2=false
 speech_encoder_path=${run_dir}/models/WavLM-Large.pt
+
+encoder2_name=w2v2
+freeze_encoder2=false
 speech_encoder2_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
