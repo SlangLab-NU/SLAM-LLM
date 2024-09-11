@@ -89,7 +89,7 @@ def get_encoder_instance(encoder_name, model_config):
     elif encoder_name == "musicfm":
         from slam_llm.models.encoder import MusicFMEncoder
         return MusicFMEncoder.load(model_config)
-    elif encoder_name == "w2v2":
+    elif "w2v" in encoder_name.lower():
         from slam_llm.models.encoder import Wav2Vec2Encoder
         return Wav2Vec2Encoder.load(model_config)
     elif "llama" in encoder_name.lower():

@@ -10,6 +10,7 @@
 #SBATCH --mail-user=jindaznb@gmail.com
 
 # export PYTHONPATH=/root/whisper:$PYTHONPATH
+
 export CUDA_VISIBLE_DEVICES=0
 export TOKENIZERS_PARALLELISM=false
 # export CUDA_LAUNCH_BLOCKING=1
@@ -24,25 +25,19 @@ run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
 cd $run_dir
 code_dir=examples/asr_librispeech
 
-encoder_name=wavlm
+encoder_name=w2v2
 encoder_dim=1024
 input_type=raw
-freeze_encoder=true
-speech_encoder_path=${run_dir}/models/WavLM-Large.pt
-
-encoder2_name=w2v2
-encoder2_dim=1024
-freeze_encoder2=false
-speech_encoder2_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
-
+freeze_encoder=false
+speech_encoder_path=facebook/wav2vec2-large-xlsr-53
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
 llm_name=TinyLlama
 llm_dim=2048
 llm_path=${run_dir}/models/TinyLlama-1.1B-Chat-v1.0
 echo "llm_path: $llm_path"
-dual_encoder=true
-encoder_projector=dual
+dual_encoder=false
+encoder_projector=linear
 
 data=ami-10h
 identifier=${data}_${encoder_name}_${llm_name}_${encoder_projector}
@@ -52,13 +47,13 @@ train_data_path=${run_dir}/data/ami-10h/ami_train.jsonl
 val_data_path=${run_dir}/data/ami-10h/ami_validation.jsonl
 
 output_dir=${run_dir}/out/train/${identifier}
-echo "output_dir: $output_dir"
+ckpt_path=$output_dir
 
 
 
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
-    python $code_dir/finetune_asr.py \
+    python -m debugpy --listen 5678 --wait-for-client $code_dir/finetune_asr.py \
         --config-path "conf" \
         --config-name "prompt.yaml" \
         hydra.run.dir=$output_dir \
@@ -70,9 +65,6 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++dataset_config.normalize=true \
         ++model_config.encoder_projector_ds_rate=5 \
         ++model_config.encoder_path=$speech_encoder_path \
-        ++model_config.encoder2_name=$encoder2_name \
-        ++model_config.encoder2_path=$speech_encoder2_path \
-        ++model_config.encoder2_dim=$encoder2_dim \
         ++model_config.encoder_dim=$encoder_dim \
         ++model_config.encoder_projector=$encoder_projector \
         ++model_config.dual_encoder=$dual_encoder \
@@ -83,7 +75,6 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.model_name=asr \
         ++train_config.num_epochs=3 \
         ++train_config.freeze_encoder=$freeze_encoder \
-        ++train_config.freeze_encoder2=$freeze_encoder2 \
         ++train_config.freeze_llm=true \
         ++train_config.batching_strategy=custom \
         ++train_config.warmup_steps=1000 \
@@ -95,5 +86,7 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.num_workers_dataloader=1 \
         ++train_config.output_dir=$output_dir \
         ++train_config.use_fp16=true \
-        ++metric=acc
+        ++log_config.wandb_exp_name=$identifier \
+        ++metric=acc \
+        ++ckpt_path=$ckpt_path
 fi

@@ -31,8 +31,10 @@ freeze_encoder=true
 speech_encoder_path=${run_dir}/models/WavLM-Large.pt
 
 encoder2_name=w2v2
+encoder2_dim=1024
 freeze_encoder2=false
 speech_encoder2_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
+
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
 llm_name=TinyLlama
@@ -68,7 +70,9 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++dataset_config.normalize=true \
         ++model_config.encoder_projector_ds_rate=5 \
         ++model_config.encoder_path=$speech_encoder_path \
+        ++model_config.encoder2_name=$encoder2_name \
         ++model_config.encoder2_path=$speech_encoder2_path \
+        ++model_config.encoder2_dim=$encoder2_dim \
         ++model_config.encoder_dim=$encoder_dim \
         ++model_config.encoder_projector=$encoder_projector \
         ++model_config.dual_encoder=$dual_encoder \

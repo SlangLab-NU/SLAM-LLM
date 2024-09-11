@@ -1,6 +1,7 @@
 import torch
 import os
 import logging
+import re
 from slam_llm.models.slam_model import (
     slam_model,
     setup_tokenizer,
@@ -48,9 +49,13 @@ def model_factory(train_config, model_config, **kwargs):
         "ckpt_path", None
     )  # FIX(MZY): load model ckpt(mainly projector, related to model_checkpointing/checkpoint_handler.py: save_model_checkpoint_peft)
     if ckpt_path is not None:
-        logger.info("loading other parts from: {}".format(ckpt_path))
-        ckpt_dict = torch.load(ckpt_path, map_location="cpu")
-        model.load_state_dict(ckpt_dict, strict=False)
+        latest_checkpoint_folder = find_latest_checkpoint(ckpt_path)
+        if latest_checkpoint_folder:
+            ckpt_path = os.path.join(latest_checkpoint_folder, 'model.pt')
+            if os.path.exists(ckpt_path):
+                logger.info("loading other parts from: {}".format(ckpt_path))
+                ckpt_dict = torch.load(ckpt_path, map_location="cpu")
+                model.load_state_dict(ckpt_dict, strict=False)
 
     print_model_size(
         model,
@@ -164,3 +169,38 @@ class slam_model_asr(slam_model):
         )
 
         return model_outputs
+
+
+def find_latest_checkpoint(directory):
+    """
+    Finds the folder with the largest epoch, then largest step in the directory.
+    """
+    latest_epoch = -1
+    latest_step = -1
+    latest_folder = None
+
+    for folder in os.listdir(directory):
+        folder_path = os.path.join(directory, folder)
+        if os.path.isdir(folder_path):
+            epoch_step = get_epoch_step(folder)
+            if epoch_step:
+                epoch, step = epoch_step
+                if (epoch > latest_epoch) or (epoch == latest_epoch and step > latest_step):
+                    latest_epoch = epoch
+                    latest_step = step
+                    latest_folder = folder_path
+
+    return latest_folder
+
+
+def get_epoch_step(folder_name):
+    """
+    Extracts epoch and step numbers from the folder name.
+    Assumes folder names follow the pattern: 'asr_epoch_<epoch>_step_<step>'.
+    """
+    match = re.match(r'asr_epoch_(\d+)_step_(\d+)', folder_name)
+    if match:
+        epoch = int(match.group(1))
+        step = int(match.group(2))
+        return epoch, step
+    return None
