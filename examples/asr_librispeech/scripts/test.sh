@@ -17,39 +17,22 @@ export TOKENIZERS_PARALLELISM=false
 export OMP_NUM_THREADS=1
 export HYDRA_FULL_ERROR=1
 
-module load anaconda3/3.7
-module load ffmpeg/20190305
+module purge && \
+module load python/3.8.1 && \
+module load anaconda3/3.7 && \
+module load ffmpeg/20190305 && \
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 
 run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
 cd $run_dir
 code_dir=examples/asr_librispeech
 
-encoder_name=w2v2
-encoder_dim=1024
-input_type=raw
-freeze_encoder=false
-speech_encoder_path=facebook/wav2vec2-large-xlsr-53
-echo "speech encoder name: $encoder_name"
-echo "speech encoder path: $speech_encoder_path"
-llm_name=TinyLlama
-llm_dim=2048
-llm_path=${run_dir}/models/TinyLlama-1.1B-Chat-v1.0
-echo "llm_path: $llm_path"
-dual_encoder=false
-encoder_projector=linear
-
-data=ami-10h
-identifier=${data}_${encoder_name}_${llm_name}_${encoder_projector}
-echo "Identifier: $identifier"
-
-train_data_path=${run_dir}/data/ami-10h/ami_train.jsonl
-val_data_path=${run_dir}/data/ami-10h/ami_validation.jsonl
-
 output_dir=${run_dir}/out/train/${identifier}
 ckpt_path=$output_dir
 
-
+val_data_path=${run_dir}/data/ami-10h/ami_test.jsonl
+split="test"
+decode_log=$output_dir/decode_${split}_beam4
 
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
@@ -69,7 +52,6 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++model_config.encoder_projector=$encoder_projector \
         ++model_config.dual_encoder=$dual_encoder \
         ++dataset_config.dataset=speech_dataset \
-        ++dataset_config.train_data_path=$train_data_path \
         ++dataset_config.val_data_path=$val_data_path \
         ++dataset_config.input_type=$input_type \
         ++train_config.model_name=asr \
@@ -88,5 +70,5 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.use_fp16=true \
         ++log_config.wandb_exp_name=$identifier \
         ++metric=acc \
-        ++ckpt_path=$ckpt_path
+        ++model_config.ckpt_path=$ckpt_path
 fi

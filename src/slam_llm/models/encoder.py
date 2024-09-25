@@ -29,7 +29,10 @@ class WhisperWrappedEncoder:
             return x
 
         import whisper
-        encoder = whisper.load_model(name=model_config.encoder_path, device='cpu').encoder
+        if not model_config.encoder2_name:
+            encoder = whisper.load_model(name=model_config.encoder_path, device='cpu').encoder
+        else:
+            encoder = whisper.load_model(name=model_config.encoder2_path, device='cpu').encoder
         encoder.extract_variable_length_features = types.MethodType(extract_variable_length_features, encoder)
         return encoder
 
@@ -169,16 +172,14 @@ class Wav2Vec2Encoder(nn.Module):
 
     @classmethod
     def load(cls, model_config):
-        if not model_config.dual_encoder:
-            from transformers import Wav2Vec2Model
+        from transformers import Wav2Vec2Model
+        if not model_config.encoder2_name:
             # Load the feature extractor and model
             model = Wav2Vec2Model.from_pretrained(model_config.encoder_path)
-            return cls(model_config, model)
         else:
-            from transformers import Wav2Vec2Model
             # Load the feature extractor and model
             model = Wav2Vec2Model.from_pretrained(model_config.encoder2_path)
-            return cls(model_config, model)
+        return cls(model_config, model)
 
     def extract_features(self, source, attention_mask):
         assert source is not None, "Input source is None."

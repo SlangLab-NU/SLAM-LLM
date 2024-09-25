@@ -21,7 +21,7 @@ def model_factory(train_config, model_config, **kwargs):
     encoder = setup_encoder(train_config, model_config, **kwargs)
 
     # j: Check if dual encoder is enabled
-    if model_config.dual_encoder:
+    if model_config.encoder2_name:
         # Set up the second encoder
         encoder2 = setup_encoder2(train_config, model_config, **kwargs)
     else:
@@ -45,9 +45,10 @@ def model_factory(train_config, model_config, **kwargs):
         **kwargs,
     )
 
-    ckpt_path = kwargs.get(
-        "ckpt_path", None
-    )  # FIX(MZY): load model ckpt(mainly projector, related to model_checkpointing/checkpoint_handler.py: save_model_checkpoint_peft)
+    ckpt_path = model_config.ckpt_path  # Use ckpt_path directly from model_config
+    # ckpt_path = kwargs.get(
+    #     "ckpt_path", None
+    # )  # FIX(MZY): load model ckpt(mainly projector, related to model_checkpointing/checkpoint_handler.py: save_model_checkpoint_peft)
     if ckpt_path is not None:
         latest_checkpoint_folder = find_latest_checkpoint(ckpt_path)
         if latest_checkpoint_folder:

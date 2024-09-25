@@ -30,13 +30,12 @@ class ModelConfig:
         "help": "whether model is only pretrained or finetuned, used for models such as hubert"
     })
 
-    # j: add dual encoder configuration
-    dual_encoder: bool = field(default=False, metadata={
-        "help": "whether to use a dual encoder setup"
-    })
     encoder2_name: Optional[str] = None
-    encoder2_dim: int = 1024
+    encoder2_dim: Optional[int] = field(default=1024)  # Default value
     encoder2_path: Optional[str] = None # j: update second encoder path
+
+    ckpt_path: Optional[str] = None
+
 
 @dataclass
 class PeftConfig:
@@ -140,5 +139,5 @@ class LogConfig:
     wandb_entity_name: str = "jindaz-work"
     wandb_project_name: str = "SLAM-LLM"
     wandb_exp_name: str = "exp_name"
-    log_file: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"
+    log_file: str = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/log/{current_time}.txt"
     log_interval: int = 5
