@@ -30,11 +30,10 @@ class ModelConfig:
         "help": "whether model is only pretrained or finetuned, used for models such as hubert"
     })
 
+    # j: update second encoder configs
     encoder2_name: Optional[str] = None
-    encoder2_dim: Optional[int] = field(default=1024)  # Default value
-    encoder2_path: Optional[str] = None # j: update second encoder path
-
-    ckpt_path: Optional[str] = None
+    encoder2_dim: Optional[int] = 1024
+    encoder2_path: Optional[str] = None
 
 
 @dataclass
@@ -63,6 +62,9 @@ class TrainConfig:
     context_length:int = 4096
     gradient_accumulation_steps:int = 1
     num_epochs:int = 3
+    resume_step: int = 0 # j: resume step and epoch
+    resume_epoch: int = 0
+
     num_workers_dataloader:int = 1
     warmup_steps:int = 1000
     total_steps:int = 100000

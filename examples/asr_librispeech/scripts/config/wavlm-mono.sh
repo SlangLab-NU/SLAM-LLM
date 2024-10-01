@@ -11,12 +11,11 @@ export HYDRA_FULL_ERROR=1
 run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
 code_dir=examples/asr_librispeech
 
-encoder_name=w2v2
+encoder_name=wavlm
 encoder_dim=1024
 input_type=raw
 freeze_encoder=true
-speech_encoder_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
-
+speech_encoder_path=${run_dir}/models/WavLM-Large.pt
 
 
 llm_name=TinyLlama
@@ -27,7 +26,7 @@ use_peft=true
 encoder_projector=linear
 
 data=ami-10h
-identifier=${data_folder}_${encoder_name}_${llm_name}_${encoder_projector}_phoneme_freeze
+identifier=${data_folder}_${encoder_name}_${llm_name}_${encoder_projector}
 echo "Identifier: $identifier"
 
 output_dir=${run_dir}/out/train/${identifier}

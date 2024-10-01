@@ -200,6 +200,7 @@ def setup_llm(train_config, model_config, **kwargs):
                 load_in_8bit=True if train_config.quantization else None,
                 device_map="auto" if train_config.quantization else None,
                 use_cache=use_cache,
+                trust_remote_code=True
             )
     if (train_config.enable_fsdp or train_config.enable_ddp) and train_config.use_fast_kernels:
         """
@@ -372,7 +373,7 @@ class slam_model(nn.Module):
         if audio_mel is not None or audio is not None or visual is not None:
             if self.train_config.freeze_encoder: # freeze encoder
                 self.encoder.eval()
-            if self.train_config.freeze_encoder2: # freeze encoder2
+            if self.encoder2 and self.train_config.freeze_encoder2: # freeze encoder2
                 self.encoder2.eval()
 
             encoder_outs, audio_mel_post_mask = self.extract_encoder_features(self.model_config.encoder_name, audio, attention_mask, audio_mask, visual, visual_mask)
