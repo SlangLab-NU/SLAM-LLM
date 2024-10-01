@@ -34,11 +34,10 @@ split="test"
 use_peft=${use_peft: -false}
 
 config_folder="examples/asr_librispeech/scripts/config"
-source ${config_folder}/wavlm-mono.sh
+source ${config_folder}/w2p_mono_freeze.sh
 decode_log=$output_dir/decode_${split}_beam4
 
 # -m debugpy --listen 5678 --wait-for-client
-# python -m debugpy --listen 5678 --wait-for-client $code_dir/inference_asr_batch.py \
 python $code_dir/inference_asr_batch.py \
         --config-path "conf" \
         --config-name "prompt.yaml" \
@@ -68,7 +67,7 @@ python $code_dir/inference_asr_batch.py \
         ++train_config.num_workers_dataloader=1 \
         ++train_config.output_dir=$output_dir \
         ++decode_log=$decode_log \
-        ++ckpt_path=$ckpt_path/model.pt \
+        ++ckpt_path=$ckpt_path \
         ++log_config.wandb_exp_name=$identifier \
         ++train_config.use_peft=true \
         # ++train_config.peft_config.r=32 \
