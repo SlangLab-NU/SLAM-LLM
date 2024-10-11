@@ -15,6 +15,7 @@ export TOKENIZERS_PARALLELISM=false
 # export CUDA_LAUNCH_BLOCKING=1
 export OMP_NUM_THREADS=1
 export HYDRA_FULL_ERROR=1
+export RUN_DIR=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
 
 module purge
 module load discovery
@@ -24,31 +25,38 @@ module load ffmpeg/20190305
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 
 
-run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm
-cd $run_dir
 
+
+cd $RUN_DIR
 code_dir=examples/asr_librispeech
-data_folder=librispeech
-train_data_path=${run_dir}/data/${data_folder}/librispeech_train_100.jsonl
-val_data_path=${run_dir}/data/${data_folder}/librispeech_validation.jsonl
-num_epochs=3
+data_folder=librispeech-100
+dataset_file="examples/asr_librispeech/dataset/multitask_speech_dataset.py:get_speech_dataset"
+# dataset_file="src/slam_llm/datasets/speech_dataset.py:get_speech_dataset"
+train_data_path="${RUN_DIR}/data/${data_folder}/${data_folder}_train.jsonl"
+val_data_path="${RUN_DIR}/data/${data_folder}/${data_folder}_val.jsonl"
+num_epochs=2
+batch_size_training=4
 
 config_folder="examples/asr_librispeech/scripts/config"
-source ${config_folder}/w2p_dual_freeze.sh
+source ${config_folder}/wavlm-mono.sh
 
-if [ "$use_peft" = true ]; then
-    freeze_llm=false
-else
-    freeze_llm=true
-fi
 
-output_dir=${run_dir}/out/train/${identifier}
-latest_ckpt_folder=$(ls -l "$output_dir" | grep "asr_epoch" | sort -V | tail -1 | awk '{print $9}')
-if [ -n "$latest_ckpt_folder" ]; then
-    ckpt_path=$output_dir/$latest_ckpt_folder/model.pt
-    echo "Latest file: $ckpt_path"
+
+output_dir=${RUN_DIR}/out/train/${identifier}
+# Check if the output_dir exists
+if [ -d "$output_dir" ]; then
+    # Find the latest checkpoint folder
+    latest_ckpt_folder=$(ls -l "$output_dir" | grep "asr_epoch" | sort -V | tail -1 | awk '{print $9}')
+    
+    # Check if a checkpoint folder was found
+    if [ -n "$latest_ckpt_folder" ]; then
+        ckpt_path=$output_dir/$latest_ckpt_folder/model.pt
+        echo "Latest file: $ckpt_path"
+    else
+        echo "No checkpoint found in $output_dir"
+    fi
 else
-    echo "No checkpoint found in $output_dir"
+    echo "$output_dir does not exist"
 fi
 
 # Extract the epoch and step using sed or set to 0 if extraction fails
@@ -66,7 +74,7 @@ echo "Resume step: $resume_step"
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
     # Define the base command
-    command="python -m debugpy --listen 5678 --wait-for-client $code_dir/finetune_asr.py \
+    command="python $code_dir/finetune_asr.py \
         --config-path 'conf' \
         --config-name 'prompt.yaml' \
         hydra.run.dir=$output_dir \
@@ -84,6 +92,7 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++model_config.encoder_projector=$encoder_projector \
         ++dataset_config.dataset=speech_dataset \
         ++dataset_config.train_data_path=$train_data_path \
+        ++dataset_config.file=$dataset_file \
         ++dataset_config.val_data_path=$val_data_path \
         ++dataset_config.input_type=$input_type \
         ++train_config.model_name=asr \
@@ -95,7 +104,7 @@ if [[ $CUDA_VISIBLE_DEVICES != *","* ]]; then
         ++train_config.total_steps=100000 \
         ++train_config.lr=1e-4 \
         ++train_config.validation_interval=1000 \
-        ++train_config.batch_size_training=1 \
+        ++train_config.batch_size_training=$batch_size_training \
         ++train_config.val_batch_size=1 \
         ++train_config.num_workers_dataloader=1 \
         ++train_config.output_dir=$output_dir \

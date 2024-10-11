@@ -87,15 +87,18 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     results = {}
     best_val_loss = float("inf")
     best_val_acc = 0.0
-    for epoch in range(train_config.num_epochs):
+    for epoch in range(train_config.resume_epoch-1, train_config.num_epochs): # j: resume_epoch
         epoch_start_time = time.perf_counter()
         with MemoryTrace() as memtrace:  # track the memory usage
             model.train()
             total_loss = 0.0
             total_acc = 0.0
-            total_length = len(train_dataloader)//gradient_accumulation_steps
+            if epoch == train_config.resume_epoch-1: # j: resume_steps
+                total_length = len(train_dataloader) // gradient_accumulation_steps - train_config.resume_step
+            else:
+                total_length = len(train_dataloader) // gradient_accumulation_steps
             pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True)
-            for step, batch in enumerate(train_dataloader):
+            for step, batch in enumerate(train_dataloader,start=train_config.resume_step):
                 for key in batch.keys():
                     if train_config.enable_fsdp or train_config.enable_ddp:
                         batch[key] = batch[key].to(local_rank) if isinstance(batch[key], torch.Tensor) else batch[key]

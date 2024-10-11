@@ -64,6 +64,39 @@ def setup_tokenizer(train_config, model_config, **kwargs):
         tokenizer.pad_token_id = tokenizer.eos_token_id
     return tokenizer
 
+def get_encoder_instance(encoder_name, model_config):
+    if encoder_name == "whisper" or encoder_name == "qwen-audio":
+        from slam_llm.models.encoder import WhisperWrappedEncoder
+        return WhisperWrappedEncoder.load(model_config)
+    elif encoder_name == "beats":
+        from slam_llm.models.encoder import BEATsEncoder
+        return BEATsEncoder.load(model_config)
+    elif encoder_name == "eat":
+        from slam_llm.models.encoder import EATEncoder
+        return EATEncoder.load(model_config)
+    elif encoder_name == "SpatialAST":
+        from slam_llm.models.encoder import SpatialASTEncoder
+        return SpatialASTEncoder.load(model_config)
+    elif encoder_name == "wavlm":
+        from slam_llm.models.encoder import WavLMEncoder
+        return WavLMEncoder.load(model_config)
+    elif encoder_name == "av_hubert":
+        from slam_llm.models.encoder import AVHubertEncoder
+        return AVHubertEncoder.load(model_config)
+    elif encoder_name == "hubert":
+        from slam_llm.models.encoder import HubertEncoder
+        return HubertEncoder.load(model_config)
+    elif encoder_name == "musicfm":
+        from slam_llm.models.encoder import MusicFMEncoder
+        return MusicFMEncoder.load(model_config)
+    elif "w2v" in encoder_name.lower():
+        from slam_llm.models.encoder import Wav2Vec2Encoder
+        return Wav2Vec2Encoder.load(model_config)
+    elif "llama" in encoder_name.lower():
+        from slam_llm.models.encoder import HfTextEncoder
+        return HfTextEncoder.load(model_config)
+    else:
+        return None
 
 def setup_encoder(train_config, model_config, **kwargs):
     encoder_list = model_config.encoder_name.split(",") if model_config.encoder_name else []
@@ -71,46 +104,8 @@ def setup_encoder(train_config, model_config, **kwargs):
         return None
     if len(encoder_list) == 1:
         encoder_name = encoder_list[0]
-        if encoder_name == "whisper" or encoder_name == "qwen-audio":
-            from slam_llm.models.encoder import WhisperWrappedEncoder
-            encoder = WhisperWrappedEncoder.load(model_config)
-        if encoder_name == "beats": 
-            from slam_llm.models.encoder import BEATsEncoder
-            encoder = BEATsEncoder.load(model_config)
-        if encoder_name == "eat":
-            from slam_llm.models.encoder import EATEncoder
-            encoder = EATEncoder.load(model_config)
-        if encoder_name == "clap": 
-            from slam_llm.models.encoder import CLAPEncoder
-            encoder = CLAPEncoder.load(model_config)
-        if encoder_name == "SpatialAST":
-            from slam_llm.models.encoder import SpatialASTEncoder
-            encoder = SpatialASTEncoder.load(model_config)
-        if encoder_name == "wavlm":
-            from slam_llm.models.encoder import WavLMEncoder
-            encoder = WavLMEncoder.load(model_config)
-        if encoder_name == "av_hubert":
-            from slam_llm.models.encoder import AVHubertEncoder
-            encoder = AVHubertEncoder.load(model_config)
-        if encoder_name == "hubert":
-            from slam_llm.models.encoder import HubertEncoder
-            encoder = HubertEncoder.load(model_config)
-        if encoder_name == "musicfm":
-            from slam_llm.models.encoder import MusicFMEncoder
-            encoder = MusicFMEncoder.load(model_config)
-        # j: add new encoder for wav2phoneme
-        if encoder_name == "wav2p":
-            from slam_llm.models.encoder import Wav2PhonemeEncoder
-            encoder = Wav2PhonemeEncoder.load(model_config)
-        # j: add new encoder for wav2vec2
-        if encoder_name == "wav2vec2":
-            from slam_llm.models.encoder import Wav2Vec2Encoder
-            encoder = Wav2Vec2Encoder.load(model_config)
-        
+        encoder = get_encoder_instance(encoder_name, model_config)
 
-        if "llama" in encoder_name.lower():
-            from slam_llm.models.encoder import HfTextEncoder
-            encoder = HfTextEncoder.load(model_config)
     print_module_size(encoder, encoder_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
 
     if train_config.freeze_encoder:
@@ -120,6 +115,22 @@ def setup_encoder(train_config, model_config, **kwargs):
     print_module_size(encoder, encoder_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
 
     return encoder
+
+def setup_encoder2(train_config, model_config, **kwargs):
+    encoder_list = model_config.encoder2_name.split(",") if model_config.encoder2_name else []
+
+    encoder2_name = encoder_list[0]
+    encoder2 = get_encoder_instance(encoder2_name, model_config)
+        
+    print_module_size(encoder2, encoder2_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
+
+    if train_config.freeze_encoder2:
+        for name, param in encoder2.named_parameters(): 
+            param.requires_grad = False
+        encoder2.eval()
+    print_module_size(encoder2, encoder2_name, int(os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
+
+    return encoder2
 
 def setup_llm(train_config, model_config, **kwargs):
     from pkg_resources import packaging
@@ -189,6 +200,7 @@ def setup_llm(train_config, model_config, **kwargs):
                 load_in_8bit=True if train_config.quantization else None,
                 device_map="auto" if train_config.quantization else None,
                 use_cache=use_cache,
+                trust_remote_code=True
             )
     if (train_config.enable_fsdp or train_config.enable_ddp) and train_config.use_fast_kernels:
         """
@@ -291,8 +303,40 @@ class slam_model(nn.Module):
                 if isinstance(item, nn.LayerNorm):
                     item.forward = types.MethodType(new_forward, item)
 
+    def extract_encoder_features(self, encoder_name, audio, attention_mask, audio_mask=None, visual=None, visual_mask=None):
+        encoder_outs = None
+        audio_mel_post_mask = None
 
+        if encoder_name == "whisper":
+            encoder_outs = self.encoder.extract_variable_length_features(audio.permute(0, 2, 1)) # bs*seq*dim
+        elif encoder_name == "beats":
+            encoder_outs, audio_mel_post_mask = self.encoder.extract_features(audio, audio_mask) # bs*seq*dim
+        elif encoder_name == "eat":
+            encoder_outs = self.encoder.model.extract_features(audio.unsqueeze(dim=1), padding_mask=None, mask=False, remove_extra_tokens=False)['x']
+        elif encoder_name == "SpatialAST":
+            encoder_outs = self.encoder(audio) # output: [bs, seq_len=3+512, dim=768]
+        elif encoder_name == "wavlm":
+            encoder_outs = self.encoder.extract_features(audio, 1 - audio_mask) # 1-audio_mask is needed for wavlm as the padding mask
+        elif encoder_name == "hubert":
+            results = self.encoder(source=audio, padding_mask=1-audio_mask)
+            if self.model_config.encoder_type == "pretrain":
+                encoder_outs, audio_mel_post_mask = results["x"], results["padding_mask"]
+            elif self.model_config.encoder_type == "finetune":
+                encoder_outs, audio_mel_post_mask = results["encoder_out"], results["padding_mask"]
+                encoder_outs = encoder_outs.transpose(0, 1)
+        elif encoder_name == "av_hubert":
+            results = self.encoder(source={'video': visual, 'audio': audio}, padding_mask=visual_mask) # bs*seq*dim  
+            encoder_outs, audio_mel_post_mask = results["encoder_out"], results["padding_mask"]
+            encoder_outs = encoder_outs.transpose(0, 1)
+            audio_mel_post_mask = (~audio_mel_post_mask).float()
+        elif encoder_name == 'musicfm':
+            encoder_outs = self.encoder.extract_features(audio, padding_mask=None) # MusicFM doesn't support padding mask
+        elif encoder_name == 'w2v2':
+            encoder_outs = self.encoder.extract_features(source=audio, attention_mask=attention_mask)
 
+        return encoder_outs, audio_mel_post_mask
+
+        
     def forward(self,
                 input_ids: torch.LongTensor = None,
                 attention_mask: Optional[torch.Tensor] = None,
@@ -329,46 +373,15 @@ class slam_model(nn.Module):
         if audio_mel is not None or audio is not None or visual is not None or text is not None:
             if self.train_config.freeze_encoder: # freeze encoder
                 self.encoder.eval()
+            if self.encoder2 and self.train_config.freeze_encoder2: # freeze encoder2
+                self.encoder2.eval()
 
-            if self.model_config.encoder_name == "whisper":
-                encoder_outs = self.encoder.extract_variable_length_features(audio_mel.permute(0, 2, 1)) # bs*seq*dim
-            if self.model_config.encoder_name == "beats":
-                encoder_outs, audio_mel_post_mask = self.encoder.extract_features(audio_mel, audio_mel_mask) # bs*seq*dim
-            if self.model_config.encoder_name == "eat":
-                encoder_outs = self.encoder.model.extract_features(audio_mel.unsqueeze(dim=1), padding_mask = None, mask=False, remove_extra_tokens = False)['x']
-            if self.model_config.encoder_name == "clap": 
-                if text is not None: 
-                    encoder_outs = self.encoder.encode_text(text).unsqueeze(1)  # [btz, 1, dim]        
-                elif audio is not None: 
-                    encoder_outs = self.encoder.encode_audio(audio)  # with projection-based decoding 
-            if self.model_config.encoder_name == "SpatialAST":
-                encoder_outs = self.encoder(audio) # output: [bs, seq_len=3+512, dim=768]
-            if self.model_config.encoder_name == "wavlm":
-                encoder_outs = self.encoder.extract_features(audio, 1 - audio_mask) #(FIX:MZY): 1-audio_mask is needed for wavlm as the padding mask
-            if self.model_config.encoder_name == "hubert":
-                results = self.encoder(source = audio, padding_mask = 1-audio_mask)
-                if self.model_config.encoder_type == "pretrain":
-                    encoder_outs, audio_mel_post_mask = results["x"], results["padding_mask"]
-                if self.model_config.encoder_type == "finetune":
-                    encoder_outs, audio_mel_post_mask = results["encoder_out"], results["padding_mask"]
-                    encoder_outs = encoder_outs.transpose(0, 1)
-            if self.model_config.encoder_name == "av_hubert":
-                results = self.encoder(source={'video':visual, 'audio':audio}, padding_mask=visual_mask) # bs*seq*dim  
-                encoder_outs, audio_mel_post_mask = results["encoder_out"], results["padding_mask"]
-                encoder_outs = encoder_outs.transpose(0, 1)
-                audio_mel_post_mask = (~audio_mel_post_mask).float()
-            if self.model_config.encoder_name == 'musicfm':
-                encoder_outs = self.encoder.extract_features(audio, padding_mask = None) # MusicFM doesn't support padding mask
-            # j: add encoder_out with extracted feature
-            if self.model_config.encoder_name == 'wav2p': # [batch_size, seq_len, dim]
-                encoder_outs = self.encoder.extract_features(audio)
-            if self.model_config.encoder_name == 'wav2vec2': # [batch_size, seq_len, dim]
-                encoder_outs = self.encoder.extract_features(audio)
+            encoder_outs, audio_mel_post_mask = self.extract_encoder_features(self.model_config.encoder_name, audio, attention_mask, audio_mask, visual, visual_mask)
 
             # j: concat embeddings
             if self.encoder2 is not None:
                 # Forward pass through the second encoder
-                encoder_outs2 = self.encoder2.extract_features(audio)
+                encoder_outs2, audio_mel_post_mask = self.extract_encoder_features(self.model_config.encoder_name, audio, attention_mask, audio_mask, visual, visual_mask)
                 # Concatenate outputs from both encoders
                 encoder_outs = torch.cat((encoder_outs, encoder_outs2), dim=-1)
                 

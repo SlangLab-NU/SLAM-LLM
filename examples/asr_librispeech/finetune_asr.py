@@ -5,7 +5,7 @@ import logging
 from typing import Optional
 from dataclasses import dataclass, field
 from omegaconf import DictConfig, ListConfig, OmegaConf
-from asr_config import ModelConfig, TrainConfig, DataConfig, LogConfig, FSDPConfig
+from asr_config import ModelConfig, TrainConfig, DataConfig, LogConfig, FSDPConfig, PeftConfig
 from typing import Optional
 
 @dataclass
@@ -15,6 +15,7 @@ class RunConfig:
     train_config: TrainConfig = field(default_factory=TrainConfig)
     log_config: LogConfig = field(default_factory=LogConfig)
     fsdp_config: FSDPConfig = field(default_factory=FSDPConfig)
+    peft_config: PeftConfig = field(default_factory=PeftConfig) # j: add peft config
     debug: bool = field(default=False, metadata={"help": "Use pdb when true"})
     metric: str = field(default="acc", metadata={"help": "The metric for evaluation"})
     ckpt_path: Optional[str] = field(

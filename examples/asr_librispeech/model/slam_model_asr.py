@@ -1,10 +1,12 @@
 import torch
 import os
 import logging
+import re
 from slam_llm.models.slam_model import (
     slam_model,
     setup_tokenizer,
     setup_encoder,
+    setup_encoder2,
     setup_encoder_projector,
     setup_llm,
 )
@@ -19,10 +21,9 @@ def model_factory(train_config, model_config, **kwargs):
     encoder = setup_encoder(train_config, model_config, **kwargs)
 
     # j: Check if dual encoder is enabled
-    if model_config.dual_encoder:
+    if model_config.encoder2_name:
         # Set up the second encoder
-        from slam_llm.models.encoder import Wav2PhonemeEncoder
-        encoder2 = Wav2PhonemeEncoder.load(model_config)
+        encoder2 = setup_encoder2(train_config, model_config, **kwargs)
     else:
         encoder2 = None
 
@@ -164,3 +165,38 @@ class slam_model_asr(slam_model):
         )
 
         return model_outputs
+
+
+def find_latest_checkpoint(directory):
+    """
+    Finds the folder with the largest epoch, then largest step in the directory.
+    """
+    latest_epoch = -1
+    latest_step = -1
+    latest_folder = None
+
+    for folder in os.listdir(directory):
+        folder_path = os.path.join(directory, folder)
+        if os.path.isdir(folder_path):
+            epoch_step = get_epoch_step(folder)
+            if epoch_step:
+                epoch, step = epoch_step
+                if (epoch > latest_epoch) or (epoch == latest_epoch and step > latest_step):
+                    latest_epoch = epoch
+                    latest_step = step
+                    latest_folder = folder_path
+
+    return latest_folder
+
+
+def get_epoch_step(folder_name):
+    """
+    Extracts epoch and step numbers from the folder name.
+    Assumes folder names follow the pattern: 'asr_epoch_<epoch>_step_<step>'.
+    """
+    match = re.match(r'asr_epoch_(\d+)_step_(\d+)', folder_name)
+    if match:
+        epoch = int(match.group(1))
+        step = int(match.group(2))
+        return epoch, step
+    return None

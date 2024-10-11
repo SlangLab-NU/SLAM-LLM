@@ -13,12 +13,15 @@ class ModelConfig:
     llm_path: str = "PATH/to/LLAMA/7B"
     llm_type: str = "decoder_only"
     llm_dim: int = 4096
+
     encoder_name: Optional[str] = None
     encoder_ds_rate: int = 2
     encoder_path: Optional[str] = None
     encoder_dim: int = 1280
+    
     encoder_projector: str = "linear"
     encoder_projector_ds_rate: int = 5 # downsample rate
+
     modal: str = "audio"
     normalize: Optional[bool] = field(default=False, metadata={
         "help": "whether input is normalized, used for models such as wavlm"
@@ -27,18 +30,24 @@ class ModelConfig:
         "help": "whether model is only pretrained or finetuned, used for models such as hubert"
     })
 
-    # j: add dual encoder configuration
-    dual_encoder: bool = field(default=False, metadata={
-        "help": "whether to use a dual encoder setup"
-    })
-    encoder2_dim: int = 1024
+    # j: update second encoder configs
+    encoder2_name: Optional[str] = None
+    encoder2_dim: Optional[int] = 1024
+    encoder2_path: Optional[str] = None
+
 
 @dataclass
 class PeftConfig:
     peft_method: str = "lora" # None , llama_adapter, prefix
     r: int = 8
     lora_alpha: int = 32
-    target_modules: List = field(default_factory=lambda: [ "q_proj", "v_proj" ])
+    target_modules: List[str] = field(default_factory=lambda: ["q_proj",
+            "k_proj",
+            "v_proj",
+            "o_proj",
+            "up_proj",
+            "gate_proj",
+            "down_proj",])
     bias: str = "none"
     task_type: str = "CAUSAL_LM"
     lora_dropout: float = 0.05
@@ -59,6 +68,9 @@ class TrainConfig:
     context_length:int = 4096
     gradient_accumulation_steps:int = 1
     num_epochs:int = 3
+    resume_step: int = 0 # j: resume step and epoch
+    resume_epoch: int = 0
+
     num_workers_dataloader:int = 1
     warmup_steps:int = 1000
     total_steps:int = 100000
@@ -90,6 +102,7 @@ class TrainConfig:
         "help": "whether to freeze llm when finetuning, should be true when use peft finetuning"
     })
     freeze_encoder:bool = False
+    freeze_encoder2:bool = False #j: update freeze encoder2
 
 @dataclass
 class DataConfig:
@@ -129,10 +142,10 @@ class FSDPConfig:
 
 @dataclass
 class LogConfig:
-    use_wandb: bool = False # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
+    use_wandb: bool = True # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
     wandb_dir: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"
-    wandb_entity_name: str = "SLAM-LLM"
+    wandb_entity_name: str = "jindaz-work"
     wandb_project_name: str = "SLAM-LLM"
     wandb_exp_name: str = "exp_name"
-    log_file: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"
+    log_file: str = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/log/{current_time}.txt"
     log_interval: int = 5

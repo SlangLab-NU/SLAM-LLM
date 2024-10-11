@@ -24,12 +24,12 @@ class RunConfig:
     ckpt_path: str = field(
         default="output/model.pt", metadata={"help": "The path to projector checkpoint"}
     )
-    peft_ckpt: Optional[str] = field(
-        default=None,
-        metadata={
-            "help": "The path to peft checkpoint, should be a directory including adapter_config.json"
-        },
-    )
+    # peft_ckpt: Optional[str] = field(
+    #     default=None,
+    #     metadata={
+    #         "help": "The path to peft checkpoint, should be a directory including adapter_config.json"
+    #     },
+    # )
 
 
 @hydra.main(config_name=None, version_base=None)
