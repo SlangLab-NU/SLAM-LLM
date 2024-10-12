@@ -25,14 +25,12 @@ module load ffmpeg/20190305
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 
 
-
-
 cd $RUN_DIR
 code_dir=examples/asr_librispeech
 data_folder=librispeech-100_phoneme
 
 
-multitask_flag=false  # Change this to false to switch to the non-multitask path
+multitask_flag=true  # Change this to false to switch to the non-multitask path
 # Conditional logic to set dataset_file based on the flag
 if [ "$multitask_flag" = true ]; then
     dataset_file="examples/asr_librispeech/dataset/multitask_speech_dataset.py:get_speech_dataset"
@@ -43,7 +41,7 @@ fi
 # dataset_file="src/slam_llm/datasets/speech_dataset.py:get_speech_dataset"
 train_data_path="${RUN_DIR}/data/${data_folder}/${data_folder}_train.jsonl"
 val_data_path="${RUN_DIR}/data/${data_folder}/${data_folder}_val.jsonl"
-num_epochs=2
+num_epochs=4
 batch_size_training=4
 
 config_folder="examples/asr_librispeech/scripts/config"

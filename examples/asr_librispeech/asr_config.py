@@ -47,7 +47,8 @@ class PeftConfig:
             "o_proj",
             "up_proj",
             "gate_proj",
-            "down_proj",])
+            "down_proj",
+            ])
     bias: str = "none"
     task_type: str = "CAUSAL_LM"
     lora_dropout: float = 0.05

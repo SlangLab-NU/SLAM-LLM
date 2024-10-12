@@ -87,13 +87,13 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     results = {}
     best_val_loss = float("inf")
     best_val_acc = 0.0
-    for epoch in range(train_config.resume_epoch-1, train_config.num_epochs): # j: resume_epoch
+    for epoch in range(train_config.resume_epoch, train_config.num_epochs): # j: resume_epoch
         epoch_start_time = time.perf_counter()
         with MemoryTrace() as memtrace:  # track the memory usage
             model.train()
             total_loss = 0.0
             total_acc = 0.0
-            if epoch == train_config.resume_epoch-1: # j: resume_steps
+            if epoch == train_config.resume_epoch: # j: resume_steps
                 total_length = len(train_dataloader) // gradient_accumulation_steps - train_config.resume_step
             else:
                 total_length = len(train_dataloader) // gradient_accumulation_steps

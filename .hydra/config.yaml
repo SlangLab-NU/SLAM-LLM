@@ -2,7 +2,7 @@ dataset_config:
   prompt: 'Transcribe speech to text. '
   normalize: true
   dataset: speech_dataset
-  val_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/ami-test/ami_test.jsonl
+  val_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/ami-10h/ami_test.jsonl
   input_type: raw
   inference_mode: true
 model_config:
@@ -14,9 +14,9 @@ model_config:
   encoder_projector_ds_rate: 5
   encoder_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/models/WavLM-Large.pt
   encoder_dim: 1024
-  encoder_projector: linear
-  encoder2_name: ''
-  encoder2_path: ''
+  encoder_projector: dual
+  encoder2_name: w2v2
+  encoder2_path: vitouphy/wav2vec2-xls-r-300m-timit-phoneme
 train_config:
   model_name: asr
   freeze_encoder: true
@@ -25,9 +25,9 @@ train_config:
   num_epochs: 1
   val_batch_size: 1
   num_workers_dataloader: 1
-  output_dir: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/ami-10h_wavlm_TinyLlama_linear
+  output_dir: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/ami-10h_wavlm_TinyLlama_dual_phoneme_freeze
   use_peft: true
-decode_log: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/ami-10h_wavlm_TinyLlama_linear/decode_test_beam4
+decode_log: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/ami-10h_wavlm_TinyLlama_dual_phoneme_freeze/decode_test_beam4
 ckpt_path: /model.pt
 log_config:
-  wandb_exp_name: ami-10h_wavlm_TinyLlama_linear
+  wandb_exp_name: ami-10h_wavlm_TinyLlama_dual_phoneme_freeze
