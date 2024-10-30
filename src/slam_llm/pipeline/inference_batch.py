@@ -66,7 +66,7 @@ def main(kwargs: DictConfig):
 	del kwargs["dataset_config"]
 	OmegaConf.set_struct(kwargs,True)
 
-	log_config.log_file = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/log_{current_time}.txt"
+	log_config.log_file = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/log/log_{current_time}.txt"
 
 	# Set log
 	if not os.path.exists(os.path.dirname(log_config.log_file)):

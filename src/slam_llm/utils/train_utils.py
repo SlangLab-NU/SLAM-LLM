@@ -1,4 +1,4 @@
-# Copyright (c) Meta Platforms, Inc. and affiliates.
+2# Copyright (c) Meta Platforms, Inc. and affiliates.
 # This software may be used and distributed according to the terms of the Llama 2 Community License Agreement.
 
 import os
@@ -87,18 +87,18 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     results = {}
     best_val_loss = float("inf")
     best_val_acc = 0.0
-    for epoch in range(train_config.resume_epoch, train_config.num_epochs): # j: resume_epoch
+    for epoch in range(train_config.resume_epoch-1, train_config.num_epochs): # j: resume_epoch
         epoch_start_time = time.perf_counter()
         with MemoryTrace() as memtrace:  # track the memory usage
             model.train()
             total_loss = 0.0
             total_acc = 0.0
-            if epoch == train_config.resume_epoch: # j: resume_steps
-                total_length = len(train_dataloader) // gradient_accumulation_steps - train_config.resume_step
-            else:
-                total_length = len(train_dataloader) // gradient_accumulation_steps
-            pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True)
-            for step, batch in enumerate(train_dataloader,start=train_config.resume_step):
+            total_length = len(train_dataloader)//gradient_accumulation_steps
+            start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0 # j, resume from steps.
+            pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True,initial=start_step) # update tqdm bar
+            for step, batch in enumerate(train_dataloader,start=start_step):
+                if step > len(train_dataloader): # j: fix steps
+                    break  # Move to the next epoch
                 for key in batch.keys():
                     if train_config.enable_fsdp or train_config.enable_ddp:
                         batch[key] = batch[key].to(local_rank) if isinstance(batch[key], torch.Tensor) else batch[key]
@@ -175,8 +175,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                     eval_ppl, eval_epoch_loss, *rest = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
                     eval_epoch_acc = rest[0] if rest else -1
                     checkpoint_start_time = time.perf_counter()
-                    if train_config.save_model and (eval_epoch_loss < best_val_loss):
-                        checkpoint_name = f"{train_config.model_name}_epoch_{str(epoch+1)}_step_{step+1}"
+                    # if train_config.save_model and (eval_epoch_loss < best_val_loss):
+                    if train_config.save_model: # j: save all checkpoints
+                        checkpoint_name = f"{train_config.model_name}_epoch_{str(epoch+1)}_step_{step+1}_loss_{eval_epoch_loss}" # j: add eval loss
                         if train_config.enable_fsdp or train_config.enable_ddp:
                             dist.barrier()
                         if train_config.use_peft:

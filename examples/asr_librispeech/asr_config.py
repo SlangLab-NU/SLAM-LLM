@@ -41,7 +41,8 @@ class PeftConfig:
     peft_method: str = "lora" # None , llama_adapter, prefix
     r: int = 8
     lora_alpha: int = 32
-    target_modules: List[str] = field(default_factory=lambda: ["q_proj",
+    target_modules: List[str] = field(default_factory=lambda: [
+            "q_proj",
             "k_proj",
             "v_proj",
             "o_proj",
@@ -75,7 +76,7 @@ class TrainConfig:
     num_workers_dataloader:int = 1
     warmup_steps:int = 1000
     total_steps:int = 100000
-    validation_interval:int = 1000
+    validation_interval:int = 1000 # j: adjust to 3000
     lr:float = 1e-4
     weight_decay:float = 0.0
     gamma:float = 0.85
@@ -144,9 +145,9 @@ class FSDPConfig:
 @dataclass
 class LogConfig:
     use_wandb: bool = True # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
-    wandb_dir: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/log/wandb_log"
+    wandb_dir: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/log/wandb_log"
     wandb_entity_name: str = "jindaz-work"
     wandb_project_name: str = "SLAM-LLM"
     wandb_exp_name: str = "exp_name"
-    log_file: str = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/log/{current_time}.txt"
+    log_file: str = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/{current_time}.txt"
     log_interval: int = 5

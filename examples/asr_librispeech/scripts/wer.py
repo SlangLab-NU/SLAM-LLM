@@ -14,6 +14,16 @@ def read_and_process_file(file_path):
     
     return processed_lines
 
+def remove_empty_lines(gt, pred):
+    gt_non_empty, pred_non_empty = [], []
+    
+    for g, p in zip(gt, pred):
+        if g and p:  # Only include non-empty lines
+            gt_non_empty.append(g)
+            pred_non_empty.append(p)
+    
+    return gt_non_empty, pred_non_empty
+
 def main(folder, pred_file_name):
     # Read and process GT file
     gt_file_path = f"{folder}/decode_test_beam4_gt"
@@ -22,6 +32,9 @@ def main(folder, pred_file_name):
     # Read and process PRED file
     pred_file_path = f"{folder}/decode_test_beam4_pred"
     pred = read_and_process_file(pred_file_path)
+
+    # Remove empty lines from GT and PRED
+    gt, pred = remove_empty_lines(gt, pred)
 
     # Print lengths of GT and PRED lists to ensure they are the same
     print(f"Number of GT lines: {len(gt)}")
