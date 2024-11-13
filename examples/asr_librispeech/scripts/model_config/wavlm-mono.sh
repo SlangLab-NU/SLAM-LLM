@@ -6,13 +6,11 @@ code_dir=examples/asr_librispeech
 encoder_name=wavlm
 encoder_dim=1024
 input_type=raw
-freeze_encoder=true
 speech_encoder_path=${run_dir}/models/WavLM-Large.pt
 
 encoder_projector=linear
 
 encoder2_dim=${encoder2_dim:-0}
-freeze_encoder2=${freeze_encoder2:-false}
 
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"

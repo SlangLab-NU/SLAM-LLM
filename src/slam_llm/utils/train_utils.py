@@ -94,6 +94,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
             total_loss = 0.0
             total_acc = 0.0
             total_length = len(train_dataloader)//gradient_accumulation_steps
+            validation_interval = total_length // 4 # For each epoch, validation 4 times
             start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0 # j, resume from steps.
             pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True,initial=start_step) # update tqdm bar
             for step, batch in enumerate(train_dataloader,start=start_step):
@@ -171,7 +172,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
 
                 logging.info(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader)} completed (loss: {loss.detach().float()}, acc: {acc})")
                 
-                if (epoch * total_length + step + 1) % train_config.validation_interval == 0 and train_config.run_validation:
+                if (epoch * total_length + step + 1) % validation_interval == 0 and train_config.run_validation:
                     eval_ppl, eval_epoch_loss, *rest = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
                     eval_epoch_acc = rest[0] if rest else -1
                     checkpoint_start_time = time.perf_counter()

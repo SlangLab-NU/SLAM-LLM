@@ -14,7 +14,6 @@ code_dir=examples/asr_librispeech
 
 encoder_name=whisper
 encoder_dim=1280
-freeze_encoder=true
 speech_encoder_path=${run_dir}/models/Whisper/large-v3.pt
 
 
@@ -22,7 +21,6 @@ encoder_projector=linear
 
 # peft_config_target_modules=[o_proj,qkv_proj]
 encoder2_dim=${encoder2_dim:-0}
-freeze_encoder2=${freeze_encoder2:-false}
 
 echo "speech encoder name: $encoder_name"
 echo "speech encoder path: $speech_encoder_path"
