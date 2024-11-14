@@ -50,6 +50,9 @@ def filter_repeated_words(gt, pred):
     return filtered_gt, filtered_pred, repeated_lines
 
 def main(folder):
+    # Print out the folder path being used
+    print(f"Using folder: {folder}")
+
     # Locate GT file with flexible naming using glob
     gt_file_pattern = os.path.join(folder, "decode_test_beam4_*_gt")
     gt_files = glob.glob(gt_file_pattern)

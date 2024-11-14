@@ -24,7 +24,7 @@ module load ffmpeg/20190305
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 which python
 
-# 45083660
+# 45083660 UNFREEZE ENCODER
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task all \
@@ -59,6 +59,45 @@ which python
 #     --config_file whisper-mono \
 #     --num_epochs 10 \
 #     --batch_size_training 4 \
+#     --use_peft true \
+#     --data_folder psst_phoneme \
+
+
+# 45095830 oom
+# bash train_eval.sh \
+#     --llm_name phi35 \
+#     --task all \
+#     --config_file wavlm-mono \
+#     --num_epochs 5 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --data_folder psst_phoneme \
+
+# bash train_eval.sh \
+#     --llm_name phi35 \
+#     --task all \
+#     --config_file w2p-wavlm-dual \
+#     --num_epochs 5 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --data_folder psst_phoneme \
+
+
+# bash train_eval.sh \
+#     --llm_name phi35 \
+#     --task all \
+#     --config_file w2p-mono \
+#     --num_epochs 5 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --data_folder psst_phoneme \
+
+# bash train_eval.sh \
+#     --llm_name phi35 \
+#     --task all \
+#     --config_file whisper-mono \
+#     --num_epochs 5 \
+#     --batch_size_training 2 \
 #     --use_peft true \
 #     --data_folder psst_phoneme \
 
@@ -132,6 +171,7 @@ which python
 #     --data_folder ami_phoneme_only \
 
 
+# 45095751
 # bash train_eval.sh \
 #     --task test \
 #     --prompt_flag phoneme_seperate \
@@ -144,34 +184,42 @@ which python
 
 
 
-bash train_eval.sh \
-    --llm_name llama32_1b \
-    --task all \
-    --config_file w2p-wavlm-dual \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --use_peft true \
-    --data_folder ami \
-
-bash train_eval.sh \
-    --llm_name llama32_1b \
-    --freeze_encoder false \
-    --task all \
-    --config_file w2p-wavlm-dual \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --use_peft true \
-    --data_folder ami_phoneme_only \
 
 
-bash train_eval.sh \
-    --task test \
-    --prompt_flag phoneme_seperate \
-    --config_file w2p-wavlm-dual \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --use_peft true \
-    --data_folder ami_phoneme_seperate \
+# 45083660
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --config_file w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --data_folder ami \
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --freeze_encoder false \
+#     --task all \
+#     --config_file w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --data_folder ami_phoneme_only \
+
+
+# bash train_eval.sh \
+#     --task test \
+#     --prompt_flag phoneme_seperate \
+#     --config_file w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --data_folder ami_phoneme_seperate \
+
+
+
+
+
 
 
 

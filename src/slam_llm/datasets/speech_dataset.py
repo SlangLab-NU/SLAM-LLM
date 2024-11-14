@@ -109,7 +109,7 @@ class SpeechDatasetJsonl(torch.utils.data.Dataset):
         audio_pseudo = torch.full((audio_length,), -1) # placeholder
 
         prompt = self.prompt
-        if data_dict.get("prompt", None):
+        if data_dict.get("prompt", None): # j: read prompt if prompt is contained in dataset. (multitask)
             prompt = data_dict["prompt"]
             prompt += ' ' # j: add space after prompt.
         if prompt is None:
