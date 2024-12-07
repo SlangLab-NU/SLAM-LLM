@@ -1,0 +1,20 @@
+Warning: llm is not set. Setting it to 'TinyLlama' by default.
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: w2v2
+speech encoder2 path: vitouphy/wav2vec2-xls-r-300m-timit-phoneme
+llm_path: 
+Identifier: 
+use_peft: true
+use_fp16: 
+Final identifier: librispeech-100_phoneme_seperate_wavlm_TinyLlama_dual_peft_seperate
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_seperate_wavlm_TinyLlama_dual_peft_seperate/asr_epoch_2_step_13731_loss0.07392126321792603/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_seperate_wavlm_TinyLlama_dual_peft_seperate/asr_epoch_2_step_13731_loss0.07392126321792603
+Resume epoch: 2
+Resume step: 13731
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_seperate_wavlm_TinyLlama_dual_peft_seperate/asr_epoch_2_step_13731_loss0.07392126321792603/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_seperate_wavlm_TinyLlama_dual_peft_seperate/asr_epoch_2_step_13731_loss0.07392126321792603
+Number of GT lines: 56
+Number of PRED lines: 56
+Word Error Rate (WER): 0.12613636363636363
+/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/peft

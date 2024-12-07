@@ -26,51 +26,72 @@ def remove_empty_lines(gt, pred):
     
     return gt_non_empty, pred_non_empty
 
-def filter_repeated_words(gt, pred):
+def filter_repeated_words(gt, pred, max_ngram=3):
+    """
+    Filters lines with repeated n-grams from predictions.
+
+    Args:
+        gt (list): Ground truth lines.
+        pred (list): Prediction lines.
+        max_ngram (int): Maximum n-gram size to check for repetitions.
+
+    Returns:
+        filtered_gt (list): Filtered ground truth lines.
+        filtered_pred (list): Filtered prediction lines.
+        repeated_lines (set): Set of removed lines from predictions.
+    """
     filtered_gt, filtered_pred = [], []
     repeated_lines = set()
     
+    def has_repeated_ngram(words, max_ngram):
+        """Check if any n-gram is repeated at least three times consecutively in the words."""
+        for n in range(1, max_ngram + 1):  # Check from 1-gram to max_ngram
+            for i in range(len(words) - 2 * n):  # Ensure space for three consecutive n-grams
+                ngram = words[i:i + n]
+                if words[i + n:i + 2 * n] == ngram and words[i + 2 * n:i + 3 * n] == ngram:
+                    return True
+        return False
+
     for g, p in zip(gt, pred):
         words = p.split()
-        repeated_word = None
-        
-        # Check if there are five consecutive occurrences of the same word
-        for i in range(len(words) - 4):  # Adjusted to `-4` to check up to five consecutive words
-            if words[i] == words[i + 1] == words[i + 2] == words[i + 3] == words[i + 4]:
-                repeated_word = words[i]
-                break
-
-        # If no repeated words are found, add to filtered lists
-        if repeated_word:
+        if has_repeated_ngram(words, max_ngram):
             repeated_lines.add(p)
         else:
             filtered_gt.append(g)
             filtered_pred.append(p)
-    
+
     return filtered_gt, filtered_pred, repeated_lines
+
+
+
+def get_latest_file(file_pattern):
+    files = glob.glob(file_pattern)
+    if not files:
+        return None
+    # Select the most recent file based on the last modified timestamp
+    latest_file = max(files, key=os.path.getmtime)
+    return latest_file
 
 def main(folder):
     # Print out the folder path being used
     print(f"Using folder: {folder}")
 
-    # Locate GT file with flexible naming using glob
-    gt_file_pattern = os.path.join(folder, "decode_test_beam4_*_gt")
-    gt_files = glob.glob(gt_file_pattern)
-    
-    # Check if any matching GT file is found
-    if not gt_files:
+    # Locate the most recent GT file
+    gt_file_pattern = os.path.join(folder, "decode_test_beam4_gt_*")
+    gt_file_path = get_latest_file(gt_file_pattern)
+    if not gt_file_path:
         print(f"No GT file matching pattern '{gt_file_pattern}' found.")
         return
-    elif len(gt_files) > 1:
-        print(f"Multiple GT files found. Using the first one: {gt_files[0]}")
-    
-    gt_file_path = gt_files[0]  # Select the first matched file
+    print(f"Using GT file: {gt_file_path}")
     gt = read_and_process_file(gt_file_path)
 
-    # Locate PRED file with flexible naming using glob
-    pred_file_pattern = os.path.join(folder, "decode_test_beam4_*_pred")
-    pred_files = glob.glob(pred_file_pattern)
-    pred_file_path = pred_files[0]  # Select the first matched file
+    # Locate the most recent PRED file
+    pred_file_pattern = os.path.join(folder, "decode_test_beam4_pred_*")
+    pred_file_path = get_latest_file(pred_file_pattern)
+    if not pred_file_path:
+        print(f"No PRED file matching pattern '{pred_file_pattern}' found.")
+        return
+    print(f"Using PRED file: {pred_file_path}")
     pred = read_and_process_file(pred_file_path)
 
     # Remove empty lines from GT and PRED

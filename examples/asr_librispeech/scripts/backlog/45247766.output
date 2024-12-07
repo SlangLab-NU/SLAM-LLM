@@ -1,0 +1,735 @@
+/work/van-speech-nlp/jindaznb/slamenv/bin/python
+Running job script...
+Configuration:
+Task: test
+Prompt Flag: 
+Config File: w2p-wavlm-dual
+Epochs: 2
+Batch Size: 4
+Data Folder: librispeech-100
+Use PEFT: true
+LLM Name: TinyLlama
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: w2v2
+speech encoder2 path: vitouphy/wav2vec2-xls-r-300m-timit-phoneme
+llm_path: 
+Identifier: 
+use_peft: true
+use_fp16: 
+Final identifier: librispeech-100_wavlm_TinyLlama_dual_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft/asr_epoch_2_step_4866/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft/asr_epoch_2_step_4866
+Resume epoch: 2
+Resume step: 4866
+Selected latest checkpoint by epoch: asr_epoch_2_step_4866
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft/asr_epoch_2_step_4866/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft/asr_epoch_2_step_4866
+[2024-11-24 22:43:38][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False}
+[2024-11-24 22:43:38][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': 'NO_SHARD', 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-11-24 22:43:38][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'TinyLlama', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/TinyLlama-1.1B-Chat-v1.0', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'dual', 'encoder_projector_ds_rate': 5, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': 'w2v2', 'encoder2_dim': 1024, 'encoder2_path': 'vitouphy/wav2vec2-xls-r-300m-timit-phoneme'}
+[2024-11-24 22:43:40][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-11-24 22:43:45][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-11-24 22:43:45][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-11-24 22:43:45][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-11-24 22:43:45][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-11-24 22:43:46][slam_llm.utils.train_utils][INFO] - --> Module w2v2
+[2024-11-24 22:43:46][slam_llm.utils.train_utils][INFO] - --> w2v2 has 315.43872 Million params
+
+[2024-11-24 22:43:46][slam_llm.utils.train_utils][INFO] - --> Module w2v2
+[2024-11-24 22:43:46][slam_llm.utils.train_utils][INFO] - --> w2v2 has 315.43872 Million params
+
+[2024-11-24 22:43:51][slam_llm.utils.train_utils][INFO] - --> Module TinyLlama
+[2024-11-24 22:43:51][slam_llm.utils.train_utils][INFO] - --> TinyLlama has 1100.048384 Million params
+
+[2024-11-24 22:43:51][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 6,307,840 || all params: 1,106,356,224 || trainable%: 0.570145479653396
+[2024-11-24 22:43:51][slam_llm.utils.train_utils][INFO] - --> Module TinyLlama
+[2024-11-24 22:43:51][slam_llm.utils.train_utils][INFO] - --> TinyLlama has 6.30784 Million params
+
+[2024-11-24 22:43:51][slam_llm.utils.train_utils][INFO] - --> Module dual
+[2024-11-24 22:43:51][slam_llm.utils.train_utils][INFO] - --> dual has 25.16992 Million params
+
+[2024-11-24 22:43:51][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft/asr_epoch_2_step_4866/model.pt
+[2024-11-24 22:43:54][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2024-11-24 22:43:54][slam_llm.utils.train_utils][INFO] - --> asr has 346.91648 Million params
+
+[2024-11-24 22:43:58][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': None, 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/librispeech-100/test.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': True, 'input_type': 'raw', 'mel_size': 80, 'normalize': True}
+[2024-11-24 22:43:59][root][INFO] - --> Training Set Length = 2620
+[2024-11-24 22:43:59][root][INFO] - =====================================
+  0%|          | 0/655 [00:00<?, ?it/s]/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/functional.py:5137: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+[2024-11-24 22:44:01][slam_llm.models.slam_model][INFO] - modality encoder
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:590: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:595: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.92` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+  0%|          | 1/655 [00:05<1:03:54,  5.86s/it][2024-11-24 22:44:05][slam_llm.models.slam_model][INFO] - modality encoder
+  0%|          | 2/655 [00:08<41:55,  3.85s/it]  [2024-11-24 22:44:07][slam_llm.models.slam_model][INFO] - modality encoder
+  0%|          | 3/655 [00:09<30:22,  2.80s/it][2024-11-24 22:44:09][slam_llm.models.slam_model][INFO] - modality encoder
+  1%|          | 4/655 [00:12<31:17,  2.88s/it][2024-11-24 22:44:12][slam_llm.models.slam_model][INFO] - modality encoder
+  1%|          | 5/655 [00:15<28:56,  2.67s/it][2024-11-24 22:44:14][slam_llm.models.slam_model][INFO] - modality encoder
+  1%|          | 6/655 [00:18<29:40,  2.74s/it][2024-11-24 22:44:17][slam_llm.models.slam_model][INFO] - modality encoder
+  1%|          | 7/655 [00:19<24:39,  2.28s/it][2024-11-24 22:44:18][slam_llm.models.slam_model][INFO] - modality encoder
+  1%|          | 8/655 [00:20<21:41,  2.01s/it][2024-11-24 22:44:20][slam_llm.models.slam_model][INFO] - modality encoder
+  1%|▏         | 9/655 [00:22<21:24,  1.99s/it][2024-11-24 22:44:22][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 10/655 [00:25<22:54,  2.13s/it][2024-11-24 22:44:24][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 11/655 [00:26<20:50,  1.94s/it][2024-11-24 22:44:26][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 12/655 [00:27<17:55,  1.67s/it][2024-11-24 22:44:27][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 13/655 [00:30<22:55,  2.14s/it][2024-11-24 22:44:30][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 14/655 [00:32<21:50,  2.04s/it][2024-11-24 22:44:32][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 15/655 [00:34<22:08,  2.08s/it][2024-11-24 22:44:34][slam_llm.models.slam_model][INFO] - modality encoder
+  2%|▏         | 16/655 [00:36<20:00,  1.88s/it][2024-11-24 22:44:35][slam_llm.models.slam_model][INFO] - modality encoder
+  3%|▎         | 17/655 [00:37<18:24,  1.73s/it][2024-11-24 22:44:37][slam_llm.models.slam_model][INFO] - modality encoder
+  3%|▎         | 18/655 [00:38<15:49,  1.49s/it][2024-11-24 22:44:38][slam_llm.models.slam_model][INFO] - modality encoder
+  3%|▎         | 19/655 [00:39<14:28,  1.37s/it][2024-11-24 22:44:39][slam_llm.models.slam_model][INFO] - modality encoder
+  3%|▎         | 20/655 [00:42<18:52,  1.78s/it][2024-11-24 22:44:42][slam_llm.models.slam_model][INFO] - modality encoder
+  3%|▎         | 21/655 [00:50<38:13,  3.62s/it][2024-11-24 22:44:50][slam_llm.models.slam_model][INFO] - modality encoder
+  3%|▎         | 22/655 [00:53<37:45,  3.58s/it][2024-11-24 22:44:53][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▎         | 23/655 [00:56<33:23,  3.17s/it][2024-11-24 22:44:55][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▎         | 24/655 [00:58<29:38,  2.82s/it][2024-11-24 22:44:57][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▍         | 25/655 [01:00<27:25,  2.61s/it][2024-11-24 22:44:59][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▍         | 26/655 [01:02<24:41,  2.35s/it][2024-11-24 22:45:01][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▍         | 27/655 [01:05<27:27,  2.62s/it][2024-11-24 22:45:04][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▍         | 28/655 [01:07<26:48,  2.57s/it][2024-11-24 22:45:07][slam_llm.models.slam_model][INFO] - modality encoder
+  4%|▍         | 29/655 [01:11<30:14,  2.90s/it][2024-11-24 22:45:10][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▍         | 30/655 [01:13<26:30,  2.54s/it][2024-11-24 22:45:12][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▍         | 31/655 [01:15<27:14,  2.62s/it][2024-11-24 22:45:15][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▍         | 32/655 [01:17<23:23,  2.25s/it][2024-11-24 22:45:16][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▌         | 33/655 [01:20<24:55,  2.40s/it][2024-11-24 22:45:19][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▌         | 34/655 [01:22<23:58,  2.32s/it][2024-11-24 22:45:21][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▌         | 35/655 [01:25<26:45,  2.59s/it][2024-11-24 22:45:25][slam_llm.models.slam_model][INFO] - modality encoder
+  5%|▌         | 36/655 [01:29<31:15,  3.03s/it][2024-11-24 22:45:28][slam_llm.models.slam_model][INFO] - modality encoder
+  6%|▌         | 37/655 [01:30<25:54,  2.52s/it][2024-11-24 22:45:30][slam_llm.models.slam_model][INFO] - modality encoder
+  6%|▌         | 38/655 [01:32<23:45,  2.31s/it][2024-11-24 22:45:32][slam_llm.models.slam_model][INFO] - modality encoder
+  6%|▌         | 39/655 [01:35<26:44,  2.61s/it][2024-11-24 22:45:35][slam_llm.models.slam_model][INFO] - modality encoder
+  6%|▌         | 40/655 [01:38<26:29,  2.58s/it][2024-11-24 22:45:38][slam_llm.models.slam_model][INFO] - modality encoder
+  6%|▋         | 41/655 [01:41<28:06,  2.75s/it][2024-11-24 22:45:41][slam_llm.models.slam_model][INFO] - modality encoder
+  6%|▋         | 42/655 [01:46<34:00,  3.33s/it][2024-11-24 22:45:46][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 43/655 [01:50<37:48,  3.71s/it][2024-11-24 22:45:50][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 44/655 [01:54<37:03,  3.64s/it][2024-11-24 22:45:53][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 45/655 [01:57<35:33,  3.50s/it][2024-11-24 22:45:57][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 46/655 [02:00<34:06,  3.36s/it][2024-11-24 22:45:59][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 47/655 [02:01<26:42,  2.64s/it][2024-11-24 22:46:00][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 48/655 [02:03<23:42,  2.34s/it][2024-11-24 22:46:02][slam_llm.models.slam_model][INFO] - modality encoder
+  7%|▋         | 49/655 [02:04<20:43,  2.05s/it][2024-11-24 22:46:03][slam_llm.models.slam_model][INFO] - modality encoder
+  8%|▊         | 50/655 [02:05<19:01,  1.89s/it][2024-11-24 22:46:05][slam_llm.models.slam_model][INFO] - modality encoder
+  8%|▊         | 51/655 [02:07<18:51,  1.87s/it][2024-11-24 22:46:07][slam_llm.models.slam_model][INFO] - modality encoder
+  8%|▊         | 52/655 [02:09<17:35,  1.75s/it][2024-11-24 22:46:08][slam_llm.models.slam_model][INFO] - modality encoder
+  8%|▊         | 53/655 [02:10<16:16,  1.62s/it][2024-11-24 22:46:10][slam_llm.models.slam_model][INFO] - modality encoder
+  8%|▊         | 54/655 [02:11<14:54,  1.49s/it][2024-11-24 22:46:11][slam_llm.models.slam_model][INFO] - modality encoder
+  8%|▊         | 55/655 [02:13<16:46,  1.68s/it][2024-11-24 22:46:13][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▊         | 56/655 [02:15<15:56,  1.60s/it][2024-11-24 22:46:14][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▊         | 57/655 [02:17<16:36,  1.67s/it][2024-11-24 22:46:16][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▉         | 58/655 [02:18<16:24,  1.65s/it][2024-11-24 22:46:18][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▉         | 59/655 [02:20<17:23,  1.75s/it][2024-11-24 22:46:20][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▉         | 60/655 [02:23<19:25,  1.96s/it][2024-11-24 22:46:22][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▉         | 61/655 [02:25<20:11,  2.04s/it][2024-11-24 22:46:25][slam_llm.models.slam_model][INFO] - modality encoder
+  9%|▉         | 62/655 [02:29<25:11,  2.55s/it][2024-11-24 22:46:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 10%|▉         | 63/655 [02:30<21:02,  2.13s/it][2024-11-24 22:46:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 10%|▉         | 64/655 [02:31<17:27,  1.77s/it][2024-11-24 22:46:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 10%|▉         | 65/655 [02:34<21:46,  2.21s/it][2024-11-24 22:46:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 10%|█         | 66/655 [02:35<19:31,  1.99s/it][2024-11-24 22:46:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 10%|█         | 67/655 [02:39<23:41,  2.42s/it][2024-11-24 22:46:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 10%|█         | 68/655 [02:42<26:07,  2.67s/it][2024-11-24 22:46:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█         | 69/655 [02:46<28:28,  2.92s/it][2024-11-24 22:46:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█         | 70/655 [02:48<28:11,  2.89s/it][2024-11-24 22:46:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█         | 71/655 [02:51<26:06,  2.68s/it][2024-11-24 22:46:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█         | 72/655 [02:53<26:27,  2.72s/it][2024-11-24 22:46:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█         | 73/655 [02:55<22:58,  2.37s/it][2024-11-24 22:46:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█▏        | 74/655 [02:58<25:56,  2.68s/it][2024-11-24 22:46:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 11%|█▏        | 75/655 [03:01<24:20,  2.52s/it][2024-11-24 22:47:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 12%|█▏        | 76/655 [03:03<24:04,  2.49s/it][2024-11-24 22:47:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 12%|█▏        | 77/655 [03:07<27:49,  2.89s/it][2024-11-24 22:47:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 12%|█▏        | 78/655 [03:10<29:16,  3.04s/it][2024-11-24 22:47:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 12%|█▏        | 79/655 [03:13<27:58,  2.91s/it][2024-11-24 22:47:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 12%|█▏        | 80/655 [03:18<34:44,  3.63s/it][2024-11-24 22:47:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 12%|█▏        | 81/655 [03:21<32:46,  3.43s/it][2024-11-24 22:47:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 82/655 [03:22<25:25,  2.66s/it][2024-11-24 22:47:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 83/655 [03:23<21:41,  2.28s/it][2024-11-24 22:47:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 84/655 [03:25<18:37,  1.96s/it][2024-11-24 22:47:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 85/655 [03:28<22:17,  2.35s/it][2024-11-24 22:47:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 86/655 [03:31<23:53,  2.52s/it][2024-11-24 22:47:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 87/655 [03:35<28:24,  3.00s/it][2024-11-24 22:47:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 13%|█▎        | 88/655 [03:36<24:12,  2.56s/it][2024-11-24 22:47:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 14%|█▎        | 89/655 [03:37<19:31,  2.07s/it][2024-11-24 22:47:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 14%|█▎        | 90/655 [03:39<17:39,  1.87s/it][2024-11-24 22:47:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 14%|█▍        | 91/655 [03:40<16:00,  1.70s/it][2024-11-24 22:47:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 14%|█▍        | 92/655 [03:42<17:21,  1.85s/it][2024-11-24 22:47:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 14%|█▍        | 93/655 [03:44<16:48,  1.79s/it][2024-11-24 22:47:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 14%|█▍        | 94/655 [03:46<16:52,  1.81s/it][2024-11-24 22:47:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▍        | 95/655 [03:48<19:12,  2.06s/it][2024-11-24 22:47:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▍        | 96/655 [03:50<18:15,  1.96s/it][2024-11-24 22:47:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▍        | 97/655 [03:53<21:05,  2.27s/it][2024-11-24 22:47:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▍        | 98/655 [03:55<20:00,  2.16s/it][2024-11-24 22:47:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▌        | 99/655 [03:58<23:02,  2.49s/it][2024-11-24 22:47:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▌        | 100/655 [04:00<21:00,  2.27s/it][2024-11-24 22:47:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 15%|█▌        | 101/655 [04:02<19:35,  2.12s/it][2024-11-24 22:48:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▌        | 102/655 [04:06<24:32,  2.66s/it][2024-11-24 22:48:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▌        | 103/655 [04:09<25:29,  2.77s/it][2024-11-24 22:48:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▌        | 104/655 [04:13<28:51,  3.14s/it][2024-11-24 22:48:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▌        | 105/655 [04:14<24:07,  2.63s/it][2024-11-24 22:48:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▌        | 106/655 [04:17<23:39,  2.59s/it][2024-11-24 22:48:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▋        | 107/655 [04:20<25:31,  2.79s/it][2024-11-24 22:48:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 16%|█▋        | 108/655 [04:21<20:50,  2.29s/it][2024-11-24 22:48:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 17%|█▋        | 109/655 [04:25<25:34,  2.81s/it][2024-11-24 22:48:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 17%|█▋        | 110/655 [04:27<22:29,  2.48s/it][2024-11-24 22:48:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 17%|█▋        | 111/655 [04:29<20:56,  2.31s/it][2024-11-24 22:48:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 17%|█▋        | 112/655 [04:30<17:11,  1.90s/it][2024-11-24 22:48:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 17%|█▋        | 113/655 [04:32<18:18,  2.03s/it][2024-11-24 22:48:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 17%|█▋        | 114/655 [04:33<17:02,  1.89s/it][2024-11-24 22:48:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 115/655 [04:35<17:05,  1.90s/it][2024-11-24 22:48:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 116/655 [04:37<16:50,  1.87s/it][2024-11-24 22:48:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 117/655 [04:41<21:51,  2.44s/it][2024-11-24 22:48:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 118/655 [04:44<22:31,  2.52s/it][2024-11-24 22:48:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 119/655 [04:45<19:53,  2.23s/it][2024-11-24 22:48:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 120/655 [04:47<18:30,  2.08s/it][2024-11-24 22:48:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 18%|█▊        | 121/655 [04:49<18:35,  2.09s/it][2024-11-24 22:48:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 19%|█▊        | 122/655 [04:51<18:44,  2.11s/it][2024-11-24 22:48:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 19%|█▉        | 123/655 [04:53<18:24,  2.08s/it][2024-11-24 22:48:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 19%|█▉        | 124/655 [04:57<22:10,  2.51s/it][2024-11-24 22:48:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 19%|█▉        | 125/655 [05:01<25:36,  2.90s/it][2024-11-24 22:49:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 19%|█▉        | 126/655 [05:03<25:35,  2.90s/it][2024-11-24 22:49:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 19%|█▉        | 127/655 [05:07<26:38,  3.03s/it][2024-11-24 22:49:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|█▉        | 128/655 [05:10<27:23,  3.12s/it][2024-11-24 22:49:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|█▉        | 129/655 [05:12<23:17,  2.66s/it][2024-11-24 22:49:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|█▉        | 130/655 [05:14<23:13,  2.65s/it][2024-11-24 22:49:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|██        | 131/655 [05:18<24:34,  2.81s/it][2024-11-24 22:49:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|██        | 132/655 [05:20<22:54,  2.63s/it][2024-11-24 22:49:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|██        | 133/655 [05:27<35:09,  4.04s/it][2024-11-24 22:49:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|██        | 134/655 [05:29<30:36,  3.53s/it][2024-11-24 22:49:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 21%|██        | 135/655 [05:32<27:29,  3.17s/it][2024-11-24 22:49:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 21%|██        | 136/655 [05:35<28:03,  3.24s/it][2024-11-24 22:49:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 21%|██        | 137/655 [05:38<26:18,  3.05s/it][2024-11-24 22:49:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 21%|██        | 138/655 [05:41<27:47,  3.22s/it][2024-11-24 22:49:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 21%|██        | 139/655 [05:43<22:47,  2.65s/it][2024-11-24 22:49:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 21%|██▏       | 140/655 [05:44<19:40,  2.29s/it][2024-11-24 22:49:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 141/655 [05:46<18:59,  2.22s/it][2024-11-24 22:49:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 142/655 [05:50<22:57,  2.68s/it][2024-11-24 22:49:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 143/655 [05:53<23:53,  2.80s/it][2024-11-24 22:49:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 144/655 [05:54<19:00,  2.23s/it][2024-11-24 22:49:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 145/655 [05:56<18:14,  2.15s/it][2024-11-24 22:49:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 146/655 [05:58<17:22,  2.05s/it][2024-11-24 22:49:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 22%|██▏       | 147/655 [06:00<19:02,  2.25s/it][2024-11-24 22:50:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 23%|██▎       | 148/655 [06:02<17:51,  2.11s/it][2024-11-24 22:50:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 23%|██▎       | 149/655 [06:04<17:58,  2.13s/it][2024-11-24 22:50:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 23%|██▎       | 150/655 [06:06<15:33,  1.85s/it][2024-11-24 22:50:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 23%|██▎       | 151/655 [06:07<13:49,  1.65s/it][2024-11-24 22:50:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 23%|██▎       | 152/655 [06:08<13:43,  1.64s/it][2024-11-24 22:50:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 23%|██▎       | 153/655 [06:10<13:49,  1.65s/it][2024-11-24 22:50:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▎       | 154/655 [06:13<17:23,  2.08s/it][2024-11-24 22:50:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▎       | 155/655 [06:16<20:18,  2.44s/it][2024-11-24 22:50:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▍       | 156/655 [06:19<20:07,  2.42s/it][2024-11-24 22:50:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▍       | 157/655 [06:22<21:51,  2.63s/it][2024-11-24 22:50:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▍       | 158/655 [06:25<21:48,  2.63s/it][2024-11-24 22:50:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▍       | 159/655 [06:26<19:51,  2.40s/it][2024-11-24 22:50:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 24%|██▍       | 160/655 [06:30<21:30,  2.61s/it][2024-11-24 22:50:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▍       | 161/655 [06:33<23:28,  2.85s/it][2024-11-24 22:50:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▍       | 162/655 [06:35<21:57,  2.67s/it][2024-11-24 22:50:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▍       | 163/655 [06:38<21:45,  2.65s/it][2024-11-24 22:50:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▌       | 164/655 [06:41<24:14,  2.96s/it][2024-11-24 22:50:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▌       | 165/655 [06:45<24:39,  3.02s/it][2024-11-24 22:50:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▌       | 166/655 [06:48<26:05,  3.20s/it][2024-11-24 22:50:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 25%|██▌       | 167/655 [06:50<22:47,  2.80s/it][2024-11-24 22:50:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 26%|██▌       | 168/655 [06:51<18:39,  2.30s/it][2024-11-24 22:50:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 26%|██▌       | 169/655 [06:54<20:47,  2.57s/it][2024-11-24 22:50:54][slam_llm.models.slam_model][INFO] - modality encoder
+ 26%|██▌       | 170/655 [06:56<19:00,  2.35s/it][2024-11-24 22:50:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 26%|██▌       | 171/655 [06:58<17:35,  2.18s/it][2024-11-24 22:50:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 26%|██▋       | 172/655 [07:01<20:15,  2.52s/it][2024-11-24 22:51:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 26%|██▋       | 173/655 [07:02<16:21,  2.04s/it][2024-11-24 22:51:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 174/655 [07:04<15:56,  1.99s/it][2024-11-24 22:51:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 175/655 [07:06<16:04,  2.01s/it][2024-11-24 22:51:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 176/655 [07:09<16:41,  2.09s/it][2024-11-24 22:51:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 177/655 [07:12<19:01,  2.39s/it][2024-11-24 22:51:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 178/655 [07:14<20:11,  2.54s/it][2024-11-24 22:51:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 179/655 [07:18<21:22,  2.69s/it][2024-11-24 22:51:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 27%|██▋       | 180/655 [07:20<20:44,  2.62s/it][2024-11-24 22:51:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 28%|██▊       | 181/655 [07:23<22:15,  2.82s/it][2024-11-24 22:51:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 28%|██▊       | 182/655 [07:26<21:07,  2.68s/it][2024-11-24 22:51:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 28%|██▊       | 183/655 [07:28<21:09,  2.69s/it][2024-11-24 22:51:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 28%|██▊       | 184/655 [07:30<19:37,  2.50s/it][2024-11-24 22:51:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 28%|██▊       | 185/655 [07:35<25:29,  3.25s/it][2024-11-24 22:51:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 28%|██▊       | 186/655 [07:38<23:08,  2.96s/it][2024-11-24 22:51:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▊       | 187/655 [07:42<25:53,  3.32s/it][2024-11-24 22:51:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▊       | 188/655 [07:44<22:50,  2.94s/it][2024-11-24 22:51:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▉       | 189/655 [07:45<18:34,  2.39s/it][2024-11-24 22:51:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▉       | 190/655 [07:46<16:25,  2.12s/it][2024-11-24 22:51:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▉       | 191/655 [07:48<15:49,  2.05s/it][2024-11-24 22:51:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▉       | 192/655 [07:50<14:21,  1.86s/it][2024-11-24 22:51:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 29%|██▉       | 193/655 [07:52<15:27,  2.01s/it][2024-11-24 22:51:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 30%|██▉       | 194/655 [07:54<14:31,  1.89s/it][2024-11-24 22:51:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 30%|██▉       | 195/655 [07:56<16:04,  2.10s/it][2024-11-24 22:51:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 30%|██▉       | 196/655 [07:58<15:01,  1.96s/it][2024-11-24 22:51:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 30%|███       | 197/655 [08:00<14:40,  1.92s/it][2024-11-24 22:51:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 30%|███       | 198/655 [08:02<16:03,  2.11s/it][2024-11-24 22:52:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 30%|███       | 199/655 [08:05<17:43,  2.33s/it][2024-11-24 22:52:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███       | 200/655 [08:06<14:52,  1.96s/it][2024-11-24 22:52:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███       | 201/655 [08:10<18:11,  2.40s/it][2024-11-24 22:52:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███       | 202/655 [08:11<15:54,  2.11s/it][2024-11-24 22:52:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███       | 203/655 [08:14<16:46,  2.23s/it][2024-11-24 22:52:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███       | 204/655 [08:16<16:20,  2.18s/it][2024-11-24 22:52:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███▏      | 205/655 [08:18<15:51,  2.11s/it][2024-11-24 22:52:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 31%|███▏      | 206/655 [08:20<17:21,  2.32s/it][2024-11-24 22:52:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 32%|███▏      | 207/655 [08:23<18:27,  2.47s/it][2024-11-24 22:52:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 32%|███▏      | 208/655 [08:25<17:13,  2.31s/it][2024-11-24 22:52:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 32%|███▏      | 209/655 [08:27<15:42,  2.11s/it][2024-11-24 22:52:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 32%|███▏      | 210/655 [08:29<16:33,  2.23s/it][2024-11-24 22:52:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 32%|███▏      | 211/655 [08:31<13:59,  1.89s/it][2024-11-24 22:52:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 32%|███▏      | 212/655 [08:33<15:44,  2.13s/it][2024-11-24 22:52:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 213/655 [08:37<18:26,  2.50s/it][2024-11-24 22:52:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 214/655 [08:39<17:18,  2.36s/it][2024-11-24 22:52:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 215/655 [08:42<19:54,  2.72s/it][2024-11-24 22:52:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 216/655 [08:44<18:17,  2.50s/it][2024-11-24 22:52:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 217/655 [08:49<23:18,  3.19s/it][2024-11-24 22:52:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 218/655 [08:52<22:27,  3.08s/it][2024-11-24 22:52:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 33%|███▎      | 219/655 [08:53<19:23,  2.67s/it][2024-11-24 22:52:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 34%|███▎      | 220/655 [08:57<20:46,  2.87s/it][2024-11-24 22:52:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 34%|███▎      | 221/655 [08:58<18:07,  2.51s/it][2024-11-24 22:52:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 34%|███▍      | 222/655 [09:03<23:14,  3.22s/it][2024-11-24 22:53:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 34%|███▍      | 223/655 [09:07<25:08,  3.49s/it][2024-11-24 22:53:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 34%|███▍      | 224/655 [09:10<23:51,  3.32s/it][2024-11-24 22:53:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 34%|███▍      | 225/655 [09:14<24:57,  3.48s/it][2024-11-24 22:53:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▍      | 226/655 [09:15<19:28,  2.72s/it][2024-11-24 22:53:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▍      | 227/655 [09:17<16:34,  2.32s/it][2024-11-24 22:53:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▍      | 228/655 [09:18<14:05,  1.98s/it][2024-11-24 22:53:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▍      | 229/655 [09:19<12:18,  1.73s/it][2024-11-24 22:53:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▌      | 230/655 [09:20<11:19,  1.60s/it][2024-11-24 22:53:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▌      | 231/655 [09:21<10:34,  1.50s/it][2024-11-24 22:53:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 35%|███▌      | 232/655 [09:23<09:41,  1.37s/it][2024-11-24 22:53:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▌      | 233/655 [09:25<11:46,  1.67s/it][2024-11-24 22:53:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▌      | 234/655 [09:26<11:25,  1.63s/it][2024-11-24 22:53:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▌      | 235/655 [09:28<10:11,  1.46s/it][2024-11-24 22:53:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▌      | 236/655 [09:29<10:16,  1.47s/it][2024-11-24 22:53:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▌      | 237/655 [09:30<09:30,  1.36s/it][2024-11-24 22:53:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▋      | 238/655 [09:32<10:00,  1.44s/it][2024-11-24 22:53:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 36%|███▋      | 239/655 [09:33<09:48,  1.42s/it][2024-11-24 22:53:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 37%|███▋      | 240/655 [09:35<09:48,  1.42s/it][2024-11-24 22:53:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 37%|███▋      | 241/655 [09:36<09:25,  1.37s/it][2024-11-24 22:53:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 37%|███▋      | 242/655 [09:37<09:28,  1.38s/it][2024-11-24 22:53:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 37%|███▋      | 243/655 [09:38<08:57,  1.31s/it][2024-11-24 22:53:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 37%|███▋      | 244/655 [09:42<13:48,  2.01s/it][2024-11-24 22:53:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 37%|███▋      | 245/655 [09:44<12:57,  1.90s/it][2024-11-24 22:53:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 246/655 [09:46<13:21,  1.96s/it][2024-11-24 22:53:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 247/655 [09:47<12:54,  1.90s/it][2024-11-24 22:53:47][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 248/655 [09:51<15:19,  2.26s/it][2024-11-24 22:53:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 249/655 [09:54<17:04,  2.52s/it][2024-11-24 22:53:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 250/655 [09:56<17:01,  2.52s/it][2024-11-24 22:53:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 251/655 [09:59<16:39,  2.47s/it][2024-11-24 22:53:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 38%|███▊      | 252/655 [10:00<15:11,  2.26s/it][2024-11-24 22:54:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 39%|███▊      | 253/655 [10:03<16:13,  2.42s/it][2024-11-24 22:54:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 39%|███▉      | 254/655 [10:04<13:58,  2.09s/it][2024-11-24 22:54:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 39%|███▉      | 255/655 [10:07<14:18,  2.15s/it][2024-11-24 22:54:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 39%|███▉      | 256/655 [10:10<15:38,  2.35s/it][2024-11-24 22:54:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 39%|███▉      | 257/655 [10:11<14:42,  2.22s/it][2024-11-24 22:54:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 39%|███▉      | 258/655 [10:13<14:01,  2.12s/it][2024-11-24 22:54:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|███▉      | 259/655 [10:17<16:01,  2.43s/it][2024-11-24 22:54:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|███▉      | 260/655 [10:18<13:20,  2.03s/it][2024-11-24 22:54:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|███▉      | 261/655 [10:20<13:28,  2.05s/it][2024-11-24 22:54:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|████      | 262/655 [10:21<11:24,  1.74s/it][2024-11-24 22:54:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|████      | 263/655 [10:23<12:05,  1.85s/it][2024-11-24 22:54:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|████      | 264/655 [10:24<11:24,  1.75s/it][2024-11-24 22:54:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|████      | 265/655 [10:25<09:47,  1.51s/it][2024-11-24 22:54:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 41%|████      | 266/655 [10:27<09:49,  1.52s/it][2024-11-24 22:54:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 41%|████      | 267/655 [10:28<09:44,  1.51s/it][2024-11-24 22:54:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 41%|████      | 268/655 [10:30<09:29,  1.47s/it][2024-11-24 22:54:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 41%|████      | 269/655 [10:32<10:25,  1.62s/it][2024-11-24 22:54:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 41%|████      | 270/655 [10:33<09:43,  1.52s/it][2024-11-24 22:54:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 41%|████▏     | 271/655 [10:34<09:19,  1.46s/it][2024-11-24 22:54:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 272/655 [10:35<08:23,  1.32s/it][2024-11-24 22:54:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 273/655 [10:37<09:37,  1.51s/it][2024-11-24 22:54:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 274/655 [10:39<09:37,  1.52s/it][2024-11-24 22:54:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 275/655 [10:41<10:28,  1.65s/it][2024-11-24 22:54:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 276/655 [10:42<10:21,  1.64s/it][2024-11-24 22:54:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 277/655 [10:44<09:36,  1.52s/it][2024-11-24 22:54:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 42%|████▏     | 278/655 [10:45<09:52,  1.57s/it][2024-11-24 22:54:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 43%|████▎     | 279/655 [10:47<09:11,  1.47s/it][2024-11-24 22:54:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 43%|████▎     | 280/655 [10:50<12:22,  1.98s/it][2024-11-24 22:54:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 43%|████▎     | 281/655 [10:53<14:32,  2.33s/it][2024-11-24 22:54:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 43%|████▎     | 282/655 [10:56<15:29,  2.49s/it][2024-11-24 22:54:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 43%|████▎     | 283/655 [10:58<14:37,  2.36s/it][2024-11-24 22:54:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 43%|████▎     | 284/655 [10:59<13:02,  2.11s/it][2024-11-24 22:54:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▎     | 285/655 [11:02<13:59,  2.27s/it][2024-11-24 22:55:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▎     | 286/655 [11:04<13:09,  2.14s/it][2024-11-24 22:55:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▍     | 287/655 [11:05<11:29,  1.87s/it][2024-11-24 22:55:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▍     | 288/655 [11:08<12:56,  2.12s/it][2024-11-24 22:55:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▍     | 289/655 [11:09<11:44,  1.93s/it][2024-11-24 22:55:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▍     | 290/655 [11:11<11:41,  1.92s/it][2024-11-24 22:55:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 44%|████▍     | 291/655 [11:13<11:31,  1.90s/it][2024-11-24 22:55:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▍     | 292/655 [11:15<11:17,  1.87s/it][2024-11-24 22:55:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▍     | 293/655 [11:17<12:50,  2.13s/it][2024-11-24 22:55:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▍     | 294/655 [11:20<13:07,  2.18s/it][2024-11-24 22:55:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▌     | 295/655 [11:21<11:15,  1.88s/it][2024-11-24 22:55:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▌     | 296/655 [11:22<10:16,  1.72s/it][2024-11-24 22:55:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▌     | 297/655 [11:24<09:37,  1.61s/it][2024-11-24 22:55:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 45%|████▌     | 298/655 [11:25<09:42,  1.63s/it][2024-11-24 22:55:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 46%|████▌     | 299/655 [11:27<09:30,  1.60s/it][2024-11-24 22:55:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 46%|████▌     | 300/655 [11:29<09:57,  1.68s/it][2024-11-24 22:55:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 46%|████▌     | 301/655 [11:31<10:48,  1.83s/it][2024-11-24 22:55:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 46%|████▌     | 302/655 [11:32<09:57,  1.69s/it][2024-11-24 22:55:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 46%|████▋     | 303/655 [11:34<09:25,  1.61s/it][2024-11-24 22:55:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 46%|████▋     | 304/655 [11:35<08:45,  1.50s/it][2024-11-24 22:55:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 305/655 [11:36<08:14,  1.41s/it][2024-11-24 22:55:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 306/655 [11:37<08:03,  1.39s/it][2024-11-24 22:55:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 307/655 [11:39<08:01,  1.38s/it][2024-11-24 22:55:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 308/655 [11:40<08:26,  1.46s/it][2024-11-24 22:55:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 309/655 [11:42<08:33,  1.48s/it][2024-11-24 22:55:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 310/655 [11:43<08:12,  1.43s/it][2024-11-24 22:55:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 47%|████▋     | 311/655 [11:46<11:06,  1.94s/it][2024-11-24 22:55:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 48%|████▊     | 312/655 [11:50<13:58,  2.44s/it][2024-11-24 22:55:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 48%|████▊     | 313/655 [11:54<16:55,  2.97s/it][2024-11-24 22:55:54][slam_llm.models.slam_model][INFO] - modality encoder
+ 48%|████▊     | 314/655 [11:58<18:14,  3.21s/it][2024-11-24 22:55:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 48%|████▊     | 315/655 [12:02<18:47,  3.32s/it][2024-11-24 22:56:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 48%|████▊     | 316/655 [12:05<19:32,  3.46s/it][2024-11-24 22:56:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 48%|████▊     | 317/655 [12:09<19:17,  3.43s/it][2024-11-24 22:56:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▊     | 318/655 [12:11<17:17,  3.08s/it][2024-11-24 22:56:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▊     | 319/655 [12:14<17:07,  3.06s/it][2024-11-24 22:56:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▉     | 320/655 [12:18<19:10,  3.43s/it][2024-11-24 22:56:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▉     | 321/655 [12:23<20:37,  3.71s/it][2024-11-24 22:56:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▉     | 322/655 [12:27<21:11,  3.82s/it][2024-11-24 22:56:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▉     | 323/655 [12:30<20:11,  3.65s/it][2024-11-24 22:56:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 49%|████▉     | 324/655 [12:33<18:39,  3.38s/it][2024-11-24 22:56:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 50%|████▉     | 325/655 [12:36<18:49,  3.42s/it][2024-11-24 22:56:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 50%|████▉     | 326/655 [12:40<18:51,  3.44s/it][2024-11-24 22:56:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 50%|████▉     | 327/655 [12:43<18:29,  3.38s/it][2024-11-24 22:56:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 50%|█████     | 328/655 [12:46<18:28,  3.39s/it][2024-11-24 22:56:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 50%|█████     | 329/655 [12:49<17:28,  3.22s/it][2024-11-24 22:56:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 50%|█████     | 330/655 [12:54<19:11,  3.54s/it][2024-11-24 22:56:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████     | 331/655 [12:56<16:56,  3.14s/it][2024-11-24 22:56:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████     | 332/655 [12:58<15:56,  2.96s/it][2024-11-24 22:56:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████     | 333/655 [13:03<18:56,  3.53s/it][2024-11-24 22:57:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████     | 334/655 [13:05<16:29,  3.08s/it][2024-11-24 22:57:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████     | 335/655 [13:08<15:39,  2.94s/it][2024-11-24 22:57:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████▏    | 336/655 [13:11<16:37,  3.13s/it][2024-11-24 22:57:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 51%|█████▏    | 337/655 [13:13<14:36,  2.76s/it][2024-11-24 22:57:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 52%|█████▏    | 338/655 [13:14<12:02,  2.28s/it][2024-11-24 22:57:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 52%|█████▏    | 339/655 [13:17<11:48,  2.24s/it][2024-11-24 22:57:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 52%|█████▏    | 340/655 [13:19<12:28,  2.38s/it][2024-11-24 22:57:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 52%|█████▏    | 341/655 [13:21<11:34,  2.21s/it][2024-11-24 22:57:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 52%|█████▏    | 342/655 [13:24<13:18,  2.55s/it][2024-11-24 22:57:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 52%|█████▏    | 343/655 [13:26<11:52,  2.28s/it][2024-11-24 22:57:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 344/655 [13:28<12:02,  2.32s/it][2024-11-24 22:57:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 345/655 [13:31<13:04,  2.53s/it][2024-11-24 22:57:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 346/655 [13:35<14:38,  2.84s/it][2024-11-24 22:57:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 347/655 [13:37<13:15,  2.58s/it][2024-11-24 22:57:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 348/655 [13:39<11:34,  2.26s/it][2024-11-24 22:57:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 349/655 [13:42<13:01,  2.55s/it][2024-11-24 22:57:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 53%|█████▎    | 350/655 [13:44<13:12,  2.60s/it][2024-11-24 22:57:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 54%|█████▎    | 351/655 [13:49<16:09,  3.19s/it][2024-11-24 22:57:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 54%|█████▎    | 352/655 [13:51<14:42,  2.91s/it][2024-11-24 22:57:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 54%|█████▍    | 353/655 [13:54<13:35,  2.70s/it][2024-11-24 22:57:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 54%|█████▍    | 354/655 [13:56<13:29,  2.69s/it][2024-11-24 22:57:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 54%|█████▍    | 355/655 [13:59<14:00,  2.80s/it][2024-11-24 22:57:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 54%|█████▍    | 356/655 [14:01<13:05,  2.63s/it][2024-11-24 22:58:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▍    | 357/655 [14:04<12:11,  2.45s/it][2024-11-24 22:58:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▍    | 358/655 [14:05<10:33,  2.13s/it][2024-11-24 22:58:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▍    | 359/655 [14:07<10:01,  2.03s/it][2024-11-24 22:58:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▍    | 360/655 [14:09<11:04,  2.25s/it][2024-11-24 22:58:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▌    | 361/655 [14:13<12:44,  2.60s/it][2024-11-24 22:58:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▌    | 362/655 [14:15<12:30,  2.56s/it][2024-11-24 22:58:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 55%|█████▌    | 363/655 [14:19<14:00,  2.88s/it][2024-11-24 22:58:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▌    | 364/655 [14:23<15:43,  3.24s/it][2024-11-24 22:58:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▌    | 365/655 [14:27<16:54,  3.50s/it][2024-11-24 22:58:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▌    | 366/655 [14:31<17:53,  3.71s/it][2024-11-24 22:58:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▌    | 367/655 [14:36<19:00,  3.96s/it][2024-11-24 22:58:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▌    | 368/655 [14:39<17:41,  3.70s/it][2024-11-24 22:58:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▋    | 369/655 [14:40<13:38,  2.86s/it][2024-11-24 22:58:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 56%|█████▋    | 370/655 [14:42<12:58,  2.73s/it][2024-11-24 22:58:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 57%|█████▋    | 371/655 [14:44<11:56,  2.52s/it][2024-11-24 22:58:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 57%|█████▋    | 372/655 [14:47<12:21,  2.62s/it][2024-11-24 22:58:47][slam_llm.models.slam_model][INFO] - modality encoder
+ 57%|█████▋    | 373/655 [14:51<13:48,  2.94s/it][2024-11-24 22:58:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 57%|█████▋    | 374/655 [14:55<14:49,  3.17s/it][2024-11-24 22:58:54][slam_llm.models.slam_model][INFO] - modality encoder
+ 57%|█████▋    | 375/655 [14:57<13:40,  2.93s/it][2024-11-24 22:58:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 57%|█████▋    | 376/655 [15:01<15:06,  3.25s/it][2024-11-24 22:59:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 377/655 [15:02<12:14,  2.64s/it][2024-11-24 22:59:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 378/655 [15:05<11:45,  2.55s/it][2024-11-24 22:59:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 379/655 [15:06<09:33,  2.08s/it][2024-11-24 22:59:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 380/655 [15:10<13:15,  2.89s/it][2024-11-24 22:59:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 381/655 [15:12<11:15,  2.47s/it][2024-11-24 22:59:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 382/655 [15:13<09:32,  2.10s/it][2024-11-24 22:59:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 58%|█████▊    | 383/655 [15:16<10:21,  2.28s/it][2024-11-24 22:59:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 59%|█████▊    | 384/655 [15:18<10:02,  2.22s/it][2024-11-24 22:59:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 59%|█████▉    | 385/655 [15:21<11:56,  2.65s/it][2024-11-24 22:59:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 59%|█████▉    | 386/655 [15:23<10:17,  2.30s/it][2024-11-24 22:59:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 59%|█████▉    | 387/655 [15:24<09:07,  2.04s/it][2024-11-24 22:59:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 59%|█████▉    | 388/655 [15:28<10:57,  2.46s/it][2024-11-24 22:59:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 59%|█████▉    | 389/655 [15:30<10:54,  2.46s/it][2024-11-24 22:59:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|█████▉    | 390/655 [15:31<08:54,  2.02s/it][2024-11-24 22:59:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|█████▉    | 391/655 [15:32<07:34,  1.72s/it][2024-11-24 22:59:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|█████▉    | 392/655 [15:34<07:20,  1.67s/it][2024-11-24 22:59:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|██████    | 393/655 [15:36<08:14,  1.89s/it][2024-11-24 22:59:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|██████    | 394/655 [15:39<09:11,  2.11s/it][2024-11-24 22:59:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|██████    | 395/655 [15:40<07:57,  1.84s/it][2024-11-24 22:59:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|██████    | 396/655 [15:41<06:44,  1.56s/it][2024-11-24 22:59:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 61%|██████    | 397/655 [15:43<06:43,  1.56s/it][2024-11-24 22:59:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 61%|██████    | 398/655 [15:44<06:32,  1.53s/it][2024-11-24 22:59:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 61%|██████    | 399/655 [15:46<07:43,  1.81s/it][2024-11-24 22:59:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 61%|██████    | 400/655 [15:49<08:18,  1.96s/it][2024-11-24 22:59:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 61%|██████    | 401/655 [15:51<08:19,  1.97s/it][2024-11-24 22:59:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 61%|██████▏   | 402/655 [15:55<11:14,  2.67s/it][2024-11-24 22:59:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 403/655 [15:59<12:32,  2.98s/it][2024-11-24 22:59:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 404/655 [16:02<12:12,  2.92s/it][2024-11-24 23:00:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 405/655 [16:07<14:48,  3.55s/it][2024-11-24 23:00:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 406/655 [16:09<13:26,  3.24s/it][2024-11-24 23:00:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 407/655 [16:12<13:25,  3.25s/it][2024-11-24 23:00:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 408/655 [16:15<12:32,  3.05s/it][2024-11-24 23:00:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 62%|██████▏   | 409/655 [16:17<11:32,  2.81s/it][2024-11-24 23:00:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 63%|██████▎   | 410/655 [16:19<10:13,  2.50s/it][2024-11-24 23:00:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 63%|██████▎   | 411/655 [16:20<08:41,  2.14s/it][2024-11-24 23:00:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 63%|██████▎   | 412/655 [16:24<10:15,  2.53s/it][2024-11-24 23:00:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 63%|██████▎   | 413/655 [16:26<09:17,  2.30s/it][2024-11-24 23:00:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 63%|██████▎   | 414/655 [16:29<10:08,  2.53s/it][2024-11-24 23:00:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 63%|██████▎   | 415/655 [16:34<13:15,  3.32s/it][2024-11-24 23:00:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▎   | 416/655 [16:37<13:40,  3.43s/it][2024-11-24 23:00:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▎   | 417/655 [16:41<14:17,  3.60s/it][2024-11-24 23:00:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▍   | 418/655 [16:45<14:46,  3.74s/it][2024-11-24 23:00:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▍   | 419/655 [16:47<11:33,  2.94s/it][2024-11-24 23:00:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▍   | 420/655 [16:50<11:59,  3.06s/it][2024-11-24 23:00:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▍   | 421/655 [16:53<11:38,  2.99s/it][2024-11-24 23:00:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 64%|██████▍   | 422/655 [16:54<09:32,  2.46s/it][2024-11-24 23:00:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▍   | 423/655 [16:56<08:32,  2.21s/it][2024-11-24 23:00:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▍   | 424/655 [17:00<10:59,  2.86s/it][2024-11-24 23:00:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▍   | 425/655 [17:02<09:41,  2.53s/it][2024-11-24 23:01:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▌   | 426/655 [17:04<09:48,  2.57s/it][2024-11-24 23:01:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▌   | 427/655 [17:09<11:35,  3.05s/it][2024-11-24 23:01:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▌   | 428/655 [17:11<10:53,  2.88s/it][2024-11-24 23:01:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 65%|██████▌   | 429/655 [17:14<10:56,  2.90s/it][2024-11-24 23:01:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 66%|██████▌   | 430/655 [17:18<11:56,  3.19s/it][2024-11-24 23:01:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 66%|██████▌   | 431/655 [17:21<11:46,  3.16s/it][2024-11-24 23:01:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 66%|██████▌   | 432/655 [17:23<10:38,  2.86s/it][2024-11-24 23:01:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 66%|██████▌   | 433/655 [17:26<10:34,  2.86s/it][2024-11-24 23:01:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 66%|██████▋   | 434/655 [17:28<09:58,  2.71s/it][2024-11-24 23:01:28][slam_llm.models.slam_model][INFO] - modality encoder
+ 66%|██████▋   | 435/655 [17:30<09:06,  2.48s/it][2024-11-24 23:01:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 436/655 [17:32<08:28,  2.32s/it][2024-11-24 23:01:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 437/655 [17:35<09:01,  2.48s/it][2024-11-24 23:01:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 438/655 [17:38<09:32,  2.64s/it][2024-11-24 23:01:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 439/655 [17:41<10:18,  2.87s/it][2024-11-24 23:01:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 440/655 [17:44<09:55,  2.77s/it][2024-11-24 23:01:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 441/655 [17:46<08:35,  2.41s/it][2024-11-24 23:01:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 67%|██████▋   | 442/655 [17:47<07:22,  2.08s/it][2024-11-24 23:01:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 68%|██████▊   | 443/655 [17:49<07:02,  1.99s/it][2024-11-24 23:01:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 68%|██████▊   | 444/655 [17:52<08:00,  2.28s/it][2024-11-24 23:01:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 68%|██████▊   | 445/655 [17:56<09:44,  2.78s/it][2024-11-24 23:01:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 68%|██████▊   | 446/655 [18:00<11:02,  3.17s/it][2024-11-24 23:01:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 68%|██████▊   | 447/655 [18:03<10:57,  3.16s/it][2024-11-24 23:02:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 68%|██████▊   | 448/655 [18:05<10:17,  2.98s/it][2024-11-24 23:02:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▊   | 449/655 [18:10<11:35,  3.38s/it][2024-11-24 23:02:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▊   | 450/655 [18:14<12:08,  3.55s/it][2024-11-24 23:02:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▉   | 451/655 [18:16<10:44,  3.16s/it][2024-11-24 23:02:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▉   | 452/655 [18:20<11:33,  3.42s/it][2024-11-24 23:02:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▉   | 453/655 [18:23<11:04,  3.29s/it][2024-11-24 23:02:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▉   | 454/655 [18:26<10:54,  3.26s/it][2024-11-24 23:02:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 69%|██████▉   | 455/655 [18:29<10:37,  3.19s/it][2024-11-24 23:02:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 70%|██████▉   | 456/655 [18:32<10:48,  3.26s/it][2024-11-24 23:02:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 70%|██████▉   | 457/655 [18:36<10:31,  3.19s/it][2024-11-24 23:02:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 70%|██████▉   | 458/655 [18:38<09:49,  2.99s/it][2024-11-24 23:02:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 70%|███████   | 459/655 [18:42<10:24,  3.19s/it][2024-11-24 23:02:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 70%|███████   | 460/655 [18:44<09:58,  3.07s/it][2024-11-24 23:02:44][slam_llm.models.slam_model][INFO] - modality encoder
+ 70%|███████   | 461/655 [18:48<10:09,  3.14s/it][2024-11-24 23:02:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████   | 462/655 [18:52<11:01,  3.43s/it][2024-11-24 23:02:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████   | 463/655 [18:56<11:22,  3.55s/it][2024-11-24 23:02:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████   | 464/655 [18:57<09:25,  2.96s/it][2024-11-24 23:02:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████   | 465/655 [19:00<09:03,  2.86s/it][2024-11-24 23:02:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████   | 466/655 [19:02<07:58,  2.53s/it][2024-11-24 23:03:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████▏  | 467/655 [19:03<07:04,  2.26s/it][2024-11-24 23:03:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 71%|███████▏  | 468/655 [19:04<05:56,  1.91s/it][2024-11-24 23:03:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 72%|███████▏  | 469/655 [19:06<05:45,  1.86s/it][2024-11-24 23:03:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 72%|███████▏  | 470/655 [19:08<05:34,  1.81s/it][2024-11-24 23:03:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 72%|███████▏  | 471/655 [19:09<05:16,  1.72s/it][2024-11-24 23:03:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 72%|███████▏  | 472/655 [19:10<04:36,  1.51s/it][2024-11-24 23:03:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 72%|███████▏  | 473/655 [19:12<04:26,  1.47s/it][2024-11-24 23:03:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 72%|███████▏  | 474/655 [19:13<04:28,  1.48s/it][2024-11-24 23:03:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 475/655 [19:14<04:08,  1.38s/it][2024-11-24 23:03:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 476/655 [19:15<03:36,  1.21s/it][2024-11-24 23:03:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 477/655 [19:17<03:58,  1.34s/it][2024-11-24 23:03:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 478/655 [19:18<03:57,  1.34s/it][2024-11-24 23:03:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 479/655 [19:21<05:08,  1.75s/it][2024-11-24 23:03:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 480/655 [19:24<06:28,  2.22s/it][2024-11-24 23:03:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 73%|███████▎  | 481/655 [19:27<06:38,  2.29s/it][2024-11-24 23:03:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 74%|███████▎  | 482/655 [19:29<06:43,  2.33s/it][2024-11-24 23:03:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 74%|███████▎  | 483/655 [19:31<06:14,  2.18s/it][2024-11-24 23:03:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 74%|███████▍  | 484/655 [19:32<05:25,  1.91s/it][2024-11-24 23:03:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 74%|███████▍  | 485/655 [19:34<05:15,  1.85s/it][2024-11-24 23:03:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 74%|███████▍  | 486/655 [19:36<05:21,  1.90s/it][2024-11-24 23:03:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 74%|███████▍  | 487/655 [19:37<04:51,  1.73s/it][2024-11-24 23:03:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▍  | 488/655 [19:40<05:14,  1.88s/it][2024-11-24 23:03:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▍  | 489/655 [19:42<05:32,  2.00s/it][2024-11-24 23:03:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▍  | 490/655 [19:43<05:11,  1.89s/it][2024-11-24 23:03:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▍  | 491/655 [19:45<05:02,  1.85s/it][2024-11-24 23:03:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▌  | 492/655 [19:46<04:26,  1.63s/it][2024-11-24 23:03:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▌  | 493/655 [19:48<04:06,  1.52s/it][2024-11-24 23:03:47][slam_llm.models.slam_model][INFO] - modality encoder
+ 75%|███████▌  | 494/655 [19:49<03:46,  1.41s/it][2024-11-24 23:03:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▌  | 495/655 [19:51<04:25,  1.66s/it][2024-11-24 23:03:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▌  | 496/655 [19:53<04:29,  1.70s/it][2024-11-24 23:03:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▌  | 497/655 [19:54<04:22,  1.66s/it][2024-11-24 23:03:54][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▌  | 498/655 [19:56<04:02,  1.54s/it][2024-11-24 23:03:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▌  | 499/655 [19:57<03:45,  1.45s/it][2024-11-24 23:03:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▋  | 500/655 [19:58<03:21,  1.30s/it][2024-11-24 23:03:57][slam_llm.models.slam_model][INFO] - modality encoder
+ 76%|███████▋  | 501/655 [19:59<03:07,  1.22s/it][2024-11-24 23:03:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 77%|███████▋  | 502/655 [20:01<03:42,  1.45s/it][2024-11-24 23:04:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 77%|███████▋  | 503/655 [20:02<03:42,  1.46s/it][2024-11-24 23:04:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 77%|███████▋  | 504/655 [20:04<03:31,  1.40s/it][2024-11-24 23:04:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 77%|███████▋  | 505/655 [20:05<03:31,  1.41s/it][2024-11-24 23:04:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 77%|███████▋  | 506/655 [20:06<03:00,  1.21s/it][2024-11-24 23:04:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 77%|███████▋  | 507/655 [20:08<03:40,  1.49s/it][2024-11-24 23:04:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 508/655 [20:09<03:38,  1.49s/it][2024-11-24 23:04:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 509/655 [20:11<03:47,  1.56s/it][2024-11-24 23:04:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 510/655 [20:13<03:49,  1.59s/it][2024-11-24 23:04:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 511/655 [20:14<03:34,  1.49s/it][2024-11-24 23:04:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 512/655 [20:16<03:48,  1.60s/it][2024-11-24 23:04:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 513/655 [20:18<04:07,  1.75s/it][2024-11-24 23:04:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 78%|███████▊  | 514/655 [20:20<04:39,  1.98s/it][2024-11-24 23:04:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 79%|███████▊  | 515/655 [20:23<04:45,  2.04s/it][2024-11-24 23:04:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 79%|███████▉  | 516/655 [20:25<05:12,  2.25s/it][2024-11-24 23:04:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 79%|███████▉  | 517/655 [20:26<04:09,  1.81s/it][2024-11-24 23:04:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 79%|███████▉  | 518/655 [20:27<03:45,  1.65s/it][2024-11-24 23:04:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 79%|███████▉  | 519/655 [20:31<05:05,  2.24s/it][2024-11-24 23:04:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 79%|███████▉  | 520/655 [20:32<04:26,  1.97s/it][2024-11-24 23:04:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|███████▉  | 521/655 [20:35<05:01,  2.25s/it][2024-11-24 23:04:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|███████▉  | 522/655 [20:38<05:16,  2.38s/it][2024-11-24 23:04:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|███████▉  | 523/655 [20:39<04:33,  2.07s/it][2024-11-24 23:04:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|████████  | 524/655 [20:41<04:33,  2.09s/it][2024-11-24 23:04:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|████████  | 525/655 [20:51<09:21,  4.32s/it][2024-11-24 23:04:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|████████  | 526/655 [20:54<08:28,  3.94s/it][2024-11-24 23:04:54][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|████████  | 527/655 [20:56<07:22,  3.46s/it][2024-11-24 23:04:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 81%|████████  | 528/655 [20:58<06:27,  3.05s/it][2024-11-24 23:04:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 81%|████████  | 529/655 [21:00<05:29,  2.61s/it][2024-11-24 23:05:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 81%|████████  | 530/655 [21:04<06:13,  2.99s/it][2024-11-24 23:05:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 81%|████████  | 531/655 [21:06<05:19,  2.58s/it][2024-11-24 23:05:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 81%|████████  | 532/655 [21:08<05:15,  2.56s/it][2024-11-24 23:05:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 81%|████████▏ | 533/655 [21:10<04:53,  2.40s/it][2024-11-24 23:05:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 534/655 [21:12<04:36,  2.28s/it][2024-11-24 23:05:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 535/655 [21:14<04:15,  2.13s/it][2024-11-24 23:05:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 536/655 [21:15<03:52,  1.95s/it][2024-11-24 23:05:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 537/655 [21:18<03:57,  2.02s/it][2024-11-24 23:05:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 538/655 [21:19<03:48,  1.95s/it][2024-11-24 23:05:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 539/655 [21:23<04:51,  2.52s/it][2024-11-24 23:05:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 82%|████████▏ | 540/655 [21:26<04:59,  2.60s/it][2024-11-24 23:05:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 83%|████████▎ | 541/655 [21:29<05:20,  2.81s/it][2024-11-24 23:05:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 83%|████████▎ | 542/655 [21:31<04:50,  2.57s/it][2024-11-24 23:05:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 83%|████████▎ | 543/655 [21:34<04:40,  2.51s/it][2024-11-24 23:05:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 83%|████████▎ | 544/655 [21:37<04:57,  2.68s/it][2024-11-24 23:05:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 83%|████████▎ | 545/655 [21:40<05:05,  2.78s/it][2024-11-24 23:05:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 83%|████████▎ | 546/655 [21:41<04:04,  2.24s/it][2024-11-24 23:05:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▎ | 547/655 [21:42<03:24,  1.89s/it][2024-11-24 23:05:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▎ | 548/655 [21:44<03:21,  1.88s/it][2024-11-24 23:05:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▍ | 549/655 [21:45<03:17,  1.86s/it][2024-11-24 23:05:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▍ | 550/655 [21:47<02:59,  1.71s/it][2024-11-24 23:05:46][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▍ | 551/655 [21:48<02:45,  1.59s/it][2024-11-24 23:05:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▍ | 552/655 [21:50<02:44,  1.59s/it][2024-11-24 23:05:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 84%|████████▍ | 553/655 [21:51<02:34,  1.51s/it][2024-11-24 23:05:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▍ | 554/655 [21:59<05:40,  3.37s/it][2024-11-24 23:05:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▍ | 555/655 [22:00<04:23,  2.64s/it][2024-11-24 23:05:59][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▍ | 556/655 [22:01<03:50,  2.33s/it][2024-11-24 23:06:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▌ | 557/655 [22:03<03:18,  2.02s/it][2024-11-24 23:06:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▌ | 558/655 [22:04<03:05,  1.91s/it][2024-11-24 23:06:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▌ | 559/655 [22:07<03:13,  2.01s/it][2024-11-24 23:06:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 85%|████████▌ | 560/655 [22:08<02:50,  1.79s/it][2024-11-24 23:06:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 86%|████████▌ | 561/655 [22:09<02:45,  1.76s/it][2024-11-24 23:06:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 86%|████████▌ | 562/655 [22:12<03:01,  1.95s/it][2024-11-24 23:06:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 86%|████████▌ | 563/655 [22:13<02:36,  1.70s/it][2024-11-24 23:06:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 86%|████████▌ | 564/655 [22:14<02:26,  1.61s/it][2024-11-24 23:06:14][slam_llm.models.slam_model][INFO] - modality encoder
+ 86%|████████▋ | 565/655 [22:16<02:31,  1.68s/it][2024-11-24 23:06:16][slam_llm.models.slam_model][INFO] - modality encoder
+ 86%|████████▋ | 566/655 [22:18<02:18,  1.56s/it][2024-11-24 23:06:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 567/655 [22:20<02:29,  1.69s/it][2024-11-24 23:06:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 568/655 [22:21<02:25,  1.68s/it][2024-11-24 23:06:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 569/655 [22:22<02:14,  1.57s/it][2024-11-24 23:06:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 570/655 [22:24<02:18,  1.63s/it][2024-11-24 23:06:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 571/655 [22:27<02:50,  2.03s/it][2024-11-24 23:06:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 572/655 [22:31<03:32,  2.56s/it][2024-11-24 23:06:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 87%|████████▋ | 573/655 [22:33<03:13,  2.36s/it][2024-11-24 23:06:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 88%|████████▊ | 574/655 [22:36<03:36,  2.67s/it][2024-11-24 23:06:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 88%|████████▊ | 575/655 [22:38<03:21,  2.52s/it][2024-11-24 23:06:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 88%|████████▊ | 576/655 [22:40<03:06,  2.37s/it][2024-11-24 23:06:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 88%|████████▊ | 577/655 [22:43<03:11,  2.45s/it][2024-11-24 23:06:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 88%|████████▊ | 578/655 [22:46<03:11,  2.48s/it][2024-11-24 23:06:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 88%|████████▊ | 579/655 [22:50<03:47,  2.99s/it][2024-11-24 23:06:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▊ | 580/655 [22:52<03:32,  2.83s/it][2024-11-24 23:06:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▊ | 581/655 [22:55<03:36,  2.92s/it][2024-11-24 23:06:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▉ | 582/655 [22:58<03:34,  2.94s/it][2024-11-24 23:06:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▉ | 583/655 [23:01<03:30,  2.93s/it][2024-11-24 23:07:01][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▉ | 584/655 [23:05<03:35,  3.03s/it][2024-11-24 23:07:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▉ | 585/655 [23:07<03:18,  2.83s/it][2024-11-24 23:07:07][slam_llm.models.slam_model][INFO] - modality encoder
+ 89%|████████▉ | 586/655 [23:10<03:23,  2.96s/it][2024-11-24 23:07:10][slam_llm.models.slam_model][INFO] - modality encoder
+ 90%|████████▉ | 587/655 [23:12<02:47,  2.46s/it][2024-11-24 23:07:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 90%|████████▉ | 588/655 [23:13<02:15,  2.03s/it][2024-11-24 23:07:12][slam_llm.models.slam_model][INFO] - modality encoder
+ 90%|████████▉ | 589/655 [23:14<01:55,  1.74s/it][2024-11-24 23:07:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 90%|█████████ | 590/655 [23:16<02:02,  1.89s/it][2024-11-24 23:07:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 90%|█████████ | 591/655 [23:18<02:13,  2.09s/it][2024-11-24 23:07:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 90%|█████████ | 592/655 [23:20<01:57,  1.87s/it][2024-11-24 23:07:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████ | 593/655 [23:21<01:41,  1.63s/it][2024-11-24 23:07:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████ | 594/655 [23:22<01:29,  1.47s/it][2024-11-24 23:07:21][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████ | 595/655 [23:24<01:44,  1.74s/it][2024-11-24 23:07:24][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████ | 596/655 [23:26<01:38,  1.67s/it][2024-11-24 23:07:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████ | 597/655 [23:28<01:41,  1.75s/it][2024-11-24 23:07:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████▏| 598/655 [23:30<01:51,  1.96s/it][2024-11-24 23:07:30][slam_llm.models.slam_model][INFO] - modality encoder
+ 91%|█████████▏| 599/655 [23:32<01:51,  2.00s/it][2024-11-24 23:07:32][slam_llm.models.slam_model][INFO] - modality encoder
+ 92%|█████████▏| 600/655 [23:34<01:38,  1.79s/it][2024-11-24 23:07:33][slam_llm.models.slam_model][INFO] - modality encoder
+ 92%|█████████▏| 601/655 [23:35<01:28,  1.64s/it][2024-11-24 23:07:34][slam_llm.models.slam_model][INFO] - modality encoder
+ 92%|█████████▏| 602/655 [23:38<01:47,  2.03s/it][2024-11-24 23:07:37][slam_llm.models.slam_model][INFO] - modality encoder
+ 92%|█████████▏| 603/655 [23:40<01:51,  2.15s/it][2024-11-24 23:07:40][slam_llm.models.slam_model][INFO] - modality encoder
+ 92%|█████████▏| 604/655 [23:42<01:48,  2.12s/it][2024-11-24 23:07:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 92%|█████████▏| 605/655 [23:44<01:36,  1.93s/it][2024-11-24 23:07:43][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 606/655 [23:46<01:34,  1.94s/it][2024-11-24 23:07:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 607/655 [23:47<01:28,  1.85s/it][2024-11-24 23:07:47][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 608/655 [23:49<01:29,  1.91s/it][2024-11-24 23:07:49][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 609/655 [23:52<01:35,  2.08s/it][2024-11-24 23:07:52][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 610/655 [23:55<01:52,  2.50s/it][2024-11-24 23:07:55][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 611/655 [23:58<01:52,  2.56s/it][2024-11-24 23:07:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 93%|█████████▎| 612/655 [24:01<01:50,  2.57s/it][2024-11-24 23:08:00][slam_llm.models.slam_model][INFO] - modality encoder
+ 94%|█████████▎| 613/655 [24:04<01:53,  2.69s/it][2024-11-24 23:08:03][slam_llm.models.slam_model][INFO] - modality encoder
+ 94%|█████████▎| 614/655 [24:07<01:53,  2.76s/it][2024-11-24 23:08:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 94%|█████████▍| 615/655 [24:09<01:51,  2.80s/it][2024-11-24 23:08:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 94%|█████████▍| 616/655 [24:13<01:59,  3.07s/it][2024-11-24 23:08:13][slam_llm.models.slam_model][INFO] - modality encoder
+ 94%|█████████▍| 617/655 [24:15<01:42,  2.71s/it][2024-11-24 23:08:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 94%|█████████▍| 618/655 [24:18<01:47,  2.90s/it][2024-11-24 23:08:18][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▍| 619/655 [24:23<02:01,  3.39s/it][2024-11-24 23:08:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▍| 620/655 [24:26<01:51,  3.18s/it][2024-11-24 23:08:25][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▍| 621/655 [24:28<01:36,  2.85s/it][2024-11-24 23:08:27][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▍| 622/655 [24:29<01:20,  2.44s/it][2024-11-24 23:08:29][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▌| 623/655 [24:31<01:12,  2.26s/it][2024-11-24 23:08:31][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▌| 624/655 [24:35<01:27,  2.83s/it][2024-11-24 23:08:35][slam_llm.models.slam_model][INFO] - modality encoder
+ 95%|█████████▌| 625/655 [24:37<01:11,  2.40s/it][2024-11-24 23:08:36][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▌| 626/655 [24:39<01:07,  2.31s/it][2024-11-24 23:08:38][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▌| 627/655 [24:41<01:05,  2.34s/it][2024-11-24 23:08:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▌| 628/655 [24:43<00:57,  2.13s/it][2024-11-24 23:08:42][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▌| 629/655 [24:45<00:56,  2.18s/it][2024-11-24 23:08:45][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▌| 630/655 [24:48<00:58,  2.33s/it][2024-11-24 23:08:47][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▋| 631/655 [24:49<00:49,  2.04s/it][2024-11-24 23:08:48][slam_llm.models.slam_model][INFO] - modality encoder
+ 96%|█████████▋| 632/655 [24:50<00:41,  1.80s/it][2024-11-24 23:08:50][slam_llm.models.slam_model][INFO] - modality encoder
+ 97%|█████████▋| 633/655 [24:52<00:39,  1.78s/it][2024-11-24 23:08:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 97%|█████████▋| 634/655 [24:53<00:33,  1.59s/it][2024-11-24 23:08:53][slam_llm.models.slam_model][INFO] - modality encoder
+ 97%|█████████▋| 635/655 [24:56<00:41,  2.08s/it][2024-11-24 23:08:56][slam_llm.models.slam_model][INFO] - modality encoder
+ 97%|█████████▋| 636/655 [24:59<00:40,  2.12s/it][2024-11-24 23:08:58][slam_llm.models.slam_model][INFO] - modality encoder
+ 97%|█████████▋| 637/655 [25:02<00:45,  2.52s/it][2024-11-24 23:09:02][slam_llm.models.slam_model][INFO] - modality encoder
+ 97%|█████████▋| 638/655 [25:04<00:40,  2.40s/it][2024-11-24 23:09:04][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 639/655 [25:05<00:32,  2.03s/it][2024-11-24 23:09:05][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 640/655 [25:07<00:28,  1.90s/it][2024-11-24 23:09:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 641/655 [25:08<00:24,  1.72s/it][2024-11-24 23:09:08][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 642/655 [25:09<00:20,  1.59s/it][2024-11-24 23:09:09][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 643/655 [25:11<00:20,  1.67s/it][2024-11-24 23:09:11][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 644/655 [25:16<00:28,  2.55s/it][2024-11-24 23:09:15][slam_llm.models.slam_model][INFO] - modality encoder
+ 98%|█████████▊| 645/655 [25:18<00:23,  2.36s/it][2024-11-24 23:09:17][slam_llm.models.slam_model][INFO] - modality encoder
+ 99%|█████████▊| 646/655 [25:20<00:19,  2.16s/it][2024-11-24 23:09:19][slam_llm.models.slam_model][INFO] - modality encoder
+ 99%|█████████▉| 647/655 [25:21<00:15,  1.88s/it][2024-11-24 23:09:20][slam_llm.models.slam_model][INFO] - modality encoder
+ 99%|█████████▉| 648/655 [25:22<00:12,  1.74s/it][2024-11-24 23:09:22][slam_llm.models.slam_model][INFO] - modality encoder
+ 99%|█████████▉| 649/655 [25:23<00:08,  1.45s/it][2024-11-24 23:09:23][slam_llm.models.slam_model][INFO] - modality encoder
+ 99%|█████████▉| 650/655 [25:26<00:09,  1.88s/it][2024-11-24 23:09:26][slam_llm.models.slam_model][INFO] - modality encoder
+ 99%|█████████▉| 651/655 [25:29<00:09,  2.25s/it][2024-11-24 23:09:29][slam_llm.models.slam_model][INFO] - modality encoder
+100%|█████████▉| 652/655 [25:32<00:07,  2.41s/it][2024-11-24 23:09:31][slam_llm.models.slam_model][INFO] - modality encoder
+100%|█████████▉| 653/655 [25:33<00:04,  2.20s/it][2024-11-24 23:09:33][slam_llm.models.slam_model][INFO] - modality encoder
+100%|█████████▉| 654/655 [25:36<00:02,  2.34s/it][2024-11-24 23:09:36][slam_llm.models.slam_model][INFO] - modality encoder
+100%|██████████| 655/655 [25:40<00:00,  2.85s/it]100%|██████████| 655/655 [25:40<00:00,  2.35s/it]
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_TinyLlama_dual_peft
+Initial Word Error Rate (WER) before filtering: 0.08728317102860621
+Number of GT lines after filtering: 2618
+Number of original PRED lines: 2620
+Number of filtered repeated lines: 2 out of 2620
+Lines with repeated words or phrases in PRED file:
+- the ingenious hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda hacienda haci
+- a montfiore a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a montfichet a
+Filtered Word Error Rate (WER) after removing repeated lines: 0.08463412776974034

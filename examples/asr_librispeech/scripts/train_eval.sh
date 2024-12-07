@@ -6,7 +6,6 @@ usage() {
     echo ""
     echo "Options:"
     echo "  -t, --task                Specify the task flag (e.g., 'train', 'eval', 'all')."
-    echo "  -d, --prompt_flag         Prompt Flag."
     echo "  -c, --config_file         Path to the configuration file."
     echo "  -e, --num_epochs          Number of epochs to train."
     echo "  -b, --batch_size_training Training batch size."
@@ -17,13 +16,14 @@ usage() {
     echo "  -s, --seed                Set the random seed."
     echo "  -l, --llm_name            Specify the language model to use."
     echo "      --freeze_encoder      Freeze the encoder (true/false). Default is true."
+    echo "      --eval_ckpt           Set evaluation checkpoint ('last' or 'best'). Default is 'last'."
     echo "      --help                Display this help message and exit."
     echo ""
     exit 0
 }
 
 # Parse arguments using getopt
-OPTIONS=$(getopt -o t:d:c:e:b:f:p:s:l: --long task:,prompt_flag:,config_file:,num_epochs:,batch_size_training:,data_folder:,use_peft:,debug_flag:,test_small,llm_name:,seed:,freeze_encoder:,help -- "$@")
+OPTIONS=$(getopt -o t:d:c:e:b:f:p:s:l: --long task:,config_file:,num_epochs:,batch_size_training:,data_folder:,use_peft:,debug_flag:,test_small,llm_name:,seed:,freeze_encoder:,eval_ckpt:,help -- "$@")
 if [ $? -ne 0 ]; then
     echo "Failed to parse arguments."
     exit 1
@@ -35,10 +35,6 @@ while true; do
     case "$1" in
         -t|--task)
             task_flag=$2
-            shift 2
-            ;;
-        -d|--prompt_flag)
-            prompt_flag=$2
             shift 2
             ;;
         -c|--config_file)
@@ -81,6 +77,10 @@ while true; do
             freeze_encoder=$2
             shift 2
             ;;
+        --eval_ckpt)
+            eval_ckpt=$2
+            shift 2
+            ;;
         --help)
             usage
             ;;
@@ -121,14 +121,19 @@ fi
 if [ -z "$use_peft" ]; then
     use_peft=true
 fi
+
 # Set default value for freeze_encoder if not provided
 if [ -z "$freeze_encoder" ]; then
     freeze_encoder=true
 fi
 
+# Set default value for eval_ckpt if not provided
+if [ -z "$eval_ckpt" ]; then
+    eval_ckpt="best"
+fi
+
 echo "Configuration:"
 echo "Task: $task_flag"
-echo "Prompt Flag: $prompt_flag"
 echo "Config File: $config_file"
 echo "Epochs: $num_epochs"
 echo "Batch Size: $batch_size_training"
@@ -146,9 +151,7 @@ cd $RUN_DIR
 code_dir=examples/asr_librispeech
 
 
-: '
-Select specific dataset file to read in based on prompt_flag value
-'
+
 dataset_file="src/slam_llm/datasets/speech_dataset.py:get_speech_dataset"
 
 
@@ -201,6 +204,11 @@ if [[ "$llm_name" == "phi35" ]]; then
     llm_dim=3072
     llm_path="${run_dir}/models/Phi-3.5-mini-instruct"
 fi
+if [[ "$llm_name" == "vicuna7b" ]]; then
+    llm_dim=4096
+    llm_path="${run_dir}/models/vicuna-7b-v1.5"
+fi
+
 
 if [ "$use_peft" = true ]; then
     freeze_llm=false
@@ -235,7 +243,7 @@ echo "Final identifier: $identifier"
 output_dir=${RUN_DIR}/out/${identifier}
 split="test"
 timestamp=$(date +"%Y%m%d_%H%M%S")  # Format: YearMonthDay_HourMinuteSecond
-decode_log="${output_dir}/decode_${split}_beam4_${timestamp}"  # test decode log with timestamp
+decode_log="${output_dir}/decode_${split}_beam4"  # test decode log with timestamp
 
 
 : '
@@ -244,7 +252,7 @@ check output dir exists and find last checkpoint to resume
 # Check if the output_dir exists
 if [ -d "$output_dir" ]; then
     # Find the latest checkpoint folder
-    latest_ckpt_folder=$(ls -l "$output_dir" | grep "asr_epoch" | sort -V | tail -1 | awk '{print $9}')
+    latest_ckpt_folder=$(ls "$output_dir" | grep "asr_epoch" | sort -V | tail -n 1)
     
     # Check if a checkpoint folder was found
     if [ -n "$latest_ckpt_folder" ]; then
@@ -356,26 +364,38 @@ check output dir exists and find best checkpoint to infernce
 '
 # Check if the output_dir exists
 if [ -d "$output_dir" ]; then
-    # Find all checkpoint folders containing "loss" in the folder name
-    ckpt_with_loss=$(ls "$output_dir" | grep "asr_epoch" | grep "loss")
-    
-    if [ -n "$ckpt_with_loss" ]; then
-        # Extract and sort by the numeric loss values
-        latest_ckpt_folder=$(echo "$ckpt_with_loss" | awk -F'_loss_' '{print $2, $0}' | sort -n | head -n 1 | awk '{print $2}')
-        echo "Selected lowest loss checkpoint: $latest_ckpt_folder"
-    else
-        # Default to selecting the latest checkpoint by epoch if no "loss" folders are found
+    if [ "$eval_ckpt" = "best" ]; then
+        # Find all checkpoint folders containing "loss" in the folder name
+        ckpt_with_loss=$(ls "$output_dir" | grep "asr_epoch" | grep "loss")
+        
+        if [ -n "$ckpt_with_loss" ]; then
+            # Extract and sort by the numeric loss values
+            latest_ckpt_folder=$(echo "$ckpt_with_loss" | awk -F'_loss_' '{print $2, $0}' | sort -n | head -n 1 | awk '{print $2}')
+            echo "Selected lowest loss checkpoint: $latest_ckpt_folder"
+        else
+            echo "No checkpoints with loss found. Cannot select 'best'."
+            exit 1
+        fi
+    elif [ "$eval_ckpt" = "last" ]; then
+        # Default to selecting the latest checkpoint by epoch
         latest_ckpt_folder=$(ls "$output_dir" | grep "asr_epoch" | sort -V | tail -n 1)
         echo "Selected latest checkpoint by epoch: $latest_ckpt_folder"
+    else
+        echo "Invalid eval_ckpt flag. Use 'best' or 'last'."
+        exit 1
     fi
 
     # Check if a checkpoint folder was found
     if [ -n "$latest_ckpt_folder" ]; then
         ckpt_path="$output_dir/$latest_ckpt_folder/model.pt"
-        echo "Latest file: $ckpt_path"
+        echo "Checkpoint file: $ckpt_path"
     else
         echo "No checkpoint found in $output_dir"
+        exit 1
     fi
+else
+    echo "Output directory does not exist: $output_dir"
+    exit 1
 fi
 
 ckpt_folder="$output_dir/$latest_ckpt_folder"
@@ -389,7 +409,7 @@ Start Inference
 if [[ $task_flag == "test" || $task_flag == "all" ]]; then
     if [[ "$debug_flag" == true ]]; then
     command="python -m debugpy --listen 5678 --wait-for-client \
-        $code_dir/finetune_asr.py"
+        $code_dir/inference_asr_batch.py"
     else
         command="python $code_dir/inference_asr_batch.py"
     fi
@@ -438,8 +458,8 @@ if [[ $task_flag == "test" || $task_flag == "all" ]]; then
 
     eval $command
 
-    if [ "$prompt_flag" == "phoneme_seperate" ]; then
-        python "$code_dir/scripts/wer-seperate.py" --folder "$output_dir"
+    if [[ "$data_folder" == *"phoneme_seperate"* ]]; then
+        python "$code_dir/scripts/wer.py" --folder "$output_dir --seperate"
     else
         python "$code_dir/scripts/wer.py" --folder "$output_dir"
     fi

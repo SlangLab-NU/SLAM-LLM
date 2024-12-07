@@ -13,6 +13,9 @@ class ModelConfig:
     llm_path: str = "PATH/to/LLAMA/7B"
     llm_type: str = "decoder_only"
     llm_dim: int = 4096
+    llm_inference_config: str = field(default="test_config.json", metadata={
+        "help": "Path to the inference configuration file for the LLM"
+    })
 
     encoder_name: Optional[str] = None
     encoder_ds_rate: int = 2
