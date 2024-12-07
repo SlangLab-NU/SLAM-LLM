@@ -203,3 +203,15 @@ class Wav2Vec2Encoder(nn.Module):
         outputs = self.model(source, attention_mask=attention_mask)
         # Return the last hidden state as the extracted features
         return outputs.last_hidden_state
+        
+class Emotion2vecEncoder:
+
+    @classmethod
+    def load(cls, model_config):
+        import fairseq
+        model_path = UserDirModule(model_config.encoder_fairseq_dir)
+        fairseq.utils.import_user_module(model_path)
+        model, cfg, task = fairseq.checkpoint_utils.load_model_ensemble_and_task([model_config.encoder_path])
+        model = model[0]
+
+        return model

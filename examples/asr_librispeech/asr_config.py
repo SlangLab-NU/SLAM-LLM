@@ -6,6 +6,9 @@ import time
 # Get the current time
 current_time = time.strftime("%Y-%m-%d_%H-%M-%S")
 
+from torch.distributed.fsdp import ShardingStrategy
+
+
 @dataclass
 class ModelConfig:
     file: str = "examples/asr_librispeech/model/slam_model_asr.py:model_factory"
@@ -138,7 +141,7 @@ class FSDPConfig:
     mixed_precision: bool = True
     use_fp16: bool = False
     # sharding_strategy = "FULL_SHARD" #ShardingStrategy = ShardingStrategy.FULL_SHARD
-    sharding_strategy: str = "NO_SHARD" #ShardingStrategy.NO_SHARD #MZY: set NO_SHARD when use DDP
+    sharding_strategy: ShardingStrategy = "NO_SHARD" #ShardingStrategy.NO_SHARD #MZY: set NO_SHARD when use DDP
     checkpoint_type: str = "SHARDED_STATE_DICT"  # alternatively can use SHARDED_STATE_DICT save one file per rank, and can resize the world-size.
     fsdp_activation_checkpointing: bool = True
     fsdp_cpu_offload: bool = False
