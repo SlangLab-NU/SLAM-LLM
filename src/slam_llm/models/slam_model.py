@@ -273,7 +273,7 @@ def setup_encoder_projector(train_config, model_config, **kwargs):
         from slam_llm.models.projector import EncoderProjectorQFormer
         encoder_projector = EncoderProjectorQFormer(model_config)
     # j: add dual projector
-    elif model_config.encoder_projector == "dual":
+    elif model_config.encoder_projector == "dual_linear":
         from slam_llm.models.projector import EncoderProjectorDualConcat
         encoder_projector = EncoderProjectorDualConcat(model_config)
     else:
@@ -327,6 +327,18 @@ class slam_model(nn.Module):
             for item in self.modules():
                 if isinstance(item, nn.LayerNorm):
                     item.forward = types.MethodType(new_forward, item)
+
+    def save_embeddings(self, speech_embeddings, language_embeddings):
+        # Generate a unique filename (you might want to use a more sophisticated naming scheme)
+        filename = f'/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/plot/embeddings/{self.model_config.identifier}.pt'
+
+        # Save both embeddings in a single file
+        torch.save({
+            'speech_embeddings': speech_embeddings,
+            'language_embeddings': language_embeddings
+        }, filename)
+
+        print(f"Embeddings saved to {filename}")
 
     def extract_encoder_features(self, encoder_name, audio, attention_mask, audio_mel, audio_mel_mask, audio_mask=None, visual=None, visual_mask=None):
         encoder_outs, audio_mel_post_mask = None, None
@@ -429,6 +441,11 @@ class slam_model(nn.Module):
                 # Concatenate outputs from both encoders
                 encoder_outs = torch.cat((encoder_outs, encoder_outs2), dim=-1)
 
+            if self.train_config.save_embedding:
+                # Save speech embeddings before projector
+                speech_embeddings = encoder_outs.detach().cpu()
+
+            # j: projector
             if self.model_config.encoder_projector == "q-former":
                 encoder_outs = self.encoder_projector(
                     encoder_outs, audio_mel_post_mask)
@@ -440,6 +457,14 @@ class slam_model(nn.Module):
             if self.model_config.encoder_projector == "dual":
                 encoder_outs = self.encoder_projector(encoder_outs)
 
+            # j: save embedding after the projector
+            if self.train_config.save_embedding:
+                # Save language embeddings after projector
+                language_embeddings = encoder_outs.detach().cpu()
+                # Save embeddings to file
+                self.save_embeddings(speech_embeddings, language_embeddings)
+
+
         if instruct_ids is not None:
             if self.encoder is not None:
                 encoder_outs = self.encoder(
@@ -450,7 +475,7 @@ class slam_model(nn.Module):
                     encoder_outs, instruct_mask)
             if self.model_config.encoder_projector == "linear":
                 encoder_outs = self.encoder_projector(encoder_outs)
-
+        
         if input_ids is not None:
             input_ids[input_ids == -1] = 0
             if isinstance(self.llm, T5ForConditionalGeneration):

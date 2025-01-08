@@ -27,6 +27,7 @@ class ModelConfig:
     
     encoder_projector: str = "linear"
     encoder_projector_ds_rate: int = 5 # downsample rate
+    qformer_layers: int = 8
 
     modal: str = "audio"
     normalize: Optional[bool] = field(default=False, metadata={
@@ -40,6 +41,8 @@ class ModelConfig:
     encoder2_name: Optional[str] = None
     encoder2_dim: Optional[int] = 1024
     encoder2_path: Optional[str] = None
+
+    identifier: Optional[str] = None # j: add identifier
 
 
 @dataclass
@@ -111,6 +114,9 @@ class TrainConfig:
     })
     freeze_encoder:bool = False
     freeze_encoder2:bool = False #j: update freeze encoder2
+    # New field: Save embedding
+    save_embedding: bool = False #j: inference plotting for speech langanguage embeddings
+
 
 @dataclass
 class DataConfig:

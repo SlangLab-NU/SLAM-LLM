@@ -1,0 +1,62 @@
+Configuration:
+Task: test
+Config File: wavlm-mono
+Epochs: 10
+Batch Size: 4
+Data Folder: psst_phoneme
+Use PEFT: true
+LLM Name: llama32_1b
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: 
+speech encoder2 path: 
+Final identifier: psst_phoneme_wavlm_llama32_1b_linear_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_10_step_554_loss_1.0206900835037231/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_10_step_554_loss_1.0206900835037231
+Resume epoch: 10
+Resume step: 554
+Selected lowest loss checkpoint: asr_epoch_4_step_137_loss_0.7657225131988525
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_4_step_137_loss_0.7657225131988525/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_4_step_137_loss_0.7657225131988525
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/cuda/__init__.py:118: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() > 0
+The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+[2024-12-23 18:35:50][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': False}
+[2024-12-23 18:35:50][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-23 18:35:50][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-23 18:35:52][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-12-23 18:35:59][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-23 18:35:59][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-23 18:35:59][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-23 18:35:59][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-23 18:36:09][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 5,636,096 || all params: 1,241,450,496 || trainable%: 0.4539928106807088
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> linear has 14.68416 Million params
+
+[2024-12-23 18:36:09][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_4_step_137_loss_0.7657225131988525/model.pt
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2024-12-23 18:36:09][slam_llm.utils.train_utils][INFO] - --> asr has 20.320256 Million params
+
+[2024-12-23 18:36:09][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': None, 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/test_small.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': True, 'input_type': 'raw', 'mel_size': 80, 'normalize': True}
+[2024-12-23 18:36:13][root][INFO] - --> Training Set Length = 20
+[2024-12-23 18:36:13][root][INFO] - =====================================
+Loaded LLM Config: {'max_new_tokens': 200, 'num_beams': 4, 'do_sample': False, 'min_length': 1, 'top_p': 1.0, 'repetition_penalty': 2.0, 'length_penalty': 1.0, 'temperature': 1.0, 'no_repeat_ngram_size': 1}
+  0%|          | 0/5 [00:00<?, ?it/s]/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/functional.py:5137: UserWarning: Support for mismatched key_padding_mask and attn_mask is deprecated. Use same type for both instead.
+  warnings.warn(
+[2024-12-23 18:36:39][slam_llm.models.slam_model][INFO] - modality encoder
+ 20%|██        | 1/5 [02:03<08:13, 123.48s/it][2024-12-23 18:38:51][slam_llm.models.slam_model][INFO] - modality encoder
+ 40%|████      | 2/5 [04:49<07:25, 148.63s/it][2024-12-23 18:41:06][slam_llm.models.slam_model][INFO] - modality encoder
+ 60%|██████    | 3/5 [05:24<03:12, 96.48s/it] [2024-12-23 18:41:41][slam_llm.models.slam_model][INFO] - modality encoder
+ 80%|████████  | 4/5 [06:04<01:14, 74.26s/it][2024-12-23 18:43:03][slam_llm.models.slam_model][INFO] - modality encoder

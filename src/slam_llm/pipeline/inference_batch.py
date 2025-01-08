@@ -24,11 +24,11 @@ import time
 current_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
 
 
-def load_config(config_file_path: str) -> dict:
-    if not os.path.exists(config_file_path):
+def load_config(encoder_config_path: str) -> dict:
+    if not os.path.exists(encoder_config_path):
         raise FileNotFoundError(
-            f"Config file not found at: {config_file_path}")
-    with open(config_file_path, "r") as file:
+            f"Config file not found at: {encoder_config_path}")
+    with open(encoder_config_path, "r") as file:
         config = json.load(file)
     return config
 
@@ -149,9 +149,9 @@ def main(kwargs: DictConfig):
     with open(pred_path, "w") as pred, open(gt_path, "w") as gt:
         # j: read llm inference configs
         llm_config_folder = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/llm_config"
-        config_file = os.path.join(
+        encoder_config = os.path.join(
             llm_config_folder, model_config.llm_inference_config)
-        llm_config = load_config(config_file)
+        llm_config = load_config(encoder_config)
         print("Loaded LLM Config:", llm_config)
         for step, batch in tqdm(enumerate(test_dataloader), total=len(test_dataloader)):
             for key in batch.keys():

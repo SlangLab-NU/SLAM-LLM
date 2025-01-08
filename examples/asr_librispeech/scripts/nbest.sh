@@ -29,7 +29,7 @@ source activate /work/van-speech-nlp/jindaznb/slamenv/
 bash train_eval.sh \
     --task all \
     --prompt_flag separate \
-    --config_file whisper-mono \
+    --encoder_config whisper-mono \
     --num_epochs 2 \
     --batch_size_training 2 \
     --use_peft true \

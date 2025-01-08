@@ -1,0 +1,581 @@
+Configuration:
+Task: test
+Config File: wavlm-mono
+Epochs: 10
+Batch Size: 4
+Data Folder: psst_phoneme
+Use PEFT: true
+LLM Name: llama32_1b
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: 
+speech encoder2 path: 
+Final identifier: psst_phoneme_wavlm_llama32_1b_linear_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_10_step_554_loss_1.0206900835037231/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_10_step_554_loss_1.0206900835037231
+Resume epoch: 10
+Resume step: 554
+Selected lowest loss checkpoint: asr_epoch_4_step_137_loss_0.7657225131988525
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_4_step_137_loss_0.7657225131988525/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_4_step_137_loss_0.7657225131988525
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/cuda/__init__.py:118: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() > 0
+The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+[2024-12-19 19:11:26][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': False}
+[2024-12-19 19:11:26][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-19 19:11:26][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-19 19:11:28][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-12-19 19:11:35][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:11:35][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-19 19:11:35][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:11:35][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-12-19 19:11:47][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:11:47][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-19 19:11:47][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 5,636,096 || all params: 1,241,450,496 || trainable%: 0.4539928106807088
+[2024-12-19 19:11:47][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:11:47][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+Error executing job with overrides: ['++model_config.llm_name=llama32_1b', '++model_config.llm_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', '++model_config.llm_dim=2048', '++model_config.encoder_name=wavlm', '++model_config.normalize=true', '++dataset_config.normalize=true', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', '++model_config.encoder_dim=1024', '++model_config.encoder_projector=linear', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder2_name=', '++model_config.encoder2_path=', '++dataset_config.dataset=speech_dataset', '++dataset_config.val_data_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/test_small.jsonl', '++dataset_config.inference_mode=true', '++dataset_config.file=src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', '++train_config.model_name=asr', '++train_config.freeze_encoder=true', '++train_config.freeze_llm=true', '++train_config.batching_strategy=custom', '++train_config.num_epochs=1', '++train_config.val_batch_size=4', '++train_config.num_workers_dataloader=1', '++train_config.output_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft', '++decode_log=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4', '++ckpt_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_4_step_137_loss_0.7657225131988525/model.pt', '++log_config.wandb_exp_name=psst_phoneme_wavlm_llama32_1b_linear_peft', '++train_config.use_peft=true', '++dataset_config.input_type=raw']
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 53, in <module>
+    main_hydra()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 49, in main_hydra
+    inference(cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/pipeline/inference_batch.py", line 116, in main
+    model, tokenizer = model_factory(train_config, model_config, **kwargs)
+  File "examples/asr_librispeech/model/slam_model_asr.py", line 34, in model_factory
+    encoder_projector = setup_encoder_projector(
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/slam_model.py", line 268, in setup_encoder_projector
+    encoder_projector = EncoderProjectorConcat(model_config)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/projector.py", line 58, in __init__
+    self.k = config.adapter_downsample_rate
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 359, in __getattr__
+    self._format_and_raise(key=key, value=None, cause=e)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 819, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 351, in __getattr__
+    return self._get_impl(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 442, in _get_impl
+    node = self._get_child(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/basecontainer.py", line 73, in _get_child
+    child = self._get_node(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 475, in _get_node
+    self._validate_get(key)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 164, in _validate_get
+    self._format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 899, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+omegaconf.errors.ConfigAttributeError: Key 'adapter_downsample_rate' not in 'ModelConfig'
+    full_key: model_config.adapter_downsample_rate
+    reference_type=ModelConfig
+    object_type=ModelConfig
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft
+Using GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4_gt_20241217_010412
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4_pred_20241217_010412
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/wer.py", line 149, in <module>
+    main(args.folder, args.separate)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/wer.py", line 120, in main
+    calculate_wer(gt_combined, pred_combined, "Combined")
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/wer.py", line 68, in calculate_wer
+    score = wer(gt, pred)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/jiwer/measures.py", line 111, in wer
+    output = process_words(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/jiwer/process.py", line 162, in process_words
+    ref_transformed = _apply_transform(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/jiwer/process.py", line 355, in _apply_transform
+    raise ValueError(
+ValueError: After applying the transformation, each reference should be a non-empty list of strings, with each string being a single word.
+Configuration:
+Task: test
+Config File: wavlm-mono
+Epochs: 10
+Batch Size: 4
+Data Folder: ami
+Use PEFT: true
+LLM Name: llama32_1b
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: 
+speech encoder2 path: 
+Final identifier: ami_wavlm_llama32_1b_linear_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_26970_loss_0.6441742181777954/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_26970_loss_0.6441742181777954
+Resume epoch: 2
+Resume step: 26970
+Selected lowest loss checkpoint: asr_epoch_2_step_20227_loss_0.6369916200637817
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_20227_loss_0.6369916200637817/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_20227_loss_0.6369916200637817
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/cuda/__init__.py:118: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() > 0
+The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+[2024-12-19 19:12:20][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': False}
+[2024-12-19 19:12:20][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-19 19:12:20][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-19 19:12:21][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-12-19 19:12:27][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:12:27][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-19 19:12:27][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:12:27][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-12-19 19:12:35][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:12:35][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-19 19:12:35][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 5,636,096 || all params: 1,241,450,496 || trainable%: 0.4539928106807088
+[2024-12-19 19:12:35][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:12:35][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+Error executing job with overrides: ['++model_config.llm_name=llama32_1b', '++model_config.llm_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', '++model_config.llm_dim=2048', '++model_config.encoder_name=wavlm', '++model_config.normalize=true', '++dataset_config.normalize=true', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', '++model_config.encoder_dim=1024', '++model_config.encoder_projector=linear', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder2_name=', '++model_config.encoder2_path=', '++dataset_config.dataset=speech_dataset', '++dataset_config.val_data_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/ami/test_small.jsonl', '++dataset_config.inference_mode=true', '++dataset_config.file=src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', '++train_config.model_name=asr', '++train_config.freeze_encoder=true', '++train_config.freeze_llm=true', '++train_config.batching_strategy=custom', '++train_config.num_epochs=1', '++train_config.val_batch_size=4', '++train_config.num_workers_dataloader=1', '++train_config.output_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft', '++decode_log=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/decode_test_beam4', '++ckpt_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_20227_loss_0.6369916200637817/model.pt', '++log_config.wandb_exp_name=ami_wavlm_llama32_1b_linear_peft', '++train_config.use_peft=true', '++dataset_config.input_type=raw']
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 53, in <module>
+    main_hydra()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 49, in main_hydra
+    inference(cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/pipeline/inference_batch.py", line 116, in main
+    model, tokenizer = model_factory(train_config, model_config, **kwargs)
+  File "examples/asr_librispeech/model/slam_model_asr.py", line 34, in model_factory
+    encoder_projector = setup_encoder_projector(
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/slam_model.py", line 268, in setup_encoder_projector
+    encoder_projector = EncoderProjectorConcat(model_config)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/projector.py", line 58, in __init__
+    self.k = config.adapter_downsample_rate
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 359, in __getattr__
+    self._format_and_raise(key=key, value=None, cause=e)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 819, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 351, in __getattr__
+    return self._get_impl(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 442, in _get_impl
+    node = self._get_child(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/basecontainer.py", line 73, in _get_child
+    child = self._get_node(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 475, in _get_node
+    self._validate_get(key)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 164, in _validate_get
+    self._format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 899, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+omegaconf.errors.ConfigAttributeError: Key 'adapter_downsample_rate' not in 'ModelConfig'
+    full_key: model_config.adapter_downsample_rate
+    reference_type=ModelConfig
+    object_type=ModelConfig
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft
+Using GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/decode_test_beam4_gt_20241217_012749
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_wavlm_llama32_1b_linear_peft/decode_test_beam4_pred_20241217_012749
+Combined WER: 0.0
+
+Filtering repeated words...
+
+Found 0 repeated lines in total.
+Filtered Combined WER: 0.0
+Configuration:
+Task: test
+Config File: wavlm-mono
+Epochs: 10
+Batch Size: 4
+Data Folder: librispeech-100
+Use PEFT: true
+LLM Name: llama32_1b
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: 
+speech encoder2 path: 
+Final identifier: librispeech-100_wavlm_llama32_1b_linear_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.2453521341085434/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.2453521341085434
+Resume epoch: 2
+Resume step: 7130
+Selected lowest loss checkpoint: asr_epoch_2_step_7130_loss_0.2453521341085434
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.2453521341085434/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.2453521341085434
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/cuda/__init__.py:118: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() > 0
+The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+[2024-12-19 19:13:07][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': True}
+[2024-12-19 19:13:07][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-19 19:13:07][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-19 19:13:09][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-12-19 19:13:15][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:13:15][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-19 19:13:15][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:13:15][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-12-19 19:13:21][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:13:21][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-19 19:13:21][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 5,636,096 || all params: 1,241,450,496 || trainable%: 0.4539928106807088
+[2024-12-19 19:13:21][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:13:21][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+Error executing job with overrides: ['++model_config.llm_name=llama32_1b', '++model_config.llm_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', '++model_config.llm_dim=2048', '++model_config.encoder_name=wavlm', '++model_config.normalize=true', '++dataset_config.normalize=true', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', '++model_config.encoder_dim=1024', '++model_config.encoder_projector=linear', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder2_name=', '++model_config.encoder2_path=', '++dataset_config.dataset=speech_dataset', '++dataset_config.val_data_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/librispeech-100/test_small.jsonl', '++dataset_config.inference_mode=true', '++dataset_config.file=src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', '++train_config.model_name=asr', '++train_config.freeze_encoder=true', '++train_config.freeze_llm=true', '++train_config.batching_strategy=custom', '++train_config.num_epochs=1', '++train_config.val_batch_size=4', '++train_config.num_workers_dataloader=1', '++train_config.output_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft', '++decode_log=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/decode_test_beam4', '++ckpt_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.2453521341085434/model.pt', '++log_config.wandb_exp_name=librispeech-100_wavlm_llama32_1b_linear_peft', '++train_config.use_peft=true', '++train_config.save_embedding=true', '++dataset_config.input_type=raw']
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 53, in <module>
+    main_hydra()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 49, in main_hydra
+    inference(cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/pipeline/inference_batch.py", line 116, in main
+    model, tokenizer = model_factory(train_config, model_config, **kwargs)
+  File "examples/asr_librispeech/model/slam_model_asr.py", line 34, in model_factory
+    encoder_projector = setup_encoder_projector(
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/slam_model.py", line 268, in setup_encoder_projector
+    encoder_projector = EncoderProjectorConcat(model_config)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/projector.py", line 58, in __init__
+    self.k = config.adapter_downsample_rate
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 359, in __getattr__
+    self._format_and_raise(key=key, value=None, cause=e)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 819, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 351, in __getattr__
+    return self._get_impl(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 442, in _get_impl
+    node = self._get_child(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/basecontainer.py", line 73, in _get_child
+    child = self._get_node(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 475, in _get_node
+    self._validate_get(key)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 164, in _validate_get
+    self._format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 899, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+omegaconf.errors.ConfigAttributeError: Key 'adapter_downsample_rate' not in 'ModelConfig'
+    full_key: model_config.adapter_downsample_rate
+    reference_type=ModelConfig
+    object_type=ModelConfig
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft
+Using GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/decode_test_beam4_gt_20241218_222302
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_linear_peft/decode_test_beam4_pred_20241218_222302
+Combined WER: 0.03125
+
+Filtering repeated words...
+
+Found 0 repeated lines in total.
+Filtered Combined WER: 0.03125
+Configuration:
+Task: test
+Config File: wavlm-mono
+Epochs: 10
+Batch Size: 4
+Data Folder: librispeech-100_phoneme
+Use PEFT: true
+LLM Name: llama32_1b
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: 
+speech encoder2 path: 
+Final identifier: librispeech-100_phoneme_wavlm_llama32_1b_linear_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.050975121557712555/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_7130_loss_0.050975121557712555
+Resume epoch: 2
+Resume step: 7130
+Selected lowest loss checkpoint: asr_epoch_2_step_5347_loss_0.048072949051856995
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_5347_loss_0.048072949051856995/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_5347_loss_0.048072949051856995
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/cuda/__init__.py:118: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() > 0
+The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+[2024-12-19 19:13:48][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': True}
+[2024-12-19 19:13:48][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-19 19:13:48][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-19 19:13:50][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-12-19 19:13:56][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:13:56][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-19 19:13:56][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:13:56][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-12-19 19:14:02][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:14:02][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-19 19:14:02][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 5,636,096 || all params: 1,241,450,496 || trainable%: 0.4539928106807088
+[2024-12-19 19:14:02][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:14:02][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+Error executing job with overrides: ['++model_config.llm_name=llama32_1b', '++model_config.llm_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', '++model_config.llm_dim=2048', '++model_config.encoder_name=wavlm', '++model_config.normalize=true', '++dataset_config.normalize=true', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', '++model_config.encoder_dim=1024', '++model_config.encoder_projector=linear', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder2_name=', '++model_config.encoder2_path=', '++dataset_config.dataset=speech_dataset', '++dataset_config.val_data_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/librispeech-100_phoneme/test_small.jsonl', '++dataset_config.inference_mode=true', '++dataset_config.file=src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', '++train_config.model_name=asr', '++train_config.freeze_encoder=true', '++train_config.freeze_llm=true', '++train_config.batching_strategy=custom', '++train_config.num_epochs=1', '++train_config.val_batch_size=4', '++train_config.num_workers_dataloader=1', '++train_config.output_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft', '++decode_log=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4', '++ckpt_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_5347_loss_0.048072949051856995/model.pt', '++log_config.wandb_exp_name=librispeech-100_phoneme_wavlm_llama32_1b_linear_peft', '++train_config.use_peft=true', '++train_config.save_embedding=true', '++dataset_config.input_type=raw']
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 53, in <module>
+    main_hydra()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 49, in main_hydra
+    inference(cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/pipeline/inference_batch.py", line 116, in main
+    model, tokenizer = model_factory(train_config, model_config, **kwargs)
+  File "examples/asr_librispeech/model/slam_model_asr.py", line 34, in model_factory
+    encoder_projector = setup_encoder_projector(
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/slam_model.py", line 268, in setup_encoder_projector
+    encoder_projector = EncoderProjectorConcat(model_config)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/projector.py", line 58, in __init__
+    self.k = config.adapter_downsample_rate
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 359, in __getattr__
+    self._format_and_raise(key=key, value=None, cause=e)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 819, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 351, in __getattr__
+    return self._get_impl(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 442, in _get_impl
+    node = self._get_child(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/basecontainer.py", line 73, in _get_child
+    child = self._get_node(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 475, in _get_node
+    self._validate_get(key)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 164, in _validate_get
+    self._format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 899, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+omegaconf.errors.ConfigAttributeError: Key 'adapter_downsample_rate' not in 'ModelConfig'
+    full_key: model_config.adapter_downsample_rate
+    reference_type=ModelConfig
+    object_type=ModelConfig
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft
+Using GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4_gt_20241218_222725
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4_pred_20241218_222725
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/wer.py", line 149, in <module>
+    main(args.folder, args.separate)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/wer.py", line 120, in main
+    calculate_wer(gt_combined, pred_combined, "Combined")
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/wer.py", line 68, in calculate_wer
+    score = wer(gt, pred)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/jiwer/measures.py", line 111, in wer
+    output = process_words(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/jiwer/process.py", line 162, in process_words
+    ref_transformed = _apply_transform(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/jiwer/process.py", line 355, in _apply_transform
+    raise ValueError(
+ValueError: After applying the transformation, each reference should be a non-empty list of strings, with each string being a single word.
+Configuration:
+Task: test
+Config File: wavlm-mono
+Epochs: 10
+Batch Size: 4
+Data Folder: ami_phoneme
+Use PEFT: true
+LLM Name: llama32_1b
+Freeze Encoder: true
+speech encoder name: wavlm
+speech encoder path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt
+speech encoder2 name: 
+speech encoder2 path: 
+Final identifier: ami_phoneme_wavlm_llama32_1b_linear_peft
+Latest file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_26970_loss_0.22486534714698792/model.pt
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_26970_loss_0.22486534714698792
+Resume epoch: 2
+Resume step: 26970
+Selected lowest loss checkpoint: asr_epoch_2_step_20227_loss_0.22307272255420685
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_20227_loss_0.22307272255420685/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_20227_loss_0.22307272255420685
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/cuda/__init__.py:118: UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 11040). Please update your GPU driver by downloading and installing a new version from the URL: http://www.nvidia.com/Download/index.aspx Alternatively, go to: https://pytorch.org to install a PyTorch version that has been compiled with your version of the CUDA driver. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() > 0
+The installed version of bitsandbytes was compiled without GPU support. 8-bit optimizers, 8-bit multiplication, and GPU quantization are unavailable.
+[2024-12-19 19:14:23][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': True}
+[2024-12-19 19:14:23][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-19 19:14:23][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-19 19:14:25][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/torch/nn/utils/weight_norm.py:28: UserWarning: torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.
+  warnings.warn("torch.nn.utils.weight_norm is deprecated in favor of torch.nn.utils.parametrizations.weight_norm.")
+[2024-12-19 19:14:31][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:14:31][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-19 19:14:31][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-19 19:14:31][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2024-12-19 19:14:36][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:14:36][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-19 19:14:36][slam_llm.models.slam_model][INFO] - setup peft...
+trainable params: 5,636,096 || all params: 1,241,450,496 || trainable%: 0.4539928106807088
+[2024-12-19 19:14:36][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-19 19:14:36][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+Error executing job with overrides: ['++model_config.llm_name=llama32_1b', '++model_config.llm_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', '++model_config.llm_dim=2048', '++model_config.encoder_name=wavlm', '++model_config.normalize=true', '++dataset_config.normalize=true', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', '++model_config.encoder_dim=1024', '++model_config.encoder_projector=linear', '++model_config.encoder_projector_ds_rate=5', '++model_config.encoder2_name=', '++model_config.encoder2_path=', '++dataset_config.dataset=speech_dataset', '++dataset_config.val_data_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/ami_phoneme/test_small.jsonl', '++dataset_config.inference_mode=true', '++dataset_config.file=src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', '++train_config.model_name=asr', '++train_config.freeze_encoder=true', '++train_config.freeze_llm=true', '++train_config.batching_strategy=custom', '++train_config.num_epochs=1', '++train_config.val_batch_size=4', '++train_config.num_workers_dataloader=1', '++train_config.output_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft', '++decode_log=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4', '++ckpt_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_20227_loss_0.22307272255420685/model.pt', '++log_config.wandb_exp_name=ami_phoneme_wavlm_llama32_1b_linear_peft', '++train_config.use_peft=true', '++train_config.save_embedding=true', '++dataset_config.input_type=raw']
+Traceback (most recent call last):
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 53, in <module>
+    main_hydra()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/main.py", line 94, in decorated_main
+    _run_hydra(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 394, in _run_hydra
+    _run_app(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 457, in _run_app
+    run_and_report(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 223, in run_and_report
+    raise ex
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 220, in run_and_report
+    return func()
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/utils.py", line 458, in <lambda>
+    lambda: hydra.run(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/inference_asr_batch.py", line 49, in main_hydra
+    inference(cfg)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/pipeline/inference_batch.py", line 116, in main
+    model, tokenizer = model_factory(train_config, model_config, **kwargs)
+  File "examples/asr_librispeech/model/slam_model_asr.py", line 34, in model_factory
+    encoder_projector = setup_encoder_projector(
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/slam_model.py", line 268, in setup_encoder_projector
+    encoder_projector = EncoderProjectorConcat(model_config)
+  File "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/src/slam_llm/models/projector.py", line 58, in __init__
+    self.k = config.adapter_downsample_rate
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 359, in __getattr__
+    self._format_and_raise(key=key, value=None, cause=e)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 819, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 351, in __getattr__
+    return self._get_impl(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 442, in _get_impl
+    node = self._get_child(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/basecontainer.py", line 73, in _get_child
+    child = self._get_node(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 475, in _get_node
+    self._validate_get(key)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/dictconfig.py", line 164, in _validate_get
+    self._format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/base.py", line 231, in _format_and_raise
+    format_and_raise(
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 899, in format_and_raise
+    _raise(ex, cause)
+  File "/work/van-speech-nlp/jindaznb/slamenv/lib/python3.10/site-packages/omegaconf/_utils.py", line 797, in _raise
+    raise ex.with_traceback(sys.exc_info()[2])  # set env var OC_CAUSE=1 for full trace
+omegaconf.errors.ConfigAttributeError: Key 'adapter_downsample_rate' not in 'ModelConfig'
+    full_key: model_config.adapter_downsample_rate
+    reference_type=ModelConfig
+    object_type=ModelConfig
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft
+Using GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4_gt_20241218_223909
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft/decode_test_beam4_pred_20241218_223909
+Combined WER: 0.14285714285714285
+
+Filtering repeated words...
+
+Found 0 repeated lines in total.
+Filtered Combined WER: 0.14285714285714285

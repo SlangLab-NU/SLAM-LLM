@@ -6,24 +6,35 @@ usage() {
     echo ""
     echo "Options:"
     echo "  -t, --task                Specify the task flag (e.g., 'train', 'eval', 'all')."
-    echo "  -c, --config_file         Path to the configuration file."
+    echo "  -c, --encoder_config         Path to the configuration file."
     echo "  -e, --num_epochs          Number of epochs to train."
     echo "  -b, --batch_size_training Training batch size."
-    echo "  -f, --data_folder         Path to the data folder."
+    echo "  -f, --train_data_folder   Path to the training data folder."
+    echo "  --test_data_folder        Path to the test data folder (optional, defaults to the same as train_data_folder)."
     echo "  -p, --use_peft            Use PEFT flag (true/false)."
-    echo "      --debug_flag          Debug flag (true/false)."
+    echo "      --debug               Debug flag (true/false)."
     echo "      --test_small          Enable testing with a smaller subset of data."
     echo "  -s, --seed                Set the random seed."
     echo "  -l, --llm_name            Specify the language model to use."
     echo "      --freeze_encoder      Freeze the encoder (true/false). Default is true."
     echo "      --eval_ckpt           Set evaluation checkpoint ('last' or 'best'). Default is 'last'."
+    echo "      --encoder_projector   Specify the encoder projector to use. Options:"
+    echo "                            'linear'          - Use a linear projector."
+    echo "                            'cov1d-linear'    - Use a 1D convolutional linear projector."
+    echo "                            'q-former'        - Use a QFormer-based projector."
+    echo "                            'dual_linear'     - Use a dual linear concatenation projector."
+    echo "                            Default: 'linear'."
+    echo "      --encoder_projector_ds_rate   Set the encoder projector down-sampling rate (default is 5)."
+    echo "      --save_embedding      Save embeddings during inference (true/false). Default is false."
+    echo "      --projector_transfer_learning  Use projector transfer learning (true/false). Default is false."
+    echo "      --transfer_data_folder  Specify the folder for transfer data (optional)."
     echo "      --help                Display this help message and exit."
     echo ""
     exit 0
 }
 
 # Parse arguments using getopt
-OPTIONS=$(getopt -o t:d:c:e:b:f:p:s:l: --long task:,config_file:,num_epochs:,batch_size_training:,data_folder:,use_peft:,debug_flag:,test_small,llm_name:,seed:,freeze_encoder:,eval_ckpt:,help -- "$@")
+OPTIONS=$(getopt -o t:c:e:b:f:p:s:l: --long task:,encoder_config:,num_epochs:,batch_size_training:,train_data_folder:,test_data_folder:,use_peft:,debug:,test_small,llm_name:,seed:,freeze_encoder:,eval_ckpt:,encoder_projector:,encoder_projector_ds_rate:,save_embedding:,projector_transfer_learning:,transfer_data_folder:,help -- "$@")
 if [ $? -ne 0 ]; then
     echo "Failed to parse arguments."
     exit 1
@@ -31,14 +42,26 @@ fi
 
 eval set -- "$OPTIONS"
 
+# Default values
+llm_name="TinyLlama"
+use_peft=true
+freeze_encoder=true
+eval_ckpt="best"
+encoder_projector="linear"  # Default encoder projector type
+encoder_projector_ds_rate=5
+save_embedding=false  # Default save_embedding flag
+projector_transfer_learning=false  # Default projector transfer learning flag
+transfer_data_folder=""  # Default is empty
+
+
 while true; do
     case "$1" in
         -t|--task)
             task_flag=$2
             shift 2
             ;;
-        -c|--config_file)
-            config_file=$2
+        -c|--encoder_config)
+            encoder_config=$2
             shift 2
             ;;
         -e|--num_epochs)
@@ -49,8 +72,12 @@ while true; do
             batch_size_training=$2
             shift 2
             ;;
-        -f|--data_folder)
-            data_folder=$2
+        -f|--train_data_folder)
+            train_data_folder=$2
+            shift 2
+            ;;
+        --test_data_folder)
+            test_data_folder=$2
             shift 2
             ;;
         -p|--use_peft)
@@ -65,8 +92,8 @@ while true; do
             llm_name=$2
             shift 2
             ;;
-        --debug_flag)
-            debug_flag=$2
+        --debug)
+            debug=true
             shift 2
             ;;
         --test_small)
@@ -81,6 +108,26 @@ while true; do
             eval_ckpt=$2
             shift 2
             ;;
+        --encoder_projector)
+            encoder_projector=$2
+            shift 2
+            ;;
+        --encoder_projector_ds_rate)
+            encoder_projector_ds_rate=$2
+            shift 2
+            ;;
+        --save_embedding)
+            save_embedding=true
+            shift 2
+            ;;
+        --projector_transfer_learning)
+            projector_transfer_learning=$2  # Set to true when flag is provided
+            shift 2
+            ;;
+        --transfer_data_folder)
+            transfer_data_folder=$2  # Store the value of the transfer data folder
+            shift 2
+            ;;
         --help)
             usage
             ;;
@@ -91,56 +138,32 @@ while true; do
     esac
 done
 
-# Ensure all required arguments are provided
-if [ -z "$config_file" ]; then
-    echo "Error: config_file is required."
-    exit 1
+# If test_data_folder is not provided, default it to train_data_folder
+if [ -z "$test_data_folder" ]; then
+    test_data_folder=$train_data_folder
 fi
 
-if [ -z "$num_epochs" ]; then
-    echo "Error: num_epochs is required."
-    exit 1
-fi
-
-if [ -z "$batch_size_training" ]; then
-    echo "Error: batch_size_training is required."
-    exit 1
-fi
-
-if [ -z "$data_folder" ]; then
-    echo "Error: data_folder is required."
-    exit 1
-fi
-
-# Check if llm is set; if not, set it to 'TinyLlama'
-if [ -z "$llm_name" ]; then
-    echo "Warning: llm is not set. Setting it to 'TinyLlama' by default."
-    llm_name="TinyLlama"
-fi
-
-if [ -z "$use_peft" ]; then
-    use_peft=true
-fi
-
-# Set default value for freeze_encoder if not provided
-if [ -z "$freeze_encoder" ]; then
-    freeze_encoder=true
-fi
-
-# Set default value for eval_ckpt if not provided
-if [ -z "$eval_ckpt" ]; then
-    eval_ckpt="best"
-fi
-
-echo "Configuration:"
-echo "Task: $task_flag"
-echo "Config File: $config_file"
-echo "Epochs: $num_epochs"
-echo "Batch Size: $batch_size_training"
-echo "Data Folder: $data_folder"
-echo "Use PEFT: $use_peft"
-echo "LLM Name: $llm_name"
-echo "Freeze Encoder: $freeze_encoder"
+: '
+Print out configurations.
+'
+echo "task_flag: $task_flag"
+echo "encoder_config: $encoder_config"
+echo "num_epochs: $num_epochs"
+echo "batch_size_training: $batch_size_training"
+echo "train_data_folder: $train_data_folder"
+echo "test_data_folder: $test_data_folder"
+echo "use_peft: $use_peft"
+echo "seed: $seed"
+echo "llm_name: $llm_name"
+echo "debug: $debug"
+echo "test_small: $test_small"
+echo "freeze_encoder: $freeze_encoder"
+echo "eval_ckpt: $eval_ckpt"
+echo "encoder_projector: $encoder_projector"
+echo "encoder_projector_ds_rate: $encoder_projector_ds_rate"
+echo "save_embedding: $save_embedding"
+echo "projector_transfer_learning: $projector_transfer_learning"
+echo "transfer_data_folder: $transfer_data_folder"
 
 
 : '
@@ -149,27 +172,23 @@ Set up folders and directories
 RUN_DIR=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm
 cd $RUN_DIR
 code_dir=examples/asr_librispeech
-
-
-
 dataset_file="src/slam_llm/datasets/speech_dataset.py:get_speech_dataset"
 
 
 : '
-Set up Data Path
+Set up Data Path for train and eval.
 '
-train_data_path="${RUN_DIR}/data/${data_folder}/train.jsonl"
-if [ -f "${RUN_DIR}/data/${data_folder}/validation.jsonl" ]; then
-    val_data_path="${RUN_DIR}/data/${data_folder}/validation.jsonl"
-elif [ -f "${RUN_DIR}/data/${data_folder}/val.jsonl" ]; then
-    val_data_path="${RUN_DIR}/data/${data_folder}/val.jsonl"
+train_data_path="${RUN_DIR}/data/${train_data_folder}/train.jsonl"
+if [ -f "${RUN_DIR}/data/${train_data_folder}/validation.jsonl" ]; then
+    val_data_path="${RUN_DIR}/data/${train_data_folder}/validation.jsonl"
+elif [ -f "${RUN_DIR}/data/${train_data_folder}/val.jsonl" ]; then
+    val_data_path="${RUN_DIR}/data/${train_data_folder}/val.jsonl"
 fi
 if [[ "$test_small" == true ]]; then
-    test_data_path="${RUN_DIR}/data/${data_folder}/test_small.jsonl"
+    test_data_path="${RUN_DIR}/data/${test_data_folder}/test_small.jsonl"
 else
-    test_data_path="${RUN_DIR}/data/${data_folder}/test.jsonl"
+    test_data_path="${RUN_DIR}/data/${test_data_folder}/test.jsonl"
 fi
-
 if [[ ! -f "$train_data_path" ]]; then
     echo "Error: Train data path not found at $train_data_path"
     exit 1
@@ -182,34 +201,65 @@ elif [[ ! -f "$test_data_path" ]]; then
 fi
 
 
-: '
-Read the model configuration file for model setup.
-'
-config_folder="examples/asr_librispeech/scripts/model_config"
-source ${config_folder}/${config_file}.sh
 
+: '
+Read the encoder config for model setup.
+'
+# Main script
+if [ "$encoder_config" == "w2p-mono" ]; then
+    encoder_name="w2v2"
+    encoder_dim=1024
+    input_type="raw"
+    speech_encoder_path="vitouphy/wav2vec2-xls-r-300m-timit-phoneme"
+    # Set encoder2_dim to 0 if it is not already set
+    encoder2_dim=${encoder2_dim:-0}
+fi
+if [ "$encoder_config" == "wavlm-mono" ]; then
+    encoder_name=wavlm
+    encoder_dim=1024
+    input_type=raw
+    speech_encoder_path=${RUN_DIR}/models/WavLM-Large.pt
+    encoder2_dim=${encoder2_dim:-0}
+fi
+if [ "$encoder_config" == "whisper-mono" ]; then
+    encoder_name=whisper
+    encoder_dim=1280
+    speech_encoder_path=${RUN_DIR}/models/Whisper/large-v3.pt
+
+    # peft_config_target_modules=[o_proj,qkv_proj]
+    encoder2_dim=${encoder2_dim:-0}
+fi
+if [ "$encoder_config" == "w2p-wavlm-dual" ]; then
+    encoder_name=wavlm
+    encoder_dim=1024
+    input_type=raw
+    speech_encoder_path=${RUN_DIR}/models/WavLM-Large.pt
+    encoder2_name=w2v2
+    encoder2_dim=1024
+    speech_encoder2_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
+    encoder_projector=dual_linear
+    encoder2_dim=${encoder2_dim:-0}
+fi
 
 : '
 Read the llm config for model setup.
 '
 if [[ "$llm_name" == "TinyLlama" ]]; then
     llm_dim=2048
-    llm_path="${run_dir}/models/TinyLlama-1.1B-Chat-v1.0"
+    llm_path="${RUN_DIR}/models/TinyLlama-1.1B-Chat-v1.0"
 fi
 if [[ "$llm_name" == "llama32_1b" ]]; then
     llm_dim=2048
-    llm_path="${run_dir}/models/Llama-3.2-1B-Instruct"
+    llm_path="${RUN_DIR}/models/Llama-3.2-1B-Instruct"
 fi
 if [[ "$llm_name" == "phi35" ]]; then
     llm_dim=3072
-    llm_path="${run_dir}/models/Phi-3.5-mini-instruct"
+    llm_path="${RUN_DIR}/models/Phi-3.5-mini-instruct"
 fi
 if [[ "$llm_name" == "vicuna7b" ]]; then
     llm_dim=4096
-    llm_path="${run_dir}/models/vicuna-7b-v1.5"
+    llm_path="${RUN_DIR}/models/vicuna-7b-v1.5"
 fi
-
-
 if [ "$use_peft" = true ]; then
     freeze_llm=false
 else
@@ -217,10 +267,11 @@ else
 fi
 freeze_encoder2=${freeze_encoder2:-true}
 
+
 : '
 Initial identifier for folder
 '
-identifier="${data_folder}_${encoder_name}_${llm_name}_${encoder_projector}"
+identifier="${train_data_folder}_${encoder_name}_${llm_name}_${encoder_projector}"
 # Add "_freeze" if use_peft is false
 if [[ $use_peft == "false" ]]; then
     identifier+="_freeze_llm"
@@ -238,6 +289,9 @@ fi
 if [[ $freeze_encoder == "false" ]]; then
     identifier+="_unfreeze_encoder"
 fi
+if [[ $encoder_projector_ds_rate -ne 5 ]]; then
+    identifier+="_ds_rate_${encoder_projector_ds_rate}"
+fi
 
 echo "Final identifier: $identifier"
 output_dir=${RUN_DIR}/out/${identifier}
@@ -247,7 +301,7 @@ decode_log="${output_dir}/decode_${split}_beam4"  # test decode log with timesta
 
 
 : '
-check output dir exists and find last checkpoint to resume
+find last checkpoint to resume
 '
 # Check if the output_dir exists
 if [ -d "$output_dir" ]; then
@@ -257,7 +311,6 @@ if [ -d "$output_dir" ]; then
     # Check if a checkpoint folder was found
     if [ -n "$latest_ckpt_folder" ]; then
         ckpt_path=$output_dir/$latest_ckpt_folder/model.pt
-        echo "Latest file: $ckpt_path"
     else
         echo "No checkpoint found in $output_dir"
     fi
@@ -276,10 +329,40 @@ else
     resume_epoch=1
     resume_step=0
 fi
+
+: '
+Update configs for transfer learning settings.
+'
+# If transfer learning flag is true, set resume_epoch and resume_step to 1 and 0
+if [[ "$projector_transfer_learning" == "true" ]]; then
+    resume_epoch=1
+    resume_step=0
+    train_data_path="${RUN_DIR}/data/${transfer_data_folder}/train.jsonl"
+    if [ -f "${RUN_DIR}/data/${transfer_data_folder}/validation.jsonl" ]; then
+        val_data_path="${RUN_DIR}/data/${transfer_data_folder}/validation.jsonl"
+    elif [ -f "${RUN_DIR}/data/${transfer_data_folder}/val.jsonl" ]; then
+        val_data_path="${RUN_DIR}/data/${transfer_data_folder}/val.jsonl"
+    fi
+    test_data_path="${RUN_DIR}/data/${transfer_data_folder}/test.jsonl"
+    identifier+="_transfer_${transfer_data_folder}"
+    output_dir=${RUN_DIR}/out/${identifier}
+
+    # Print transfer learning information
+    echo -e "\n\n\n----- Transfer Learning Information -----"
+    echo "Resume Epoch: $resume_epoch"
+    echo "Resume Step: $resume_step"
+    echo "Train Data Path: $train_data_path"
+    echo "Validation Data Path: ${val_data_path:-'Not specified'}"
+    echo "Test Data Path: $test_data_path"
+    echo "Identifier: $identifier"
+    echo "Output Directory: $output_dir"
+    echo "----------------------------------------"
+fi
+
+
 # Output the values for debugging or use
 echo "Resume epoch: $resume_epoch"
 echo "Resume step: $resume_step"
-
 
 
 : '
@@ -288,7 +371,7 @@ Start Training
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $task_flag == "train" || $task_flag == "all" ]]; then
     # Define the base command
-    if [[ "$debug_flag" == true ]]; then
+    if [[ "$debug" == true ]]; then
     command="python -m debugpy --listen 5678 --wait-for-client \
         $code_dir/finetune_asr.py"
     else
@@ -303,12 +386,13 @@ if [[ $task_flag == "train" || $task_flag == "all" ]]; then
         ++model_config.encoder_name=$encoder_name \
         ++model_config.normalize=true \
         ++dataset_config.normalize=true \
-        ++model_config.encoder_projector_ds_rate=5 \
         ++model_config.encoder_path=$speech_encoder_path \
         ++model_config.encoder2_name=$encoder2_name \
         ++model_config.encoder2_path=$speech_encoder2_path \
         ++model_config.encoder_dim=$encoder_dim \
         ++model_config.encoder_projector=$encoder_projector \
+        ++model_config.encoder_projector_ds_rate=$encoder_projector_ds_rate \
+        ++model_config.identifier=$identifier \
         ++dataset_config.dataset=speech_dataset \
         ++dataset_config.train_data_path=$train_data_path \
         ++dataset_config.file=$dataset_file \
@@ -347,8 +431,8 @@ if [[ $task_flag == "train" || $task_flag == "all" ]]; then
     if [ -n "$seed" ]; then
         command+=" ++train_config.seed=$seed"
     fi
-    # Adjust validation interval if debug_flag is true
-    # if [[ "$debug_flag" == true ]]; then
+    # Adjust validation interval if debug is true
+    # if [[ "$debug" == true ]]; then
     #     command+=" ++train_config.validation_interval=2"
     #     command+=" ++train_config.batch_size_training=1"
     #     command+=" ++train_config.val_batch_size=1"
@@ -373,8 +457,11 @@ if [ -d "$output_dir" ]; then
             latest_ckpt_folder=$(echo "$ckpt_with_loss" | awk -F'_loss_' '{print $2, $0}' | sort -n | head -n 1 | awk '{print $2}')
             echo "Selected lowest loss checkpoint: $latest_ckpt_folder"
         else
-            echo "No checkpoints with loss found. Cannot select 'best'."
-            exit 1
+            echo "No checkpoints with loss found. Selecting the checkpoint with the latest epoch and step."
+
+            # Find the checkpoint with the latest epoch and step (e.g., "asr_epoch_2_step_9731")
+            latest_ckpt_folder=$(ls "$output_dir" | grep "asr_epoch" | sort -t_ -k3,3n -k5,5n | tail -n 1)
+            echo "Selected checkpoint with latest epoch and step: $latest_ckpt_folder"
         fi
     elif [ "$eval_ckpt" = "last" ]; then
         # Default to selecting the latest checkpoint by epoch
@@ -407,26 +494,27 @@ Start Inference
 '
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $task_flag == "test" || $task_flag == "all" ]]; then
-    if [[ "$debug_flag" == true ]]; then
+    if [[ "$debug" == true ]]; then
     command="python -m debugpy --listen 5678 --wait-for-client \
         $code_dir/inference_asr_batch.py"
     else
         command="python $code_dir/inference_asr_batch.py"
     fi
     command+=" \
-        hydra.run.dir=$ckpt_folder \
+        hydra.run.dir=$output_dir \
         ++model_config.llm_name=$llm_name \
         ++model_config.llm_path=$llm_path \
         ++model_config.llm_dim=$llm_dim \
         ++model_config.encoder_name=$encoder_name \
         ++model_config.normalize=true \
         ++dataset_config.normalize=true \
-        ++model_config.encoder_projector_ds_rate=5 \
         ++model_config.encoder_path=$speech_encoder_path \
         ++model_config.encoder_dim=$encoder_dim \
         ++model_config.encoder_projector=$encoder_projector \
+        ++model_config.encoder_projector_ds_rate=$encoder_projector_ds_rate \
         ++model_config.encoder2_name=$encoder2_name \
         ++model_config.encoder2_path=$speech_encoder2_path \
+        ++model_config.identifier=$identifier \
         ++dataset_config.dataset=speech_dataset \
         ++dataset_config.val_data_path=$test_data_path \
         ++dataset_config.inference_mode=true \
@@ -443,6 +531,10 @@ if [[ $task_flag == "test" || $task_flag == "all" ]]; then
         ++ckpt_path=$ckpt_folder/model.pt \
         ++log_config.wandb_exp_name=$identifier \
         ++train_config.use_peft=true"
+    # Check if save_embedding is true
+    if [[ "$save_embedding" == true ]]; then
+        command+=" ++train_config.save_embedding=true"
+    fi
     if [[ "$encoder_name" == "whisper" ]]; then
         command+=" ++dataset_config.input_type=mel"
         command+=" ++dataset_config.mel_size=128"
@@ -458,8 +550,8 @@ if [[ $task_flag == "test" || $task_flag == "all" ]]; then
 
     eval $command
 
-    if [[ "$data_folder" == *"phoneme_seperate"* ]]; then
-        python "$code_dir/scripts/wer.py" --folder "$output_dir --seperate"
+    if [[ "$train_data_folder" == *"phoneme_seperate"* ]]; then
+        python "$code_dir/scripts/wer.py" --folder "$output_dir" --separate
     else
         python "$code_dir/scripts/wer.py" --folder "$output_dir"
     fi
