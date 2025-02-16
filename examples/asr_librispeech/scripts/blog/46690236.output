@@ -1,0 +1,47 @@
+/work/van-speech-nlp/jindaznb/slamenv/bin/python
+task_flag: all
+train_data_folder: aphasia_phoneme
+test_data_folder: aphasia_phoneme
+use_peft: true
+seed: 
+debug: 
+Is test_run? 
+freeze_encoder: true
+Is save_embedding? false
+projector_transfer_learning: true
+transfer_data_folder: psst_phoneme
+llm_inference_config: repetition_penalty
+eval_ckpt: best
+----------
+----------
+Final identifier: aphasia_phoneme_wavlm_llama32_1b_linear_peft
+ckpt_folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft/asr_epoch_2_step_23834_loss_0.4641912281513214
+
+
+
+----- Transfer Learning Information -----
+Resume Epoch: 1
+Resume Step: 0
+Train Data Path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/train.jsonl
+Validation Data Path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/validation.jsonl
+Test Data Path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/test.jsonl
+Identifier: aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme
+Output Directory: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme
+----------------------------------------
+----------------------------------------
+Resume epoch: 1
+Resume step: 0
+Selected lowest loss checkpoint: asr_epoch_2_step_284_loss_0.5118914246559143
+Checkpoint file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/asr_epoch_2_step_284_loss_0.5118914246559143/model.pt
+ckpt_folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/asr_epoch_2_step_284_loss_0.5118914246559143
+Using folder: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme
+Using GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/decode_test_beam4_gt_20250212_221016
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/decode_test_beam4_pred_20250212_221016
+Combined WER: 0.32717557251908397
+
+Filtering repeated words...
+
+Found 1 repeated lines in total.
+Repeated lines are:
+- AH N D IH T S IH T S IH T S AH HH AO R IY K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA R K AA
+Filtered Combined WER: 0.30056826908309014

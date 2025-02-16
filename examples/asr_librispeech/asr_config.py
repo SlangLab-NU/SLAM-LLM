@@ -8,7 +8,6 @@ current_time = time.strftime("%Y-%m-%d_%H-%M-%S")
 
 from torch.distributed.fsdp import ShardingStrategy
 
-
 @dataclass
 class ModelConfig:
     file: str = "examples/asr_librispeech/model/slam_model_asr.py:model_factory"
@@ -16,9 +15,7 @@ class ModelConfig:
     llm_path: str = "PATH/to/LLAMA/7B"
     llm_type: str = "decoder_only"
     llm_dim: int = 4096
-    llm_inference_config: str = field(default="test_config.json", metadata={
-        "help": "Path to the inference configuration file for the LLM"
-    })
+    llm_inference_config: str = "repetition_penalty"
 
     encoder_name: Optional[str] = None
     encoder_ds_rate: int = 2
@@ -26,7 +23,8 @@ class ModelConfig:
     encoder_dim: int = 1280
     
     encoder_projector: str = "linear"
-    encoder_projector_ds_rate: int = 5 # downsample rate
+    encoder_projector_ds_rate: int = 5  # downsample rate
+    qformer_layers: int = 8
 
     modal: str = "audio"
     normalize: Optional[bool] = field(default=False, metadata={
@@ -41,6 +39,7 @@ class ModelConfig:
     encoder2_dim: Optional[int] = 1024
     encoder2_path: Optional[str] = None
 
+    identifier: Optional[str] = None  # j: add identifier
 
 @dataclass
 class PeftConfig:
@@ -111,6 +110,15 @@ class TrainConfig:
     })
     freeze_encoder:bool = False
     freeze_encoder2:bool = False #j: update freeze encoder2
+    # New field: Save embedding
+    save_embedding: bool = False #j: inference plotting for speech langanguage embeddings
+
+    # Add flag_test functionality flag
+    test_flag: bool = field(default=True, metadata={
+        "help": "functionality flag for testing, default is True"
+    })
+
+
 
 @dataclass
 class DataConfig:

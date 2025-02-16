@@ -1,4 +1,4 @@
-2# Copyright (c) Meta Platforms, Inc. and affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 # This software may be used and distributed according to the terms of the Llama 2 Community License Agreement.
 
 import os
@@ -25,7 +25,8 @@ from slam_llm.utils.checkpoint_handler import (
     save_model_and_optimizer_sharded, 
     save_optimizer_checkpoint, 
     save_model_checkpoint_peft,
-    save_model_checkpoint_peft_full_shard
+    save_model_checkpoint_peft_full_shard,
+    save_model_checkpoint_peft_new
 )
 from slam_llm.policies import fpSixteen,bfSixteen_mixed, get_llama_wrapper
 from slam_llm.utils.memory_utils import MemoryTrace
@@ -94,7 +95,10 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
             total_loss = 0.0
             total_acc = 0.0
             total_length = len(train_dataloader)//gradient_accumulation_steps
-            validation_interval = total_length // 4 # For each epoch, validation 4 times
+            validation_interval = total_length // 4 # j: For each epoch, validation 4 times
+            # j: If validation_interval is 0, reset it to train_config.validation_interval
+            if validation_interval == 0:
+                validation_interval = train_config.validation_interval
             start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0 # j, resume from steps.
             pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True,initial=start_step) # update tqdm bar
             for step, batch in enumerate(train_dataloader,start=start_step):
@@ -194,21 +198,41 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                         )
                                 elif fsdp_config.sharding_strategy == ShardingStrategy.NO_SHARD:
                                     if rank==0:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
+                                        if train_config.test_flag:
+                                            save_model_checkpoint_peft_new(
+                                                model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                            )
+                                        else:
+                                            save_model_checkpoint_peft(
+                                                model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
+                                            )
                                     dist.barrier()
                             elif train_config.enable_ddp:
                                 if rank==0:
-                                    save_model_checkpoint_peft(
+                                    if train_config.test_flag:
+                                        save_model_checkpoint_peft_new(
+                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                        )
+                                    else:
+                                        save_model_checkpoint_peft(
                                             model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
                                         )
                                 dist.barrier()
                             else:
                                 # model.save_pretrained(train_config.output_dir)
-                                save_model_checkpoint_peft(
-                                        model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
+                                if train_config.test_flag:
+                                    save_model_checkpoint_peft_new(
+                                        model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
                                     )
+                                else:
+                                    if train_config.test_flag:
+                                        save_model_checkpoint_peft_new(
+                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                        )
+                                    else:
+                                        save_model_checkpoint_peft(
+                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
+                                        )
                             if train_config.enable_fsdp or train_config.enable_ddp:
                                 if rank==0:
                                     logger.info(f"PEFT modules are saved in {train_config.output_dir} directory")
@@ -224,18 +248,36 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                         )
                                 elif fsdp_config.sharding_strategy == ShardingStrategy.NO_SHARD:
                                     if rank==0:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
+                                        # model.save_pretrained(train_config.output_dir)
+                                        if train_config.test_flag:
+                                            save_model_checkpoint_peft_new(
+                                                model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                            )
+                                        else:
+                                            save_model_checkpoint_peft(
+                                                model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
+                                            )
                                     dist.barrier()
                             elif train_config.enable_ddp:
                                 if rank==0:
-                                    save_model_checkpoint_peft(
+                                # model.save_pretrained(train_config.output_dir)
+                                    if train_config.test_flag:
+                                        save_model_checkpoint_peft_new(
+                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                        )
+                                    else:
+                                        save_model_checkpoint_peft(
                                             model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
                                         )
                                 dist.barrier()
                             else:
-                                save_model_checkpoint_peft(
+                                # model.save_pretrained(train_config.output_dir)
+                                if train_config.test_flag:
+                                    save_model_checkpoint_peft_new(
+                                        model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                    )
+                                else:
+                                    save_model_checkpoint_peft(
                                         model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
                                     )
 

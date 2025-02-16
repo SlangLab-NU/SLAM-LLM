@@ -24,11 +24,11 @@ import time
 current_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
 
 
-def load_config(config_file_path: str) -> dict:
-    if not os.path.exists(config_file_path):
+def load_config(encoder_config_path: str) -> dict:
+    if not os.path.exists(encoder_config_path):
         raise FileNotFoundError(
-            f"Config file not found at: {config_file_path}")
-    with open(config_file_path, "r") as file:
+            f"Config file not found at: {encoder_config_path}")
+    with open(encoder_config_path, "r") as file:
         config = json.load(file)
     return config
 
@@ -75,7 +75,7 @@ def main(kwargs: DictConfig):
     del kwargs["dataset_config"]
     OmegaConf.set_struct(kwargs, True)
 
-    log_config.log_file = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/log/log_{current_time}.txt"
+    log_config.log_file = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/log/{current_time}_{model_config.identifier}.txt"
 
     # Set log
     if not os.path.exists(os.path.dirname(log_config.log_file)):
@@ -143,15 +143,16 @@ def main(kwargs: DictConfig):
     # Get the current timestamp in a readable format (e.g., YYYYMMDD_HHMMSS)
     timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     logger.info("=====================================")
-    pred_path = kwargs.get('decode_log') + "_pred_" + timestamp
-    gt_path = kwargs.get('decode_log') + "_gt_" + timestamp
-
+    pred_path = f"{kwargs.get('decode_log')}_pred_{model_config.identifier}_{timestamp}"
+    gt_path = f"{kwargs.get('decode_log')}_gt_{model_config.identifier}_{timestamp}"
+    
     with open(pred_path, "w") as pred, open(gt_path, "w") as gt:
         # j: read llm inference configs
         llm_config_folder = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/llm_config"
-        config_file = os.path.join(
-            llm_config_folder, model_config.llm_inference_config)
-        llm_config = load_config(config_file)
+        llm_config_path = os.path.join(
+            llm_config_folder, f"{model_config.llm_inference_config}.json")
+        llm_config = load_config(llm_config_path)
+        print("Loaded LLM Config Path:", llm_config_path)
         print("Loaded LLM Config:", llm_config)
         for step, batch in tqdm(enumerate(test_dataloader), total=len(test_dataloader)):
             for key in batch.keys():
@@ -164,7 +165,8 @@ def main(kwargs: DictConfig):
             for key, text, target in zip(batch["keys"], output_text, batch["targets"]):
                 pred.write(key + "\t" + text.replace("\n", " ") + "\n")
                 gt.write(key + "\t" + target + "\n")
-
+    logger.info(f"Predictions written to: {pred_path}")
+    logger.info(f"Ground truth written to: {gt_path}")
 
 if __name__ == "__main__":
     main_hydra()

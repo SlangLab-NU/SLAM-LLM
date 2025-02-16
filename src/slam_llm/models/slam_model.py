@@ -46,8 +46,26 @@ def model_factory(train_config, model_config, **kwargs):
     ckpt_path = kwargs.get("ckpt_path", None)
     if ckpt_path is not None:
         logger.info("loading other parts from: {}".format(ckpt_path))
-        ckpt_dict = torch.load(ckpt_path, map_location="cpu")
-        model.load_state_dict(ckpt_dict, strict=False)
+        try:
+            ckpt_dict = torch.load(ckpt_path, map_location="cpu")
+            
+            # Check for mismatch in checkpoint and model state_dict keys
+            model_state_dict = model.state_dict()
+            missing_keys, unexpected_keys = model_state_dict.keys() - ckpt_dict.keys(), ckpt_dict.keys() - model_state_dict.keys()
+            if missing_keys or unexpected_keys:
+                logger.error(f"Checkpoint and model state_dict mismatch:")
+                logger.error(f"Missing keys: {missing_keys}")
+                logger.error(f"Unexpected keys: {unexpected_keys}")
+                raise ValueError(f"Checkpoint does not match model architecture. Missing or unexpected keys.")
+
+            # Load the state dict into the model
+            model.load_state_dict(ckpt_dict, strict=False)
+
+            logger.info("Model loaded successfully from checkpoint.")
+
+        except Exception as e:
+            logger.error(f"Error loading checkpoint from {ckpt_path}: {e}")
+            raise RuntimeError(f"Failed to load checkpoint: {e}")
 
     print_model_size(model, train_config, int(
         os.environ["RANK"]) if train_config.enable_fsdp or train_config.enable_ddp else 0)
@@ -272,7 +290,7 @@ def setup_encoder_projector(train_config, model_config, **kwargs):
     elif model_config.encoder_projector == "q-former":
         from slam_llm.models.projector import EncoderProjectorQFormer
         encoder_projector = EncoderProjectorQFormer(model_config)
-    # j: add dual projector
+    # j: add dual projectordual
     elif model_config.encoder_projector == "dual":
         from slam_llm.models.projector import EncoderProjectorDualConcat
         encoder_projector = EncoderProjectorDualConcat(model_config)
@@ -327,6 +345,18 @@ class slam_model(nn.Module):
             for item in self.modules():
                 if isinstance(item, nn.LayerNorm):
                     item.forward = types.MethodType(new_forward, item)
+
+    def save_embeddings(self, speech_embeddings, language_embeddings):
+        # Generate a unique filename (you might want to use a more sophisticated naming scheme)
+        filename = f'/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/plot/embeddings/{self.model_config.identifier}.pt'
+
+        # Save both embeddings in a single file
+        torch.save({
+            'speech_embeddings': speech_embeddings,
+            'language_embeddings': language_embeddings
+        }, filename)
+
+        print(f"Embeddings saved to {filename}")
 
     def extract_encoder_features(self, encoder_name, audio, attention_mask, audio_mel, audio_mel_mask, audio_mask=None, visual=None, visual_mask=None):
         encoder_outs, audio_mel_post_mask = None, None
@@ -429,6 +459,9 @@ class slam_model(nn.Module):
                 # Concatenate outputs from both encoders
                 encoder_outs = torch.cat((encoder_outs, encoder_outs2), dim=-1)
 
+           
+
+            # j: projector
             if self.model_config.encoder_projector == "q-former":
                 encoder_outs = self.encoder_projector(
                     encoder_outs, audio_mel_post_mask)
@@ -440,6 +473,17 @@ class slam_model(nn.Module):
             if self.model_config.encoder_projector == "dual":
                 encoder_outs = self.encoder_projector(encoder_outs)
 
+
+                
+            # j: save embedding after the projector
+            if self.train_config.save_embedding:
+                speech_embeddings = self.encoder_projector.saved_speech_embeddings
+                # Save language embeddings after projector
+                language_embeddings = encoder_outs.detach().cpu()
+                # Save embeddings to file
+                self.save_embeddings(speech_embeddings, language_embeddings)
+
+
         if instruct_ids is not None:
             if self.encoder is not None:
                 encoder_outs = self.encoder(
@@ -450,7 +494,7 @@ class slam_model(nn.Module):
                     encoder_outs, instruct_mask)
             if self.model_config.encoder_projector == "linear":
                 encoder_outs = self.encoder_projector(encoder_outs)
-
+        
         if input_ids is not None:
             input_ids[input_ids == -1] = 0
             if isinstance(self.llm, T5ForConditionalGeneration):

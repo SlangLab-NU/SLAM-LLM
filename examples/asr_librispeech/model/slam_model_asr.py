@@ -50,8 +50,30 @@ def model_factory(train_config, model_config, **kwargs):
     )  # FIX(MZY): load model ckpt(mainly projector, related to model_checkpointing/checkpoint_handler.py: save_model_checkpoint_peft)
     if ckpt_path is not None:
         logger.info("loading other parts from: {}".format(ckpt_path))
-        ckpt_dict = torch.load(ckpt_path, map_location="cpu")
-        model.load_state_dict(ckpt_dict, strict=False)
+        try:
+            ckpt_dict = torch.load(ckpt_path, map_location="cpu")
+            
+            # Check for mismatch in checkpoint and model state_dict keys
+            model_state_dict = model.state_dict()
+            # missing_keys, unexpected_keys = model_state_dict.keys() - ckpt_dict['model'].keys(), ckpt_dict.keys() - model_state_dict.keys()
+            # if missing_keys or unexpected_keys:
+            #     logger.error(f"Checkpoint and model state_dict mismatch:")
+            #     logger.error(f"Missing keys: {missing_keys}")
+            #     logger.error(f"Unexpected keys: {unexpected_keys}")
+            #     raise ValueError(f"Checkpoint does not match model architecture. Missing or unexpected keys.")
+            # print(ckpt_dict['model'].keys())
+
+            if 'model' in ckpt_dict:
+                # Load the state dict into the model
+                model.load_state_dict(ckpt_dict['model'], strict=False)
+            else:
+                model.load_state_dict(ckpt_dict, strict=False)
+
+            logger.info("Model loaded successfully from checkpoint.")
+
+        except Exception as e:
+            logger.error(f"Error loading checkpoint from {ckpt_path}: {e}")
+            raise RuntimeError(f"Failed to load checkpoint: {e}")
 
     print_model_size(
         model,
