@@ -1,3 +1,0 @@
-/usr/share/Modules/init/sh: line 2: unalias: salloc: not found
-/usr/share/Modules/init/sh: line 2: unalias: df: not found
-slurmstepd: error: *** JOB 46380872 ON d1012 CANCELLED AT 2025-01-26T11:02:52 DUE TO TIME LIMIT ***
