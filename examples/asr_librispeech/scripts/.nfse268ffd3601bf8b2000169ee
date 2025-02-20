@@ -1,0 +1,4 @@
+nohup: ignoring input
+Using specified GT file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_dual_peft/decode_test_beam4_gt_20250213_102213
+Using PRED file: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/librispeech-100_wavlm_llama32_1b_dual_peft/decode_test_beam4_pred_20250213_102213
+Combined WER: 0.07691722458916615

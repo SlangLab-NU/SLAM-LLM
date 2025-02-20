@@ -21,7 +21,6 @@ def read_and_process_file(file_path):
 
     return asr_lines, phoneme_lines
 
-
 def remove_empty_lines(gt, pred):
     gt_non_empty, pred_non_empty = [], []
 
@@ -32,6 +31,31 @@ def remove_empty_lines(gt, pred):
 
     return gt_non_empty, pred_non_empty
 
+
+def filter_repeated_words(gt, pred, max_ngram=3):
+    filtered_gt, filtered_pred = [], []
+    repeated_lines = set()
+
+    def has_repeated_ngram(words, max_ngram):
+        """Check if any n-gram is repeated at the end of the sentence."""
+        for n in range(1, max_ngram + 1):
+            # Check if the last n words repeat multiple times at the end
+            if len(words) >= 4 * n:
+                # Compare the last 4*n words in chunks of n-grams
+                last_ngram = words[-4*n:]
+                if last_ngram[:n] == last_ngram[n:2*n] == last_ngram[2*n:3*n] == last_ngram[3*n:]:
+                    return True
+        return False
+
+    for g, p in zip(gt, pred):
+        words = p.split()
+        if has_repeated_ngram(words, max_ngram):
+            repeated_lines.add(p)
+        else:
+            filtered_gt.append(g)
+            filtered_pred.append(p)
+
+    return filtered_gt, filtered_pred, repeated_lines
 
 def get_latest_file(file_pattern):
     files = glob.glob(file_pattern)
@@ -55,31 +79,25 @@ def print_combined_repeated_lines(repeated_asr, repeated_phoneme):
         for line in combined_repeated_lines:
             print(f"- {line}")
 
-def main(folder, separate, file):
+def main(folder, separate):
+    print(f"Using folder: {folder}")
+
     # Locate GT and PRED files
-    if file:
-        print(f"Using specified GT file: {file}")
-        # Replace 'gt' with 'pred' in the specified GT file path to find the corresponding PRED file
-        pred_file_path = file.replace('gt', 'pred')
-    else:
-        gt_file_pattern = os.path.join(folder, "decode_test_beam4_gt_*")
-        file = get_latest_file(gt_file_pattern)
-        if not file:
-            print("Missing GT file.")
-            return
-        print(f"Using GT file: {file}")
+    gt_file_pattern = os.path.join(folder, "decode_test_beam4_gt_*")
+    pred_file_pattern = os.path.join(folder, "decode_test_beam4_pred_*")
 
-        pred_file_pattern = os.path.join(folder, "decode_test_beam4_pred_*")
-        pred_file_path = get_latest_file(pred_file_pattern)
+    gt_file_path = get_latest_file(gt_file_pattern)
+    pred_file_path = get_latest_file(pred_file_pattern)
 
-        if not pred_file_path:
-            print("Missing PRED file.")
-            return
+    if not gt_file_path or not pred_file_path:
+        print("Missing GT or PRED file.")
+        return
 
+    print(f"Using GT file: {gt_file_path}")
     print(f"Using PRED file: {pred_file_path}")
 
     # Read files
-    gt_asr, gt_phoneme = read_and_process_file(file)
+    gt_asr, gt_phoneme = read_and_process_file(gt_file_path)
     pred_asr, pred_phoneme = read_and_process_file(pred_file_path)
 
     # Remove empty lines
@@ -96,13 +114,31 @@ def main(folder, separate, file):
         pred_combined = pred_asr + pred_phoneme
         calculate_wer(gt_combined, pred_combined, "Combined")
 
+    # # Filter repeated words
+    # print("\nFiltering repeated words...")
+    # gt_asr, pred_asr, repeated_asr = filter_repeated_words(gt_asr, pred_asr)
+    # gt_phoneme, pred_phoneme, repeated_phoneme = filter_repeated_words(gt_phoneme, pred_phoneme)
+
+    # # Print combined repeated lines for both ASR and phoneme
+    # if separate:
+    #     print_combined_repeated_lines(repeated_asr, repeated_phoneme)
+    # else:
+    #     print_combined_repeated_lines(repeated_asr, repeated_phoneme)
+
+    # # Calculate filtered WER
+    # if separate:
+    #     calculate_wer(gt_asr, pred_asr, "Filtered ASR")
+    #     calculate_wer(gt_phoneme, pred_phoneme, "Filtered Phoneme")
+    # else:
+    #     gt_combined = gt_asr + gt_phoneme
+    #     pred_combined = pred_asr + pred_phoneme
+    #     calculate_wer(gt_combined, pred_combined, "Filtered Combined")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Calculate WER from GT and PRED files")
-    parser.add_argument('--folder', type=str, help="Path to the folder containing GT and PRED files")
+    parser.add_argument('--folder', type=str, required=True, help="Path to the folder containing GT and PRED files")
     parser.add_argument('--separate', action='store_true', help="Calculate WER separately for ASR and phoneme lines (default: False)")
-    parser.add_argument('--file', type=str, help="Path to the specific GT file (optional)")
     args = parser.parse_args()
 
     # `args.separate` will be False by default and True only if --separate is specified
-    main(args.folder, args.separate, args.file)
+    main(args.folder, args.separate)

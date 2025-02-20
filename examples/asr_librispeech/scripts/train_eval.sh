@@ -19,6 +19,7 @@ usage() {
     echo "  -s, --seed                      Set the random seed."
     echo "  -l, --llm_name                  Specify the language model to use."
     echo "      --freeze_encoder            Freeze the encoder (true/false). Default is true."
+    echo "      --freeze_encoder2           Freeze the second encoder (true/false)."
     echo "      --eval_ckpt                 Set evaluation checkpoint ('last' or 'best'). Default is 'last'."
     echo "      --encoder_projector         Specify the encoder projector to use. Options:"
     echo "                                   'linear'          - Use a linear projector."
@@ -37,7 +38,7 @@ usage() {
 }
 
 # Parse arguments using getopt
-OPTIONS=$(getopt -o t:c:e:b:f:p:s:l: --long task:,encoder_config:,num_epochs:,batch_size_training:,train_data_folder:,test_data_folder:,use_peft:,debug:,test_run,llm_name:,seed:,freeze_encoder:,eval_ckpt:,encoder_projector:,encoder_projector_ds_rate:,save_embedding:,projector_transfer_learning:,transfer_data_folder:,llm_inference_config:,help -- "$@")
+OPTIONS=$(getopt -o t:c:e:b:f:p:s:l: --long task:,encoder_config:,num_epochs:,batch_size_training:,train_data_folder:,test_data_folder:,use_peft:,debug:,test_run,llm_name:,seed:,freeze_encoder:,freeze_encoder2:,eval_ckpt:,encoder_projector:,encoder_projector_ds_rate:,save_embedding:,projector_transfer_learning:,transfer_data_folder:,llm_inference_config:,help -- "$@")
 if [ $? -ne 0 ]; then
     echo "Failed to parse arguments."
     exit 1
@@ -49,13 +50,14 @@ eval set -- "$OPTIONS"
 llm_name="llama32_1b"
 use_peft=true
 freeze_encoder=true
+freeze_encoder2=true  # Default value for freeze_encoder2
 eval_ckpt="best"
-encoder_projector="linear"  # Default encoder projector type
+encoder_projector="linear"
 encoder_projector_ds_rate=5
-save_embedding=false  # Default save_embedding flag
-projector_transfer_learning=false  # Default projector transfer learning flag
-transfer_data_folder=""  # Default is empty
-llm_inference_config="repetition_penalty"  # Default inference config
+save_embedding=false
+projector_transfer_learning=false
+transfer_data_folder=""
+llm_inference_config="repetition_penalty"
 
 while true; do
     case "$1" in
@@ -105,6 +107,10 @@ while true; do
             ;;
         --freeze_encoder)
             freeze_encoder=$2
+            shift 2
+            ;;
+        --freeze_encoder2)
+            freeze_encoder2=$2
             shift 2
             ;;
         --eval_ckpt)
@@ -273,8 +279,6 @@ if [ "$use_peft" = true ]; then
 else
     freeze_llm=true
 fi
-freeze_encoder2=${freeze_encoder2:-true}
-
 
 : '
 Initial identifier for folder
@@ -296,6 +300,9 @@ if [[ -n $seed ]]; then
 fi
 if [[ $freeze_encoder == "false" ]]; then
     identifier+="_unfreeze_encoder"
+fi
+if [[ $freeze_encoder2 == "false" ]]; then
+    identifier+="_unfreeze_encoder2"
 fi
 if [[ $encoder_projector_ds_rate -ne 5 ]]; then
     identifier+="_ds_rate_${encoder_projector_ds_rate}"

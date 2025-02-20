@@ -1,9 +1,10 @@
 import argparse
 import glob
 import os
+import numpy as np
 from jiwer import wer
+from random import choices
 
-# Function to read and process the file
 def read_and_process_file(file_path):
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -21,17 +22,15 @@ def read_and_process_file(file_path):
 
     return asr_lines, phoneme_lines
 
-
 def remove_empty_lines(gt, pred):
     gt_non_empty, pred_non_empty = [], []
-
+    
     for g, p in zip(gt, pred):
         if g.strip() and p.strip():  # Ensure lines are not empty or just spaces
-            gt_non_empty.append(g.strip())  # Strip to remove unnecessary spaces
-            pred_non_empty.append(p.strip())  # Strip to remove unnecessary spaces
-
+            gt_non_empty.append(g.strip())
+            pred_non_empty.append(p.strip())
+    
     return gt_non_empty, pred_non_empty
-
 
 def get_latest_file(file_pattern):
     files = glob.glob(file_pattern)
@@ -42,24 +41,29 @@ def get_latest_file(file_pattern):
 def calculate_wer(gt, pred, label):
     if len(gt) == len(pred):
         score = wer(gt, pred)
-        print(f"{label} WER: {score}")
+        print(f"{label} WER: {score*100} %")
+        return score
     else:
         print(f"Error: {label} line counts do not match (GT: {len(gt)}, PRED: {len(pred)}).")
+        return None
 
-def print_combined_repeated_lines(repeated_asr, repeated_phoneme):
-    """Combine and print repeated lines from both ASR and Phoneme."""
-    combined_repeated_lines = repeated_asr.union(repeated_phoneme)
-    print(f"\nFound {len(combined_repeated_lines)} repeated lines in total.")
-    if combined_repeated_lines:
-        print("Repeated lines are:")
-        for line in combined_repeated_lines:
-            print(f"- {line}")
+def bootstrap_ci(gt, pred, n_bootstrap=1000, ci=95):
+    wer_scores = []
+    for _ in range(n_bootstrap):
+        sampled_indices = choices(range(len(gt)), k=len(gt))
+        sampled_gt = [gt[i] for i in sampled_indices]
+        sampled_pred = [pred[i] for i in sampled_indices]
+        wer_scores.append(wer(sampled_gt, sampled_pred))
+    
+    lower_bound = np.percentile(wer_scores, (100 - ci) / 2)
+    upper_bound = np.percentile(wer_scores, 100 - (100 - ci) / 2)
+    return lower_bound, upper_bound
 
 def main(folder, separate, file):
-    # Locate GT and PRED files
+    asr_wer = None  # Initialize asr_wer here
+    
     if file:
         print(f"Using specified GT file: {file}")
-        # Replace 'gt' with 'pred' in the specified GT file path to find the corresponding PRED file
         pred_file_path = file.replace('gt', 'pred')
     else:
         gt_file_pattern = os.path.join(folder, "decode_test_beam4_gt_*")
@@ -75,34 +79,39 @@ def main(folder, separate, file):
         if not pred_file_path:
             print("Missing PRED file.")
             return
-
+    
     print(f"Using PRED file: {pred_file_path}")
-
-    # Read files
+    
     gt_asr, gt_phoneme = read_and_process_file(file)
     pred_asr, pred_phoneme = read_and_process_file(pred_file_path)
-
-    # Remove empty lines
+    
     gt_asr, pred_asr = remove_empty_lines(gt_asr, pred_asr)
     gt_phoneme, pred_phoneme = remove_empty_lines(gt_phoneme, pred_phoneme)
-
+    
     if separate:
-        # Calculate WER separately for ASR and phoneme
-        calculate_wer(gt_asr, pred_asr, "ASR")
-        calculate_wer(gt_phoneme, pred_phoneme, "Phoneme")
+        asr_wer = calculate_wer(gt_asr, pred_asr, "ASR")
+        phoneme_wer = calculate_wer(gt_phoneme, pred_phoneme, "Phoneme")
     else:
-        # Combine ASR and phoneme lines for unified WER calculation
         gt_combined = gt_asr + gt_phoneme
         pred_combined = pred_asr + pred_phoneme
-        calculate_wer(gt_combined, pred_combined, "Combined")
+        combined_wer = calculate_wer(gt_combined, pred_combined, "Combined")
+        asr_wer = combined_wer
+        
+    # Calculate bootstrap CI for ASR WER
+    if asr_wer is not None:
+        ci_lower, ci_upper = bootstrap_ci(gt_asr, pred_asr)
+        margin_of_error = (ci_upper - ci_lower) / 2
+        # Convert WER and CI to percentages
+        asr_wer_percent = asr_wer * 100
+        margin_of_error_percent = margin_of_error * 100
+        print(f"{asr_wer_percent:.2f} $\pm$ {margin_of_error_percent:.2f}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Calculate WER from GT and PRED files")
+    parser = argparse.ArgumentParser(description="Calculate WER from GT and PRED files, with CI for ASR")
     parser.add_argument('--folder', type=str, help="Path to the folder containing GT and PRED files")
     parser.add_argument('--separate', action='store_true', help="Calculate WER separately for ASR and phoneme lines (default: False)")
     parser.add_argument('--file', type=str, help="Path to the specific GT file (optional)")
     args = parser.parse_args()
 
-    # `args.separate` will be False by default and True only if --separate is specified
     main(args.folder, args.separate, args.file)

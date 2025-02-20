@@ -1,0 +1,10 @@
+bash train_eval.sh \
+    --task all \
+    --encoder_config w2p-wavlm-dual \
+    --num_epochs 2 \
+    --batch_size_training 2 \
+    --use_peft true \
+    --eval_ckpt best \
+    --seed 41 \
+    --freeze_encoder2 false \
+    --train_data_folder aphasia_phoneme \

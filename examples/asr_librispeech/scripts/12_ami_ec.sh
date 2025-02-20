@@ -26,15 +26,15 @@ which python
 exec > >(tee -a last_slam_run.txt) 2>&1
 
 
-# 46442031
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 2 \
-#     --use_peft false \
-#     --train_data_folder ami_ec \
+bash train_eval.sh \
+    --llm_name llama32_1b \
+    --task all \
+    --encoder_config wavlm-mono \
+    --num_epochs 2 \
+    --batch_size_training 2 \
+    --use_peft false \
+    --seed 42 \
+    --train_data_folder ami_ec \
 
 
 # bash train_eval.sh \
