@@ -1,0 +1,382 @@
+[2025-01-06 01:59:40,531][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': False}
+[2025-01-06 01:59:40,531][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-01-06 01:59:40,531][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'test_config.json', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme'}
+[2025-01-06 01:59:42,072][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+[2025-01-06 01:59:47,486][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2025-01-06 01:59:47,489][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2025-01-06 01:59:47,491][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2025-01-06 01:59:47,492][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2025-01-06 01:59:52,233][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-01-06 01:59:52,233][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-01-06 01:59:52,235][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-01-06 01:59:52,356][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-01-06 01:59:52,358][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-01-06 01:59:52,462][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-01-06 01:59:52,462][slam_llm.utils.train_utils][INFO] - --> linear has 14.68416 Million params
+
+[2025-01-06 01:59:52,462][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/asr_epoch_2_step_284_loss_0.5588149428367615/model.pt
+[2025-01-06 01:59:52,663][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-01-06 01:59:52,667][slam_llm.utils.train_utils][INFO] - --> asr has 20.320256 Million params
+
+[2025-01-06 01:59:54,559][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': None, 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/test.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': True, 'input_type': 'raw', 'mel_size': 80, 'normalize': True}
+[2025-01-06 01:59:55,266][root][INFO] - --> Training Set Length = 652
+[2025-01-06 01:59:55,267][root][INFO] - =====================================
+[2025-01-06 01:59:56,423][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 01:59:57,310][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 01:59:57,770][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 01:59:58,222][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 01:59:58,966][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 01:59:59,965][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:06,713][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:08,328][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:08,957][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:14,778][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:15,791][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:16,829][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:22,854][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:24,134][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:29,936][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:30,310][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:31,169][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:33,053][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:38,731][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:39,386][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:40,099][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:40,558][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:41,076][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:41,674][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:42,535][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:43,660][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:44,443][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:44,991][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:45,764][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:46,298][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:46,780][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:47,329][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:47,934][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:48,476][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:49,180][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:49,953][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:50,944][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:51,360][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:52,010][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:52,858][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:53,666][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:54,242][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:55,150][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:55,632][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:56,374][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:56,862][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:57,305][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:00:59,232][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:00,355][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:02,016][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:04,198][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:04,666][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:05,160][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:05,682][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:06,150][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:07,454][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:08,327][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:09,099][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:10,974][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:12,130][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:12,648][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:14,264][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:15,308][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:16,791][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:18,545][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:21,006][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:21,961][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:22,337][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:22,834][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:23,672][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:24,210][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:25,106][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:26,703][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:27,833][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:28,233][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:28,783][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:29,668][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:35,924][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:37,405][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:40,321][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:46,327][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:48,408][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:49,526][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:49,914][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:50,418][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:50,967][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:51,393][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:51,928][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:52,364][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:53,320][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:55,844][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:57,602][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:01:59,428][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:06,493][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:07,606][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:08,977][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:10,124][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:11,157][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:12,403][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:14,154][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:20,693][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:21,114][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:21,578][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:22,021][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:22,469][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:23,039][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:24,541][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:24,906][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:25,347][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:25,834][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:26,319][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:26,879][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:27,813][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:28,404][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:29,307][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:29,964][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:30,937][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:31,452][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:31,982][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:32,593][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:33,206][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:33,612][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:34,314][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:39,775][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:40,411][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:46,023][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:46,529][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:46,919][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:47,402][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:47,976][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:48,500][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:49,063][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:49,829][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:50,413][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:50,915][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:52,201][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:52,817][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:53,454][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:54,110][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:55,093][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:55,539][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:56,241][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:56,751][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:57,958][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:58,440][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:59,066][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:02:59,870][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:00,479][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:01,011][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:01,482][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:02,107][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:03,455][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:04,785][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:12,102][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:17,675][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:19,092][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:19,567][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:19,990][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:20,425][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:21,379][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:22,365][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:22,948][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-01-06 02:03:29,959][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:08,608][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 1, 'resume_step': 0, 'resume_epoch': 0, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 1000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': False, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': True, 'freeze_encoder': True, 'freeze_encoder2': False, 'save_embedding': False}
+[2025-02-07 04:03:08,608][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': False, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-07 04:03:08,608][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme'}
+[2025-02-07 04:03:10,047][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+[2025-02-07 04:03:15,514][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2025-02-07 04:03:15,516][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2025-02-07 04:03:15,519][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2025-02-07 04:03:15,520][slam_llm.utils.train_utils][INFO] - --> wavlm has 0.0 Million params
+
+[2025-02-07 04:03:19,862][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-07 04:03:19,863][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-07 04:03:19,864][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-07 04:03:19,987][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-07 04:03:19,989][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-07 04:03:20,091][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-07 04:03:20,091][slam_llm.utils.train_utils][INFO] - --> linear has 14.68416 Million params
+
+[2025-02-07 04:03:20,091][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/asr_epoch_10_step_554_loss_0.8852918744087219/model.pt
+[2025-02-07 04:03:20,279][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-07 04:03:20,283][slam_llm.utils.train_utils][INFO] - --> asr has 20.320256 Million params
+
+[2025-02-07 04:03:22,203][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': None, 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/test.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': True, 'input_type': 'raw', 'mel_size': 80, 'normalize': True}
+[2025-02-07 04:03:22,875][root][INFO] - --> Training Set Length = 652
+[2025-02-07 04:03:22,876][root][INFO] - =====================================
+[2025-02-07 04:03:24,121][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:25,086][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:25,663][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:26,260][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:27,031][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:33,461][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:35,751][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:36,981][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:37,715][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:38,920][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:44,921][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:51,005][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:57,327][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:03:58,761][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:04,792][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:05,223][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:06,109][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:08,069][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:08,703][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:09,464][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:10,217][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:10,713][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:11,190][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:11,903][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:12,883][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:14,112][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:14,861][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:15,454][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:16,252][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:16,836][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:17,314][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:17,895][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:18,498][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:19,038][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:19,768][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:20,577][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:21,541][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:22,075][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:22,794][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:23,921][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:24,726][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:25,346][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:26,193][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:26,677][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:27,511][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:28,025][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:28,769][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:30,478][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:31,590][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:33,484][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:35,040][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:35,562][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:36,061][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:36,584][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:37,107][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:38,675][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:39,597][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:45,499][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:47,379][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:48,414][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:49,063][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:50,489][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:51,717][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:53,372][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:55,286][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:57,490][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:58,513][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:58,886][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:04:59,412][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:00,234][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:00,800][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:01,836][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:03,443][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:04,469][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:04,852][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:05,546][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:06,603][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:08,855][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:10,421][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:12,400][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:18,465][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:20,426][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:21,551][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:22,054][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:22,564][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:23,097][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:23,588][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:24,168][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:24,700][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:26,004][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:32,830][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:34,690][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:36,954][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:43,739][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:44,856][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:46,371][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:47,478][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:48,571][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:49,905][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:51,780][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:58,328][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:58,843][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:59,317][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:05:59,780][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:00,219][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:00,767][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:02,470][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:02,842][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:03,278][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:08,933][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:09,443][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:10,019][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:10,947][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:11,609][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:17,373][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:18,286][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:24,043][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:24,642][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:25,341][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:25,936][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:26,522][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:26,975][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:27,745][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:28,602][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:29,407][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:35,328][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:36,027][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:36,433][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:36,931][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:37,628][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:38,142][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:38,749][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:44,473][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:44,984][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:45,609][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:46,886][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:47,507][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:48,288][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:48,976][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:50,004][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:50,465][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:50,986][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:51,569][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:52,815][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:53,378][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:54,050][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:54,993][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:55,714][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:56,266][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:56,818][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:57,560][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:06:58,702][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:00,487][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:07,588][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:08,844][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:14,926][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:15,412][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:15,855][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:16,358][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:17,407][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:18,349][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:19,359][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:23,344][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-07 04:07:24,491][root][INFO] - Predictions written to: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/decode_test_beam4_pred_20250207_040322
+[2025-02-07 04:07:24,491][root][INFO] - Ground truth written to: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_wavlm_llama32_1b_linear_peft_transfer_psst_phoneme/decode_test_beam4_gt_20250207_040322

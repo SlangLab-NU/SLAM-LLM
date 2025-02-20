@@ -1,0 +1,483 @@
+[2024-12-02 02:21:03,238][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 10, 'resume_step': 0, 'resume_epoch': 1, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 3000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/psst_phoneme_wavlm_llama32_1b_linear_peft_unfreeze_encoder', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': False, 'freeze_encoder2': True}
+[2024-12-02 02:21:03,238][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': 'NO_SHARD', 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2024-12-02 02:21:03,238][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'encoder_name': 'wavlm', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/WavLM-Large.pt', 'encoder_dim': 1024, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': ''}
+[2024-12-02 02:21:03,238][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'psst_phoneme_wavlm_llama32_1b_linear_peft_unfreeze_encoder', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2024-12-02_02-21-02.txt', 'log_interval': 5}
+[2024-12-02 02:21:24,548][slam_llm.models.wavlm.WavLM][INFO] - WavLM Config: {'extractor_mode': 'layer_norm', 'encoder_layers': 24, 'encoder_embed_dim': 1024, 'encoder_ffn_embed_dim': 4096, 'encoder_attention_heads': 16, 'activation_fn': 'gelu', 'layer_norm_first': True, 'conv_feature_layers': '[(512,10,5)] + [(512,3,2)] * 4 + [(512,2,2)] * 2', 'conv_bias': False, 'feature_grad_mult': 1.0, 'normalize': True, 'dropout': 0.0, 'attention_dropout': 0.0, 'activation_dropout': 0.0, 'encoder_layerdrop': 0.0, 'dropout_input': 0.0, 'dropout_features': 0.0, 'mask_length': 10, 'mask_prob': 0.8, 'mask_selection': 'static', 'mask_other': 0.0, 'no_mask_overlap': False, 'mask_min_space': 1, 'mask_channel_length': 10, 'mask_channel_prob': 0.0, 'mask_channel_selection': 'static', 'mask_channel_other': 0.0, 'no_mask_channel_overlap': False, 'mask_channel_min_space': 1, 'conv_pos': 128, 'conv_pos_groups': 16, 'relative_position_embedding': True, 'num_buckets': 320, 'max_distance': 800, 'gru_rel_pos': True}
+[2024-12-02 02:21:29,936][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-02 02:21:29,937][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-02 02:21:29,938][slam_llm.utils.train_utils][INFO] - --> Module wavlm
+[2024-12-02 02:21:29,939][slam_llm.utils.train_utils][INFO] - --> wavlm has 315.45312 Million params
+
+[2024-12-02 02:21:34,724][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-02 02:21:34,726][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2024-12-02 02:21:34,726][slam_llm.models.slam_model][INFO] - setup peft...
+[2024-12-02 02:21:35,020][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2024-12-02 02:21:35,022][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2024-12-02 02:21:35,130][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2024-12-02 02:21:35,130][slam_llm.utils.train_utils][INFO] - --> linear has 14.68416 Million params
+
+[2024-12-02 02:21:35,130][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2024-12-02 02:21:35,134][slam_llm.utils.train_utils][INFO] - --> asr has 335.773376 Million params
+
+[2024-12-02 02:21:36,984][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/psst_phoneme/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'raw', 'mel_size': 80, 'normalize': True}
+[2024-12-02 02:21:38,163][root][INFO] - --> Training Set Length = 2298
+[2024-12-02 02:21:38,171][root][INFO] - --> Validation Set Length = 341
+[2024-12-02 02:21:38,172][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2024-12-02 02:21:38,173][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2024-12-02 02:21:39,736][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:40,532][numexpr.utils][INFO] - Note: NumExpr detected 28 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+[2024-12-02 02:21:41,558][root][INFO] - Training Epoch: 1/10, step 0/2298 completed (loss: 11.119621276855469, acc: 0.0)
+[2024-12-02 02:21:41,684][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:42,058][root][INFO] - Training Epoch: 1/10, step 1/2298 completed (loss: 11.033697128295898, acc: 0.0)
+[2024-12-02 02:21:42,174][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:42,511][root][INFO] - Training Epoch: 1/10, step 2/2298 completed (loss: 9.101160049438477, acc: 0.0)
+[2024-12-02 02:21:42,627][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:43,027][root][INFO] - Training Epoch: 1/10, step 3/2298 completed (loss: 6.8632636070251465, acc: 0.0)
+[2024-12-02 02:21:43,162][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:43,479][root][INFO] - Training Epoch: 1/10, step 4/2298 completed (loss: 8.642507553100586, acc: 0.0)
+[2024-12-02 02:21:43,597][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:43,921][root][INFO] - Training Epoch: 1/10, step 5/2298 completed (loss: 7.490041255950928, acc: 0.0)
+[2024-12-02 02:21:44,054][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:44,597][root][INFO] - Training Epoch: 1/10, step 6/2298 completed (loss: 9.451687812805176, acc: 0.0)
+[2024-12-02 02:21:44,689][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:45,038][root][INFO] - Training Epoch: 1/10, step 7/2298 completed (loss: 8.54145622253418, acc: 0.0)
+[2024-12-02 02:21:45,148][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:45,516][root][INFO] - Training Epoch: 1/10, step 8/2298 completed (loss: 7.643661975860596, acc: 0.0)
+[2024-12-02 02:21:45,627][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:45,976][root][INFO] - Training Epoch: 1/10, step 9/2298 completed (loss: 8.544817924499512, acc: 0.0)
+[2024-12-02 02:21:46,091][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:46,384][root][INFO] - Training Epoch: 1/10, step 10/2298 completed (loss: 7.987484455108643, acc: 0.0)
+[2024-12-02 02:21:46,508][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:46,864][root][INFO] - Training Epoch: 1/10, step 11/2298 completed (loss: 8.640603065490723, acc: 0.0)
+[2024-12-02 02:21:46,966][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:47,322][root][INFO] - Training Epoch: 1/10, step 12/2298 completed (loss: 8.674371719360352, acc: 0.0)
+[2024-12-02 02:21:47,447][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:47,791][root][INFO] - Training Epoch: 1/10, step 13/2298 completed (loss: 9.011311531066895, acc: 0.0)
+[2024-12-02 02:21:47,899][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:48,262][root][INFO] - Training Epoch: 1/10, step 14/2298 completed (loss: 6.560796737670898, acc: 0.0)
+[2024-12-02 02:21:48,416][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:48,798][root][INFO] - Training Epoch: 1/10, step 15/2298 completed (loss: 8.73156452178955, acc: 0.0)
+[2024-12-02 02:21:48,901][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:49,257][root][INFO] - Training Epoch: 1/10, step 16/2298 completed (loss: 6.691139221191406, acc: 0.0)
+[2024-12-02 02:21:49,376][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:49,715][root][INFO] - Training Epoch: 1/10, step 17/2298 completed (loss: 6.665511131286621, acc: 0.0)
+[2024-12-02 02:21:49,817][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:50,174][root][INFO] - Training Epoch: 1/10, step 18/2298 completed (loss: 8.942646980285645, acc: 0.0)
+[2024-12-02 02:21:50,304][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:50,653][root][INFO] - Training Epoch: 1/10, step 19/2298 completed (loss: 6.229285717010498, acc: 0.0555555559694767)
+[2024-12-02 02:21:50,756][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:51,102][root][INFO] - Training Epoch: 1/10, step 20/2298 completed (loss: 7.941749572753906, acc: 0.0)
+[2024-12-02 02:21:51,207][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:51,548][root][INFO] - Training Epoch: 1/10, step 21/2298 completed (loss: 7.687915802001953, acc: 0.0)
+[2024-12-02 02:21:51,703][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:52,055][root][INFO] - Training Epoch: 1/10, step 22/2298 completed (loss: 7.156338214874268, acc: 0.0)
+[2024-12-02 02:21:52,206][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:52,573][root][INFO] - Training Epoch: 1/10, step 23/2298 completed (loss: 7.292112350463867, acc: 0.0)
+[2024-12-02 02:21:52,720][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:53,066][root][INFO] - Training Epoch: 1/10, step 24/2298 completed (loss: 7.32003927230835, acc: 0.05000000074505806)
+[2024-12-02 02:21:53,203][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:53,561][root][INFO] - Training Epoch: 1/10, step 25/2298 completed (loss: 7.374710559844971, acc: 0.0)
+[2024-12-02 02:21:53,666][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:54,011][root][INFO] - Training Epoch: 1/10, step 26/2298 completed (loss: 7.886421203613281, acc: 0.0)
+[2024-12-02 02:21:54,171][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:54,554][root][INFO] - Training Epoch: 1/10, step 27/2298 completed (loss: 7.692713737487793, acc: 0.0)
+[2024-12-02 02:21:54,697][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:55,048][root][INFO] - Training Epoch: 1/10, step 28/2298 completed (loss: 8.167454719543457, acc: 0.0)
+[2024-12-02 02:21:55,202][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:55,571][root][INFO] - Training Epoch: 1/10, step 29/2298 completed (loss: 7.090908527374268, acc: 0.0)
+[2024-12-02 02:21:55,691][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:56,039][root][INFO] - Training Epoch: 1/10, step 30/2298 completed (loss: 8.239313125610352, acc: 0.0)
+[2024-12-02 02:21:56,155][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:56,528][root][INFO] - Training Epoch: 1/10, step 31/2298 completed (loss: 6.694301128387451, acc: 0.0)
+[2024-12-02 02:21:56,678][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:57,031][root][INFO] - Training Epoch: 1/10, step 32/2298 completed (loss: 7.966444492340088, acc: 0.0)
+[2024-12-02 02:21:57,161][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:57,475][root][INFO] - Training Epoch: 1/10, step 33/2298 completed (loss: 11.978811264038086, acc: 0.0)
+[2024-12-02 02:21:57,596][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:57,958][root][INFO] - Training Epoch: 1/10, step 34/2298 completed (loss: 10.530821800231934, acc: 0.0)
+[2024-12-02 02:21:58,084][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:58,458][root][INFO] - Training Epoch: 1/10, step 35/2298 completed (loss: 8.597969055175781, acc: 0.0)
+[2024-12-02 02:21:58,599][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:58,953][root][INFO] - Training Epoch: 1/10, step 36/2298 completed (loss: 6.208038806915283, acc: 0.0)
+[2024-12-02 02:21:59,079][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:59,431][root][INFO] - Training Epoch: 1/10, step 37/2298 completed (loss: 8.196783065795898, acc: 0.0)
+[2024-12-02 02:21:59,538][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:21:59,875][root][INFO] - Training Epoch: 1/10, step 38/2298 completed (loss: 7.106840133666992, acc: 0.0)
+[2024-12-02 02:21:59,987][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:00,352][root][INFO] - Training Epoch: 1/10, step 39/2298 completed (loss: 8.31318473815918, acc: 0.0)
+[2024-12-02 02:22:00,473][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:00,820][root][INFO] - Training Epoch: 1/10, step 40/2298 completed (loss: 8.822206497192383, acc: 0.0)
+[2024-12-02 02:22:00,914][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:01,286][root][INFO] - Training Epoch: 1/10, step 41/2298 completed (loss: 7.4319000244140625, acc: 0.1666666716337204)
+[2024-12-02 02:22:01,407][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:01,751][root][INFO] - Training Epoch: 1/10, step 42/2298 completed (loss: 8.541502952575684, acc: 0.0)
+[2024-12-02 02:22:01,863][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:02,175][root][INFO] - Training Epoch: 1/10, step 43/2298 completed (loss: 6.880743503570557, acc: 0.0)
+[2024-12-02 02:22:02,325][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:02,696][root][INFO] - Training Epoch: 1/10, step 44/2298 completed (loss: 5.903138637542725, acc: 0.0)
+[2024-12-02 02:22:02,822][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:03,198][root][INFO] - Training Epoch: 1/10, step 45/2298 completed (loss: 7.335843086242676, acc: 0.0)
+[2024-12-02 02:22:03,313][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:03,673][root][INFO] - Training Epoch: 1/10, step 46/2298 completed (loss: 6.943390846252441, acc: 0.0)
+[2024-12-02 02:22:03,796][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:04,145][root][INFO] - Training Epoch: 1/10, step 47/2298 completed (loss: 5.93031120300293, acc: 0.0)
+[2024-12-02 02:22:04,244][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:04,586][root][INFO] - Training Epoch: 1/10, step 48/2298 completed (loss: 6.858153820037842, acc: 0.0)
+[2024-12-02 02:22:04,687][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:05,015][root][INFO] - Training Epoch: 1/10, step 49/2298 completed (loss: 6.579137325286865, acc: 0.0)
+[2024-12-02 02:22:05,171][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:05,521][root][INFO] - Training Epoch: 1/10, step 50/2298 completed (loss: 7.107068061828613, acc: 0.0)
+[2024-12-02 02:22:05,628][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:05,970][root][INFO] - Training Epoch: 1/10, step 51/2298 completed (loss: 7.175539493560791, acc: 0.0)
+[2024-12-02 02:22:06,073][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:06,415][root][INFO] - Training Epoch: 1/10, step 52/2298 completed (loss: 5.313945293426514, acc: 0.0)
+[2024-12-02 02:22:06,549][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:06,854][root][INFO] - Training Epoch: 1/10, step 53/2298 completed (loss: 6.425302982330322, acc: 0.0)
+[2024-12-02 02:22:06,956][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:07,308][root][INFO] - Training Epoch: 1/10, step 54/2298 completed (loss: 6.6418328285217285, acc: 0.0)
+[2024-12-02 02:22:07,429][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:07,770][root][INFO] - Training Epoch: 1/10, step 55/2298 completed (loss: 6.4525909423828125, acc: 0.09090909361839294)
+[2024-12-02 02:22:07,912][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:08,277][root][INFO] - Training Epoch: 1/10, step 56/2298 completed (loss: 6.76774263381958, acc: 0.05882352963089943)
+[2024-12-02 02:22:08,393][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:08,749][root][INFO] - Training Epoch: 1/10, step 57/2298 completed (loss: 6.051509857177734, acc: 0.0)
+[2024-12-02 02:22:08,860][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:09,224][root][INFO] - Training Epoch: 1/10, step 58/2298 completed (loss: 6.526162624359131, acc: 0.0)
+[2024-12-02 02:22:09,324][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:09,656][root][INFO] - Training Epoch: 1/10, step 59/2298 completed (loss: 6.89169454574585, acc: 0.0)
+[2024-12-02 02:22:09,764][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:10,124][root][INFO] - Training Epoch: 1/10, step 60/2298 completed (loss: 5.979543685913086, acc: 0.0)
+[2024-12-02 02:22:10,253][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:10,598][root][INFO] - Training Epoch: 1/10, step 61/2298 completed (loss: 6.295345306396484, acc: 0.0)
+[2024-12-02 02:22:10,714][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:11,031][root][INFO] - Training Epoch: 1/10, step 62/2298 completed (loss: 4.074985027313232, acc: 0.20000000298023224)
+[2024-12-02 02:22:11,165][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:11,524][root][INFO] - Training Epoch: 1/10, step 63/2298 completed (loss: 6.338791370391846, acc: 0.0)
+[2024-12-02 02:22:11,641][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:12,002][root][INFO] - Training Epoch: 1/10, step 64/2298 completed (loss: 7.87716817855835, acc: 0.0)
+[2024-12-02 02:22:12,080][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:12,404][root][INFO] - Training Epoch: 1/10, step 65/2298 completed (loss: 8.110612869262695, acc: 0.0)
+[2024-12-02 02:22:12,544][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:12,900][root][INFO] - Training Epoch: 1/10, step 66/2298 completed (loss: 7.134335517883301, acc: 0.0)
+[2024-12-02 02:22:13,017][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:13,355][root][INFO] - Training Epoch: 1/10, step 67/2298 completed (loss: 9.052947044372559, acc: 0.0)
+[2024-12-02 02:22:13,454][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:13,800][root][INFO] - Training Epoch: 1/10, step 68/2298 completed (loss: 7.026442050933838, acc: 0.0)
+[2024-12-02 02:22:13,904][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:14,262][root][INFO] - Training Epoch: 1/10, step 69/2298 completed (loss: 5.34676456451416, acc: 0.0)
+[2024-12-02 02:22:14,365][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:14,705][root][INFO] - Training Epoch: 1/10, step 70/2298 completed (loss: 7.042802333831787, acc: 0.0)
+[2024-12-02 02:22:14,801][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:15,157][root][INFO] - Training Epoch: 1/10, step 71/2298 completed (loss: 6.648452281951904, acc: 0.0)
+[2024-12-02 02:22:15,285][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:15,653][root][INFO] - Training Epoch: 1/10, step 72/2298 completed (loss: 5.652531147003174, acc: 0.0)
+[2024-12-02 02:22:15,813][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:16,191][root][INFO] - Training Epoch: 1/10, step 73/2298 completed (loss: 4.776412487030029, acc: 0.1666666716337204)
+[2024-12-02 02:22:16,313][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:16,663][root][INFO] - Training Epoch: 1/10, step 74/2298 completed (loss: 5.370142459869385, acc: 0.0)
+[2024-12-02 02:22:16,793][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:17,161][root][INFO] - Training Epoch: 1/10, step 75/2298 completed (loss: 4.224375247955322, acc: 0.1428571492433548)
+[2024-12-02 02:22:17,275][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:17,628][root][INFO] - Training Epoch: 1/10, step 76/2298 completed (loss: 7.988463401794434, acc: 0.0)
+[2024-12-02 02:22:17,741][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:18,065][root][INFO] - Training Epoch: 1/10, step 77/2298 completed (loss: 4.583855628967285, acc: 0.25)
+[2024-12-02 02:22:18,214][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:18,579][root][INFO] - Training Epoch: 1/10, step 78/2298 completed (loss: 5.626835346221924, acc: 0.0)
+[2024-12-02 02:22:18,697][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:19,041][root][INFO] - Training Epoch: 1/10, step 79/2298 completed (loss: 4.63195276260376, acc: 0.3333333432674408)
+[2024-12-02 02:22:19,148][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:19,493][root][INFO] - Training Epoch: 1/10, step 80/2298 completed (loss: 6.247011661529541, acc: 0.1666666716337204)
+[2024-12-02 02:22:19,596][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:19,937][root][INFO] - Training Epoch: 1/10, step 81/2298 completed (loss: 5.236589431762695, acc: 0.1666666716337204)
+[2024-12-02 02:22:20,043][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:20,392][root][INFO] - Training Epoch: 1/10, step 82/2298 completed (loss: 6.067533493041992, acc: 0.1666666716337204)
+[2024-12-02 02:22:20,496][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:20,844][root][INFO] - Training Epoch: 1/10, step 83/2298 completed (loss: 5.368098735809326, acc: 0.125)
+[2024-12-02 02:22:20,990][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:21,353][root][INFO] - Training Epoch: 1/10, step 84/2298 completed (loss: 5.632108211517334, acc: 0.1666666716337204)
+[2024-12-02 02:22:21,460][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:21,798][root][INFO] - Training Epoch: 1/10, step 85/2298 completed (loss: 4.487706661224365, acc: 0.1428571492433548)
+[2024-12-02 02:22:21,940][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:22,303][root][INFO] - Training Epoch: 1/10, step 86/2298 completed (loss: 5.80377721786499, acc: 0.1428571492433548)
+[2024-12-02 02:22:22,419][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:22,759][root][INFO] - Training Epoch: 1/10, step 87/2298 completed (loss: 4.3755269050598145, acc: 0.1111111119389534)
+[2024-12-02 02:22:22,854][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:23,198][root][INFO] - Training Epoch: 1/10, step 88/2298 completed (loss: 5.112545967102051, acc: 0.20000000298023224)
+[2024-12-02 02:22:23,290][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:23,604][root][INFO] - Training Epoch: 1/10, step 89/2298 completed (loss: 4.428305625915527, acc: 0.1428571492433548)
+[2024-12-02 02:22:23,706][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:24,051][root][INFO] - Training Epoch: 1/10, step 90/2298 completed (loss: 4.4477996826171875, acc: 0.25)
+[2024-12-02 02:22:24,159][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:24,528][root][INFO] - Training Epoch: 1/10, step 91/2298 completed (loss: 4.781421661376953, acc: 0.20000000298023224)
+[2024-12-02 02:22:24,682][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:25,053][root][INFO] - Training Epoch: 1/10, step 92/2298 completed (loss: 4.82733678817749, acc: 0.1428571492433548)
+[2024-12-02 02:22:25,168][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:25,524][root][INFO] - Training Epoch: 1/10, step 93/2298 completed (loss: 5.647480010986328, acc: 0.25)
+[2024-12-02 02:22:25,643][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:26,002][root][INFO] - Training Epoch: 1/10, step 94/2298 completed (loss: 3.637212038040161, acc: 0.3333333432674408)
+[2024-12-02 02:22:26,123][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:26,468][root][INFO] - Training Epoch: 1/10, step 95/2298 completed (loss: 4.386609077453613, acc: 0.25)
+[2024-12-02 02:22:26,570][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:26,907][root][INFO] - Training Epoch: 1/10, step 96/2298 completed (loss: 6.674142837524414, acc: 0.0)
+[2024-12-02 02:22:27,033][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:27,426][root][INFO] - Training Epoch: 1/10, step 97/2298 completed (loss: 7.038402557373047, acc: 0.0)
+[2024-12-02 02:22:27,556][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:27,903][root][INFO] - Training Epoch: 1/10, step 98/2298 completed (loss: 3.7898833751678467, acc: 0.1666666716337204)
+[2024-12-02 02:22:28,007][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:28,351][root][INFO] - Training Epoch: 1/10, step 99/2298 completed (loss: 4.097800254821777, acc: 0.20000000298023224)
+[2024-12-02 02:22:28,465][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:28,809][root][INFO] - Training Epoch: 1/10, step 100/2298 completed (loss: 5.047976493835449, acc: 0.0)
+[2024-12-02 02:22:28,919][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:29,275][root][INFO] - Training Epoch: 1/10, step 101/2298 completed (loss: 5.104080677032471, acc: 0.03448275849223137)
+[2024-12-02 02:22:29,416][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:29,770][root][INFO] - Training Epoch: 1/10, step 102/2298 completed (loss: 3.4969542026519775, acc: 0.1666666716337204)
+[2024-12-02 02:22:29,923][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:30,293][root][INFO] - Training Epoch: 1/10, step 103/2298 completed (loss: 4.377537250518799, acc: 0.0714285746216774)
+[2024-12-02 02:22:30,412][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:30,750][root][INFO] - Training Epoch: 1/10, step 104/2298 completed (loss: 4.539842128753662, acc: 0.09090909361839294)
+[2024-12-02 02:22:30,861][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:31,216][root][INFO] - Training Epoch: 1/10, step 105/2298 completed (loss: 4.483060836791992, acc: 0.03846153989434242)
+[2024-12-02 02:22:31,330][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:31,692][root][INFO] - Training Epoch: 1/10, step 106/2298 completed (loss: 4.2833147048950195, acc: 0.10000000149011612)
+[2024-12-02 02:22:31,829][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:32,185][root][INFO] - Training Epoch: 1/10, step 107/2298 completed (loss: 4.2470383644104, acc: 0.1875)
+[2024-12-02 02:22:32,307][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:32,663][root][INFO] - Training Epoch: 1/10, step 108/2298 completed (loss: 5.308058261871338, acc: 0.0)
+[2024-12-02 02:22:32,787][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:33,145][root][INFO] - Training Epoch: 1/10, step 109/2298 completed (loss: 3.507000207901001, acc: 0.3055555522441864)
+[2024-12-02 02:22:33,716][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:34,393][root][INFO] - Training Epoch: 1/10, step 110/2298 completed (loss: 3.650998592376709, acc: 0.2647058963775635)
+[2024-12-02 02:22:34,501][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:34,836][root][INFO] - Training Epoch: 1/10, step 111/2298 completed (loss: 4.883152961730957, acc: 0.0)
+[2024-12-02 02:22:34,950][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:35,295][root][INFO] - Training Epoch: 1/10, step 112/2298 completed (loss: 3.7402548789978027, acc: 0.0)
+[2024-12-02 02:22:35,401][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:35,762][root][INFO] - Training Epoch: 1/10, step 113/2298 completed (loss: 4.333667278289795, acc: 0.1875)
+[2024-12-02 02:22:35,870][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:36,235][root][INFO] - Training Epoch: 1/10, step 114/2298 completed (loss: 4.101152420043945, acc: 0.1666666716337204)
+[2024-12-02 02:22:36,355][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:36,687][root][INFO] - Training Epoch: 1/10, step 115/2298 completed (loss: 5.8075971603393555, acc: 0.20000000298023224)
+[2024-12-02 02:22:36,835][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:37,208][root][INFO] - Training Epoch: 1/10, step 116/2298 completed (loss: 3.262667655944824, acc: 0.3529411852359772)
+[2024-12-02 02:22:37,333][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:37,669][root][INFO] - Training Epoch: 1/10, step 117/2298 completed (loss: 5.0028276443481445, acc: 0.07692307978868484)
+[2024-12-02 02:22:37,763][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:38,109][root][INFO] - Training Epoch: 1/10, step 118/2298 completed (loss: 4.022301197052002, acc: 0.1428571492433548)
+[2024-12-02 02:22:38,222][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:38,504][root][INFO] - Training Epoch: 1/10, step 119/2298 completed (loss: 4.206357002258301, acc: 0.06896551698446274)
+[2024-12-02 02:22:38,608][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:38,973][root][INFO] - Training Epoch: 1/10, step 120/2298 completed (loss: 3.2327210903167725, acc: 0.29411765933036804)
+[2024-12-02 02:22:39,120][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:39,485][root][INFO] - Training Epoch: 1/10, step 121/2298 completed (loss: 3.6011452674865723, acc: 0.21153846383094788)
+[2024-12-02 02:22:39,644][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:40,034][root][INFO] - Training Epoch: 1/10, step 122/2298 completed (loss: 4.387716293334961, acc: 0.0)
+[2024-12-02 02:22:40,175][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:40,516][root][INFO] - Training Epoch: 1/10, step 123/2298 completed (loss: 4.885693550109863, acc: 0.0)
+[2024-12-02 02:22:40,623][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:40,979][root][INFO] - Training Epoch: 1/10, step 124/2298 completed (loss: 4.578231334686279, acc: 0.07692307978868484)
+[2024-12-02 02:22:41,083][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:41,405][root][INFO] - Training Epoch: 1/10, step 125/2298 completed (loss: 3.814126968383789, acc: 0.0)
+[2024-12-02 02:22:41,509][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:41,852][root][INFO] - Training Epoch: 1/10, step 126/2298 completed (loss: 3.5504355430603027, acc: 0.4000000059604645)
+[2024-12-02 02:22:41,957][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:42,303][root][INFO] - Training Epoch: 1/10, step 127/2298 completed (loss: 3.833054304122925, acc: 0.4000000059604645)
+[2024-12-02 02:22:42,436][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:42,808][root][INFO] - Training Epoch: 1/10, step 128/2298 completed (loss: 3.32619047164917, acc: 0.1428571492433548)
+[2024-12-02 02:22:42,921][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:43,287][root][INFO] - Training Epoch: 1/10, step 129/2298 completed (loss: 3.238274097442627, acc: 0.20000000298023224)
+[2024-12-02 02:22:43,375][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:43,710][root][INFO] - Training Epoch: 1/10, step 130/2298 completed (loss: 4.0916948318481445, acc: 0.375)
+[2024-12-02 02:22:43,803][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:44,156][root][INFO] - Training Epoch: 1/10, step 131/2298 completed (loss: 3.5474929809570312, acc: 0.1428571492433548)
+[2024-12-02 02:22:44,277][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:44,649][root][INFO] - Training Epoch: 1/10, step 132/2298 completed (loss: 3.8832199573516846, acc: 0.1666666716337204)
+[2024-12-02 02:22:44,797][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:45,162][root][INFO] - Training Epoch: 1/10, step 133/2298 completed (loss: 3.4980766773223877, acc: 0.20000000298023224)
+[2024-12-02 02:22:45,288][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:45,638][root][INFO] - Training Epoch: 1/10, step 134/2298 completed (loss: 4.154241561889648, acc: 0.3333333432674408)
+[2024-12-02 02:22:45,746][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:46,086][root][INFO] - Training Epoch: 1/10, step 135/2298 completed (loss: 2.9921348094940186, acc: 0.1666666716337204)
+[2024-12-02 02:22:46,216][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:46,575][root][INFO] - Training Epoch: 1/10, step 136/2298 completed (loss: 3.0947415828704834, acc: 0.3541666567325592)
+[2024-12-02 02:22:46,682][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:47,028][root][INFO] - Training Epoch: 1/10, step 137/2298 completed (loss: 3.5828216075897217, acc: 0.23076923191547394)
+[2024-12-02 02:22:47,157][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:47,572][root][INFO] - Training Epoch: 1/10, step 138/2298 completed (loss: 3.3316433429718018, acc: 0.2777777910232544)
+[2024-12-02 02:22:47,683][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:48,028][root][INFO] - Training Epoch: 1/10, step 139/2298 completed (loss: 3.804685592651367, acc: 0.1428571492433548)
+[2024-12-02 02:22:48,147][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:48,522][root][INFO] - Training Epoch: 1/10, step 140/2298 completed (loss: 3.4533822536468506, acc: 0.3333333432674408)
+[2024-12-02 02:22:48,629][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:48,981][root][INFO] - Training Epoch: 1/10, step 141/2298 completed (loss: 3.8319058418273926, acc: 0.25)
+[2024-12-02 02:22:49,135][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:49,511][root][INFO] - Training Epoch: 1/10, step 142/2298 completed (loss: 3.1136558055877686, acc: 0.22727273404598236)
+[2024-12-02 02:22:49,627][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:49,989][root][INFO] - Training Epoch: 1/10, step 143/2298 completed (loss: 3.5639445781707764, acc: 0.23076923191547394)
+[2024-12-02 02:22:50,139][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:50,486][root][INFO] - Training Epoch: 1/10, step 144/2298 completed (loss: 2.9190289974212646, acc: 0.25)
+[2024-12-02 02:22:50,589][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:50,938][root][INFO] - Training Epoch: 1/10, step 145/2298 completed (loss: 2.6311726570129395, acc: 0.4285714328289032)
+[2024-12-02 02:22:51,053][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:51,399][root][INFO] - Training Epoch: 1/10, step 146/2298 completed (loss: 3.6114823818206787, acc: 0.1428571492433548)
+[2024-12-02 02:22:51,502][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:51,852][root][INFO] - Training Epoch: 1/10, step 147/2298 completed (loss: 2.5097172260284424, acc: 0.3333333432674408)
+[2024-12-02 02:22:51,957][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:52,312][root][INFO] - Training Epoch: 1/10, step 148/2298 completed (loss: 4.065021514892578, acc: 0.06666667014360428)
+[2024-12-02 02:22:52,437][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:52,779][root][INFO] - Training Epoch: 1/10, step 149/2298 completed (loss: 3.1546874046325684, acc: 0.25)
+[2024-12-02 02:22:52,877][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:53,245][root][INFO] - Training Epoch: 1/10, step 150/2298 completed (loss: 3.378838300704956, acc: 0.30000001192092896)
+[2024-12-02 02:22:53,358][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:53,703][root][INFO] - Training Epoch: 1/10, step 151/2298 completed (loss: 4.7490234375, acc: 0.2142857164144516)
+[2024-12-02 02:22:53,867][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:54,236][root][INFO] - Training Epoch: 1/10, step 152/2298 completed (loss: 4.3307061195373535, acc: 0.11428571492433548)
+[2024-12-02 02:22:54,340][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:54,695][root][INFO] - Training Epoch: 1/10, step 153/2298 completed (loss: 3.3554861545562744, acc: 0.3076923191547394)
+[2024-12-02 02:22:54,823][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:55,192][root][INFO] - Training Epoch: 1/10, step 154/2298 completed (loss: 1.9737027883529663, acc: 0.53125)
+[2024-12-02 02:22:55,286][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:55,646][root][INFO] - Training Epoch: 1/10, step 155/2298 completed (loss: 2.4218714237213135, acc: 0.5714285969734192)
+[2024-12-02 02:22:55,756][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:56,115][root][INFO] - Training Epoch: 1/10, step 156/2298 completed (loss: 4.279542446136475, acc: 0.0)
+[2024-12-02 02:22:56,210][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:56,536][root][INFO] - Training Epoch: 1/10, step 157/2298 completed (loss: 3.385117530822754, acc: 0.25)
+[2024-12-02 02:22:56,647][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:56,996][root][INFO] - Training Epoch: 1/10, step 158/2298 completed (loss: 3.8907625675201416, acc: 0.25)
+[2024-12-02 02:22:57,096][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:57,441][root][INFO] - Training Epoch: 1/10, step 159/2298 completed (loss: 3.0859451293945312, acc: 0.3333333432674408)
+[2024-12-02 02:22:57,544][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:57,893][root][INFO] - Training Epoch: 1/10, step 160/2298 completed (loss: 3.69516658782959, acc: 0.3333333432674408)
+[2024-12-02 02:22:58,029][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:58,348][root][INFO] - Training Epoch: 1/10, step 161/2298 completed (loss: 4.013986110687256, acc: 0.1111111119389534)
+[2024-12-02 02:22:58,453][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:58,775][root][INFO] - Training Epoch: 1/10, step 162/2298 completed (loss: 3.4184539318084717, acc: 0.2857142984867096)
+[2024-12-02 02:22:58,894][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:59,254][root][INFO] - Training Epoch: 1/10, step 163/2298 completed (loss: 3.670328378677368, acc: 0.1428571492433548)
+[2024-12-02 02:22:59,383][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:22:59,752][root][INFO] - Training Epoch: 1/10, step 164/2298 completed (loss: 3.781256914138794, acc: 0.10000000149011612)
+[2024-12-02 02:22:59,905][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:00,286][root][INFO] - Training Epoch: 1/10, step 165/2298 completed (loss: 3.665611505508423, acc: 0.1428571492433548)
+[2024-12-02 02:23:00,422][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:00,789][root][INFO] - Training Epoch: 1/10, step 166/2298 completed (loss: 3.3025460243225098, acc: 0.25)
+[2024-12-02 02:23:00,936][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:01,306][root][INFO] - Training Epoch: 1/10, step 167/2298 completed (loss: 3.348841428756714, acc: 0.29729729890823364)
+[2024-12-02 02:23:01,430][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:01,805][root][INFO] - Training Epoch: 1/10, step 168/2298 completed (loss: 3.1000375747680664, acc: 0.1666666716337204)
+[2024-12-02 02:23:01,958][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:02,325][root][INFO] - Training Epoch: 1/10, step 169/2298 completed (loss: 3.6087231636047363, acc: 0.3333333432674408)
+[2024-12-02 02:23:02,447][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:02,795][root][INFO] - Training Epoch: 1/10, step 170/2298 completed (loss: 3.0525314807891846, acc: 0.30000001192092896)
+[2024-12-02 02:23:02,906][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:03,273][root][INFO] - Training Epoch: 1/10, step 171/2298 completed (loss: 4.030502796173096, acc: 0.25)
+[2024-12-02 02:23:03,408][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:03,768][root][INFO] - Training Epoch: 1/10, step 172/2298 completed (loss: 3.5799496173858643, acc: 0.3199999928474426)
+[2024-12-02 02:23:03,920][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:04,289][root][INFO] - Training Epoch: 1/10, step 173/2298 completed (loss: 2.640141487121582, acc: 0.3636363744735718)
+[2024-12-02 02:23:04,416][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:04,782][root][INFO] - Training Epoch: 1/10, step 174/2298 completed (loss: 4.001218795776367, acc: 0.09090909361839294)
+[2024-12-02 02:23:04,959][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:05,333][root][INFO] - Training Epoch: 1/10, step 175/2298 completed (loss: 3.6563987731933594, acc: 0.4000000059604645)
+[2024-12-02 02:23:05,460][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:05,808][root][INFO] - Training Epoch: 1/10, step 176/2298 completed (loss: 3.7985434532165527, acc: 0.2702702581882477)
+[2024-12-02 02:23:05,944][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:06,303][root][INFO] - Training Epoch: 1/10, step 177/2298 completed (loss: 3.2335493564605713, acc: 0.0)
+[2024-12-02 02:23:06,420][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:06,786][root][INFO] - Training Epoch: 1/10, step 178/2298 completed (loss: 3.302844524383545, acc: 0.20000000298023224)
+[2024-12-02 02:23:06,949][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:07,335][root][INFO] - Training Epoch: 1/10, step 179/2298 completed (loss: 2.4736571311950684, acc: 0.6590909361839294)
+[2024-12-02 02:23:07,469][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:07,874][root][INFO] - Training Epoch: 1/10, step 180/2298 completed (loss: 4.071249961853027, acc: 0.1666666716337204)
+[2024-12-02 02:23:08,007][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:08,368][root][INFO] - Training Epoch: 1/10, step 181/2298 completed (loss: 2.9160337448120117, acc: 0.3799999952316284)
+[2024-12-02 02:23:08,512][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:08,865][root][INFO] - Training Epoch: 1/10, step 182/2298 completed (loss: 3.9262523651123047, acc: 0.3478260934352875)
+[2024-12-02 02:23:09,026][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:09,380][root][INFO] - Training Epoch: 1/10, step 183/2298 completed (loss: 2.2233176231384277, acc: 0.6000000238418579)
+[2024-12-02 02:23:09,488][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:09,851][root][INFO] - Training Epoch: 1/10, step 184/2298 completed (loss: 2.4868414402008057, acc: 0.5555555820465088)
+[2024-12-02 02:23:09,992][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:10,340][root][INFO] - Training Epoch: 1/10, step 185/2298 completed (loss: 3.8648202419281006, acc: 0.1666666716337204)
+[2024-12-02 02:23:10,445][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:10,790][root][INFO] - Training Epoch: 1/10, step 186/2298 completed (loss: 2.2993030548095703, acc: 0.0)
+[2024-12-02 02:23:10,900][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:11,265][root][INFO] - Training Epoch: 1/10, step 187/2298 completed (loss: 5.04727029800415, acc: 0.0)
+[2024-12-02 02:23:11,392][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:11,741][root][INFO] - Training Epoch: 1/10, step 188/2298 completed (loss: 2.670952796936035, acc: 0.4444444477558136)
+[2024-12-02 02:23:11,883][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:12,243][root][INFO] - Training Epoch: 1/10, step 189/2298 completed (loss: 2.880018711090088, acc: 0.25)
+[2024-12-02 02:23:12,393][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:12,743][root][INFO] - Training Epoch: 1/10, step 190/2298 completed (loss: 3.2107107639312744, acc: 0.2222222238779068)
+[2024-12-02 02:23:12,887][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:13,262][root][INFO] - Training Epoch: 1/10, step 191/2298 completed (loss: 2.6706748008728027, acc: 0.6000000238418579)
+[2024-12-02 02:23:13,373][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:13,713][root][INFO] - Training Epoch: 1/10, step 192/2298 completed (loss: 2.5378530025482178, acc: 0.4285714328289032)
+[2024-12-02 02:23:13,833][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:14,243][root][INFO] - Training Epoch: 1/10, step 193/2298 completed (loss: 2.0137460231781006, acc: 0.5)
+[2024-12-02 02:23:14,413][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:14,767][root][INFO] - Training Epoch: 1/10, step 194/2298 completed (loss: 3.3717799186706543, acc: 0.10000000149011612)
+[2024-12-02 02:23:14,869][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:15,238][root][INFO] - Training Epoch: 1/10, step 195/2298 completed (loss: 3.750584125518799, acc: 0.1428571492433548)
+[2024-12-02 02:23:15,361][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:15,704][root][INFO] - Training Epoch: 1/10, step 196/2298 completed (loss: 2.936649799346924, acc: 0.2857142984867096)
+[2024-12-02 02:23:15,825][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:16,176][root][INFO] - Training Epoch: 1/10, step 197/2298 completed (loss: 2.7402544021606445, acc: 0.5)
+[2024-12-02 02:23:16,286][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:16,648][root][INFO] - Training Epoch: 1/10, step 198/2298 completed (loss: 3.409011125564575, acc: 0.3529411852359772)
+[2024-12-02 02:23:16,763][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:17,123][root][INFO] - Training Epoch: 1/10, step 199/2298 completed (loss: 1.826666235923767, acc: 0.6666666865348816)
+[2024-12-02 02:23:17,248][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:17,577][root][INFO] - Training Epoch: 1/10, step 200/2298 completed (loss: 2.898796558380127, acc: 0.3636363744735718)
+[2024-12-02 02:23:17,682][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:18,034][root][INFO] - Training Epoch: 1/10, step 201/2298 completed (loss: 3.5558316707611084, acc: 0.27272728085517883)
+[2024-12-02 02:23:18,150][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:18,493][root][INFO] - Training Epoch: 1/10, step 202/2298 completed (loss: 2.1339528560638428, acc: 0.5416666865348816)
+[2024-12-02 02:23:18,597][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:18,943][root][INFO] - Training Epoch: 1/10, step 203/2298 completed (loss: 3.9110655784606934, acc: 0.3636363744735718)
+[2024-12-02 02:23:19,046][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:19,407][root][INFO] - Training Epoch: 1/10, step 204/2298 completed (loss: 2.059941291809082, acc: 0.3333333432674408)
+[2024-12-02 02:23:19,526][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:19,870][root][INFO] - Training Epoch: 1/10, step 205/2298 completed (loss: 3.200538158416748, acc: 0.1111111119389534)
+[2024-12-02 02:23:19,976][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:20,330][root][INFO] - Training Epoch: 1/10, step 206/2298 completed (loss: 3.541252851486206, acc: 0.3333333432674408)
+[2024-12-02 02:23:20,463][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:20,834][root][INFO] - Training Epoch: 1/10, step 207/2298 completed (loss: 3.416313648223877, acc: 0.3076923191547394)
+[2024-12-02 02:23:20,950][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:21,355][root][INFO] - Training Epoch: 1/10, step 208/2298 completed (loss: 2.7546207904815674, acc: 0.6666666865348816)
+[2024-12-02 02:23:21,502][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:21,853][root][INFO] - Training Epoch: 1/10, step 209/2298 completed (loss: 2.917950391769409, acc: 0.2142857164144516)
+[2024-12-02 02:23:22,004][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:22,373][root][INFO] - Training Epoch: 1/10, step 210/2298 completed (loss: 2.851280689239502, acc: 0.27272728085517883)
+[2024-12-02 02:23:22,501][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:22,847][root][INFO] - Training Epoch: 1/10, step 211/2298 completed (loss: 3.887871503829956, acc: 0.2750000059604645)
+[2024-12-02 02:23:22,987][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:23,360][root][INFO] - Training Epoch: 1/10, step 212/2298 completed (loss: 3.1915085315704346, acc: 0.32258063554763794)
+[2024-12-02 02:23:23,495][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:23,847][root][INFO] - Training Epoch: 1/10, step 213/2298 completed (loss: 3.912445545196533, acc: 0.2142857164144516)
+[2024-12-02 02:23:23,964][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:24,324][root][INFO] - Training Epoch: 1/10, step 214/2298 completed (loss: 3.2647647857666016, acc: 0.4000000059604645)
+[2024-12-02 02:23:24,491][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:24,884][root][INFO] - Training Epoch: 1/10, step 215/2298 completed (loss: 3.2414743900299072, acc: 0.28169015049934387)
+[2024-12-02 02:23:25,014][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:25,380][root][INFO] - Training Epoch: 1/10, step 216/2298 completed (loss: 3.0240848064422607, acc: 0.4615384638309479)
+[2024-12-02 02:23:25,498][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:25,845][root][INFO] - Training Epoch: 1/10, step 217/2298 completed (loss: 2.9404714107513428, acc: 0.5)
+[2024-12-02 02:23:25,990][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:26,352][root][INFO] - Training Epoch: 1/10, step 218/2298 completed (loss: 1.5331363677978516, acc: 0.6000000238418579)
+[2024-12-02 02:23:26,486][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:26,849][root][INFO] - Training Epoch: 1/10, step 219/2298 completed (loss: 2.249727487564087, acc: 0.2857142984867096)
+[2024-12-02 02:23:26,960][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:27,320][root][INFO] - Training Epoch: 1/10, step 220/2298 completed (loss: 3.7210259437561035, acc: 0.0)
+[2024-12-02 02:23:27,441][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:27,802][root][INFO] - Training Epoch: 1/10, step 221/2298 completed (loss: 1.9813429117202759, acc: 0.25)
+[2024-12-02 02:23:27,926][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:28,296][root][INFO] - Training Epoch: 1/10, step 222/2298 completed (loss: 3.9069743156433105, acc: 0.0)
+[2024-12-02 02:23:28,417][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:28,770][root][INFO] - Training Epoch: 1/10, step 223/2298 completed (loss: 2.510631561279297, acc: 0.4444444477558136)
+[2024-12-02 02:23:28,860][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:29,191][root][INFO] - Training Epoch: 1/10, step 224/2298 completed (loss: 2.491997480392456, acc: 0.6000000238418579)
+[2024-12-02 02:23:29,299][slam_llm.models.slam_model][INFO] - modality encoder
+[2024-12-02 02:23:29,650][root][INFO] - Training Epoch: 1/10, step 225/2298 completed (loss: 2.1383590698242188, acc: 0.4000000059604645)
+[2024-12-02 02:23:30,857][slam_llm.models.slam_model][INFO] - modality encoder

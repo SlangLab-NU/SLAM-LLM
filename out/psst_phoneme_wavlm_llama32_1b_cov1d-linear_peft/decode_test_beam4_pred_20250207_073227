@@ -1,0 +1,652 @@
+ACWT01a-BNT01-house	AH HH AW S
+ACWT01a-BNT02-comb	K OW M
+ACWT01a-BNT03-toothbrush	G R IH F T
+ACWT01a-BNT04-octopus	W AA SH W AA SH IH NG
+ACWT01a-BNT05-bench	CH EY R
+ACWT01a-BNT06-volcano	V AA L K EY N OW
+ACWT01a-BNT08-beaver	G EY V IH NG
+ACWT01a-BNT09-cactus	K AE K T AH S
+ACWT01a-BNT11-stethoscope	K AE K T AH S <spn>
+ACWT01a-BNT12-unicorn	W AA SH IH NG
+ACWT01a-BNT14-sphinx	G IH F T IH NG
+ACWT01a-BNT15-palette	AH HH AA P ER P UH S
+ACWT01a-VNT01-cut	G IH F T IH NG HH IH M
+ACWT01a-VNT02-bark	K R AO L IH NG
+ACWT01a-VNT03-put	OW G IH F T IH NG DH AH D IH NG D IH NG
+ACWT01a-VNT04-send	TH EY V IH NG DH AH D AA G
+ACWT01a-VNT05-drive	AH M S T ER IH NG L AY L AE F IH NG
+ACWT01a-VNT06-wash	W AA SH IH NG
+ACWT01a-VNT07-read	G IH F T IH NG DH AH D IH NG
+ACWT01a-VNT08-laugh	G R AE B IH NG
+ACWT01a-VNT09-watch	G IH F T IH NG AH P AA L DH AH P OW S T
+ACWT01a-VNT10-give	AH M IH T IH NG AH P IY S AH P EY P ER
+ACWT01a-VNT11-swim	AH M <sil> OW AH M <sil> OW AH
+ACWT01a-VNT12-stir	R AH S IY V IH NG
+ACWT01a-VNT13-pinch	G IH F T IH NG
+ACWT01a-VNT14-crawl	AH M EY B IY IH T S AH M <sil> AH M
+ACWT01a-VNT15-deliver	TH R OW IH NG DH AH D AA G
+ACWT01a-VNT16-pour	G IH F T IH NG W AH T DH AH D AA G
+ACWT01a-VNT17-howl	V AH D AA K IH NG N OW HH IY R Z
+ACWT01a-VNT18-throw	AH TH R OW IH NG
+ACWT01a-VNT19-bite	G IH F T IH NG W AH T IH T IH K AH L IH NG
+ACWT01a-VNT20-shove	AH M SH EY V IH NG
+ACWT01a-VNT21-tickle	G IH F T IH NG
+ACWT01a-VNT22-shave	R AA L AY L AE F IH NG <sil> SH EY V IH NG
+ACWT08a-BNT02-comb	K OW M
+ACWT08a-VNT01-cut	AH M AH M L AY L AE F IH NG
+ACWT08a-VNT02-bark	W AH T DH AH K AE CH IH NG W AH T DH AH B IY P OW S T M AE N
+ACWT08a-VNT03-put	AH M AH M L AY L AE F
+ACWT08a-VNT04-send	Y AE AH HH IY IH Z AH DH AH L EH DX ER
+ACWT08a-VNT05-drive	AH M AH M L AY L AE F IH NG
+ACWT08a-VNT06-wash	AH M AH M L AY L AE F IH NG
+ACWT08a-VNT07-read	Y AE AH HH IY IH Z AH DH AH L EH DX ER
+ACWT08a-VNT09-watch	AH M AH M L AY L AE F IH NG
+ACWT08a-VNT10-give	AH M EY B IY AH M <sil> AH P L EY IH NG
+ACWT08a-VNT11-swim	AH M <sil> OW AH M <sil> OW AH
+ACWT08a-VNT12-stir	AH B EY B IY IH NG
+ACWT08a-VNT13-pinch	AH M AH M AH M HH IY Z AH DH AH L EH DX ER
+ACWT08a-VNT14-crawl	AH M AH M L AY L AE F IH NG
+ACWT08a-VNT15-deliver	AH M <sil> OW AH M <sil> OW AH
+ACWT08a-VNT16-pour	AH M AH M L AY L AE F IH NG
+ACWT08a-VNT17-howl	AH M EY L M AE N L OW
+ACWT08a-VNT18-throw	OW K EY DH AE T OW AH M IH T S AH HH OW M
+ACWT08a-VNT19-bite	AH M EY B IY AH M <sil> AH P AE K IH JH
+ACWT08a-VNT20-shove	AH M AE N EY D AO R AH M <sil> AH P L EY IH N
+ACWT08a-VNT21-tickle	OW K EY DH AE T OW AH M <sil> W AH T DH AH D AA G IH Z B AY DX IH NG
+ACWT08a-VNT22-shave	AH M AH M L AY L AE F IH NG
+elman06a-BNT03-toothbrush	G IH F T IH K AH L
+elman06a-BNT15-palette	K AH N UW
+elman06a-VNT01-cut	HH AE M AH K
+elman06a-VNT02-bark	V AA L K EY N OW
+elman06a-VNT03-put	G IH F T IH NG
+elman06a-VNT04-send	AH P AE K IH JH IH NG AH P AE K IH JH
+elman06a-VNT05-drive	HH IY Z AH <sil> AY D OW N OW
+elman06a-VNT06-wash	SH AH V IH T
+elman06a-VNT07-read	HH OW M
+elman06a-VNT08-laugh	HH AE M AH K
+elman06a-VNT09-watch	G R AY B IH NG
+elman06a-VNT10-give	DH AE T S AH L AE F IH NG AH P AE K IH JH IH T
+elman06a-VNT11-swim	W AH T DH AH AH M IH NG
+elman06a-VNT12-stir	W AH T DH AH AH M W AH T DH AH W AH T DH AH W AH T DH AH W AH T
+elman06a-VNT13-pinch	G IH F T IH K AH L
+elman06a-VNT14-crawl	SH EY V IH NG
+elman06a-VNT15-deliver	AH S T EH TH AH S K OW P
+elman06a-VNT16-pour	W AA SH IH NG
+elman06a-VNT17-howl	SH EY V IH NG
+elman06a-VNT18-throw	HH AE M AH K IH NG N OW HH AE M AH K IH NG
+elman06a-VNT20-shove	SH SH IY Z L AE F IH NG
+elman06a-VNT21-tickle	HH AE M ER IH NG
+fridriksson04a-BNT01-house	AH N AA K T AH P UH S
+fridriksson04a-BNT02-comb	K OW M
+fridriksson04a-BNT03-toothbrush	Y UW N IH K AO R N
+fridriksson04a-BNT04-octopus	AA K T AH P UH S
+fridriksson04a-BNT05-bench	G EY V IH N
+fridriksson04a-BNT06-volcano	V AE L K EY N OW
+fridriksson04a-BNT07-canoe	K AH N UW
+fridriksson04a-BNT08-beaver	V AE L K EY N OW
+fridriksson04a-BNT09-cactus	K AE K T AH S
+fridriksson04a-BNT12-unicorn	Y UW N IH K AO R N
+fridriksson04a-BNT13-tripod	G R AW N HH AA G
+fridriksson04a-BNT14-sphinx	G IH F T IH K AH L
+fridriksson04a-BNT15-palette	AH B IY V ER
+fridriksson04a-VNT01-cut	G IH F T IH NG AH P EY P ER IH N T UW
+fridriksson04a-VNT02-bark	V AA L K EY N OW IH R AH P T IH NG
+fridriksson04a-VNT03-put	G IH F T IH NG AH P AA L DH AH P OW S T
+fridriksson04a-VNT04-send	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+fridriksson04a-VNT05-drive	HH IY Z D R AY V IH NG
+fridriksson04a-VNT06-wash	HH IY Z W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+fridriksson04a-VNT07-read	HH IY Z D R AY V IH NG EY D R AY V IH NG
+fridriksson04a-VNT08-laugh	HH IY Z L AE F IH NG
+fridriksson04a-VNT09-watch	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+fridriksson04a-VNT10-give	G IH F T IH NG DH AH D AA G
+fridriksson04a-VNT11-swim	W AH T IH NG
+fridriksson04a-VNT12-stir	CH ER D AH G CH IH NG N OW P
+fridriksson04a-VNT13-pinch	SH EY V IH NG
+fridriksson04a-VNT14-crawl	K R AO L IH NG
+fridriksson04a-VNT15-deliver	DH AH L IH DX AH L IH DX AH L IH DX AH L IH DX AH L IH DX AH L IH DX AH L IH DX AH
+fridriksson04a-VNT16-pour	W AA SH IH NG
+fridriksson04a-VNT17-howl	HH AW AH L IH NG HH AW L IH NG
+fridriksson04a-VNT18-throw	V AE K AO R IH N OW V AH L EH DX ER
+fridriksson04a-VNT19-bite	Y UW N IH K AO R N
+fridriksson04a-VNT20-shove	AY TH IH NG DH AH D AA G IH Z B AE S K IH T
+fridriksson04a-VNT21-tickle	G IH F IH NG HH IH M
+fridriksson04a-VNT22-shave	AH M S T ER IH NG
+fridriksson05a-BNT02-comb	K OW M
+fridriksson05a-BNT03-toothbrush	CH EY R AH K AA R
+fridriksson05a-BNT04-octopus	AA K T AH P UH S
+fridriksson05a-BNT05-bench	G IH F T IH K AH L
+fridriksson05a-BNT06-volcano	V AA L K EY N OW
+fridriksson05a-BNT07-canoe	K AH N UW
+fridriksson05a-BNT08-beaver	CH EY R
+fridriksson05a-BNT09-cactus	K AE K T AH S
+fridriksson05a-BNT10-hammock	K AE M AH K
+fridriksson05a-BNT11-stethoscope	TH AE T AH S K OW P
+fridriksson05a-BNT12-unicorn	Y UW N IH K AO R N
+fridriksson05a-BNT13-tripod	V AE L K EY N OW
+fridriksson05a-BNT14-sphinx	K AH DX IH NG N OW
+fridriksson05a-VNT01-cut	K AH DX IH NG
+fridriksson05a-VNT02-bark	V AA L K EY N OW IH NG
+fridriksson05a-VNT03-put	AH M G EY V IH NG
+fridriksson05a-VNT04-send	G IH F IH NG
+fridriksson05a-VNT05-drive	R AY D IH NG
+fridriksson05a-VNT06-wash	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+fridriksson05a-VNT07-read	R IY D IH NG
+fridriksson05a-VNT09-watch	W AA CH IH NG T IY V IY
+fridriksson05a-VNT10-give	G IH F T IH NG AH P AE K IH JH
+fridriksson05a-VNT11-swim	AH M B EY B IY NG
+fridriksson05a-VNT12-stir	CH EY R IH NG <sil> CH EY R IH NG
+fridriksson05a-VNT13-pinch	CH EY R IH NG
+fridriksson05a-VNT14-crawl	TH R OW IH NG
+fridriksson05a-VNT15-deliver	G IH F T IH NG T IH K AH L IH NG
+fridriksson05a-VNT16-pour	R AY D IH NG W AH T DH AH D AA G
+fridriksson05a-VNT17-howl	HH AW L IH NG
+fridriksson05a-VNT18-throw	TH R OW IH NG
+fridriksson05a-VNT19-bite	G AY DX IH NG AH W EY
+fridriksson05a-VNT20-shove	K AH T IH NG
+fridriksson05a-VNT21-tickle	K AH N UW
+fridriksson07a-BNT01-house	HH AW S
+fridriksson07a-BNT02-comb	K OW M
+fridriksson07a-BNT05-bench	DH IH S DH IH S IH Z AH Z N OW P
+fridriksson07a-BNT06-volcano	AH N UW Y UW P EY P ER
+fridriksson07a-BNT07-canoe	K AH N UW
+fridriksson07a-BNT08-beaver	AH HH AE M AH K IH NG N OW P
+fridriksson07a-BNT09-cactus	AA K T AH P UH S
+fridriksson07a-BNT10-hammock	DH AE T IH Z AH HH AE M AH K
+fridriksson07a-BNT11-stethoscope	G IH F T IH S AH S P EY K AH JH
+fridriksson07a-BNT14-sphinx	AH S P AE NG AH L Z
+fridriksson07a-VNT01-cut	DH EY R HH IY IH Z L AE F IH NG AH P IY S AH P EY P ER
+fridriksson07a-VNT03-put	G IH F T IH NG N OW P
+fridriksson07a-VNT05-drive	R AY D IH NG
+fridriksson07a-VNT06-wash	W AA SH IH NG
+fridriksson07a-VNT07-read	R IY D IH NG
+fridriksson07a-VNT08-laugh	TH AE T IH NG
+fridriksson07a-VNT09-watch	W AA CH IH NG T IY V IY
+fridriksson07a-VNT10-give	G IH F IH NG
+fridriksson07a-VNT11-swim	W AH T IH NG
+fridriksson07a-VNT12-stir	W AH T DH AH AH M <sil> W AH T DH AH W AH T DH AH OW F R IY Z IH NG
+fridriksson07a-VNT13-pinch	G IH F T IH NG AH P IY S AH P EY P ER
+fridriksson07a-VNT14-crawl	K R AO L IH NG
+fridriksson07a-VNT15-deliver	G IH V IH NG T IY V IY
+fridriksson07a-VNT16-pour	W AO CH IH NG
+fridriksson07a-VNT17-howl	HH AW L IH NG
+fridriksson07a-VNT18-throw	TH R OW IH NG
+fridriksson07a-VNT19-bite	V AY IH NG
+fridriksson07a-VNT20-shove	G UH T <sil> SH EY V IH NG
+fridriksson07a-VNT21-tickle	CH IH K AH L IH NG
+fridriksson07a-VNT22-shave	SH EY V IH NG
+fridriksson12a-BNT01-house	HH AW S
+fridriksson12a-BNT02-comb	K OW M
+fridriksson12a-BNT03-toothbrush	TH AE T AH S K OW P
+fridriksson12a-BNT04-octopus	AA K T AH P UH S
+fridriksson12a-BNT05-bench	AH G EY V
+fridriksson12a-BNT10-hammock	HH AE M AH K
+fridriksson12a-BNT15-palette	K AH DX IH NG N OW
+fridriksson12a-VNT01-cut	K AH T
+fridriksson12a-VNT02-bark	AH M <sil> OW AH M <sil> OW AH
+fridriksson12a-VNT03-put	G AH N UW
+fridriksson12a-VNT04-send	AH M <sil> OW AH M <sil> OW AH
+fridriksson12a-VNT05-drive	G R AY IH NG
+fridriksson12a-VNT07-read	AH V AA L K AE N OW
+fridriksson12a-VNT08-laugh	AH M AH M L AY L AE F IH NG
+fridriksson12a-VNT09-watch	AH M S T ER IH NG
+fridriksson12a-VNT11-swim	AH M S W IH M IH NG
+fridriksson12a-VNT14-crawl	W AA CH IH NG
+fridriksson12a-VNT15-deliver	AH K AE T IH Z L UH K IH NG T AH DH AH D AA G
+fridriksson12a-VNT17-howl	OW AH <sil> OW AH L AE F IH NG <sil> L AE F IH NG
+fridriksson12a-VNT18-throw	AH S OW AH M AH AH S IY AY D OW N OW S IY
+fridriksson12a-VNT19-bite	AH M AE N EY D AO R AH M <sil> AH P L EY IH N
+fridriksson12a-VNT20-shove	AH M <sil> OW AH M <sil> OW AH
+fridriksson12a-VNT21-tickle	K Y UW N IH K AO R N
+fridriksson12a-VNT22-shave	AH M <sil> OW AH M <sil> OW AH
+fridriksson13a-BNT01-house	HH AW S
+fridriksson13a-BNT02-comb	K OW M
+fridriksson13a-BNT03-toothbrush	Y UW N IH K AO R N
+fridriksson13a-BNT04-octopus	AA K T AH P UH S
+fridriksson13a-BNT05-bench	CH EY R AY D OW N OW
+fridriksson13a-BNT06-volcano	V AA L K EY N OW
+fridriksson13a-BNT07-canoe	K AH N UW
+fridriksson13a-BNT08-beaver	G EY V IH NG
+fridriksson13a-BNT09-cactus	G IH F T IH K AH L T IH K AH L
+fridriksson13a-BNT10-hammock	HH AE M AH K
+fridriksson13a-BNT11-stethoscope	TH AE T AH S K OW P
+fridriksson13a-BNT12-unicorn	HH OW R S
+fridriksson13a-BNT13-tripod	R AY D IH NG
+fridriksson13a-BNT14-sphinx	G IH F T IH K AH L IH NG
+fridriksson13a-BNT15-palette	HH IY Z D R AY V IH NG
+fridriksson13a-VNT01-cut	Y UW N IH K AO R N
+fridriksson13a-VNT02-bark	AH N UW L EY D
+fridriksson13a-VNT03-put	HH AE T IH Z L UH K IH NG T AH DH IY AH M <sil> P IH N CH IH NG
+fridriksson13a-VNT04-send	V AA L K EY N OW IH R AH P T IH NG
+fridriksson13a-VNT05-drive	G R AE B IH NG D R AY V IH NG
+fridriksson13a-VNT06-wash	K AH T
+fridriksson13a-VNT07-read	G EY V IH NG T EY B AH L
+fridriksson13a-VNT08-laugh	W AH T DH AH AH HH AW S
+fridriksson13a-VNT09-watch	HH IY Z K AH T IH NG
+fridriksson13a-VNT11-swim	W AH DX IH NG W AH T IH Z DH AH D IH NG W AH T IH Z
+fridriksson13a-VNT12-stir	Y UW N IH K AO R N
+fridriksson13a-VNT13-pinch	HH AW AH L IH NG HH AW L IH NG
+fridriksson13a-VNT14-crawl	K AH T IH Z B AY DX IH NG W AH T DH AH D AA G
+fridriksson13a-VNT15-deliver	K AE T <sil> K AH T IH Z B AY DX IH NG W AH T DH AH D AA G
+fridriksson13a-VNT16-pour	R IY D IH NG R IY D IH NG
+fridriksson13a-VNT17-howl	V OW K EY DH AE T S AH HH OW M
+fridriksson13a-VNT18-throw	K AE T IH Z L UH K IH NG
+fridriksson13a-VNT19-bite	HH IY Z P UH SH IH NG HH IY Z P UH SH IH NG HH IY Z P UH SH IH NG
+fridriksson13a-VNT20-shove	OW IH T IY L IH NG T IY L IH NG N OW IH T IY L IH NG
+fridriksson13a-VNT21-tickle	W AH T DH AH AH M NG K IH NG
+fridriksson13a-VNT22-shave	TH IH S AH S T IH K AH L IH NG
+scale01a-BNT02-comb	K OW M
+scale01a-BNT04-octopus	HH AE M AH K
+scale01a-BNT07-canoe	K AH N UW
+scale01a-BNT11-stethoscope	G AH N UW
+scale01a-BNT12-unicorn	W AH T DH AH AH M <sil> W AH T DH AH
+scale01a-VNT01-cut	K AH DX IH NG
+scale01a-VNT02-bark	V AA L K EY N OW IH R AH P T IH NG AH P AE K IH JH
+scale01a-VNT03-put	G IH F T IH NG
+scale01a-VNT04-send	AH B AA K S AO R AH M <sil> AH P AE K IH JH
+scale01a-VNT05-drive	G R AY IH NG
+scale01a-VNT06-wash	W AH T DH AH AH M
+scale01a-VNT07-read	UH T AH P UH SH IH NG AH P EY P ER <sil> AH P EY P ER
+scale01a-VNT08-laugh	HH AH NG AH HH AE Z L AE F IH NG L AE F
+scale01a-VNT09-watch	AH S T ER N IH NG AH P IY S AH S T IH K OW P
+scale01a-VNT10-give	V AA L K AE N OW
+scale01a-VNT11-swim	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+scale01a-VNT12-stir	AH M AH M L AY L AE F IH NG
+scale01a-VNT13-pinch	K IH T IH NG AH P IY S AH P EY P ER IH NG AH B AA L
+scale01a-VNT14-crawl	AH DH AH D AA G IH Z B AA R K IH NG
+scale01a-VNT15-deliver	AH M AE N EY D AO R AH M <sil> AH P AE K IH JH
+scale01a-VNT16-pour	AH M IH T S AH M <sil> P IH N CH IH NG P IH N CH IH NG
+scale01a-VNT18-throw	SH IY Z AH M W AH T DH AH D AA G IH Z B AY DX IH NG AH P AE K IH JH
+scale01a-VNT19-bite	K IH T IH NG AH P AE K IH JH
+scale01a-VNT20-shove	G IH F T IH NG AH P R EH Z IH N T S <sil> G IH F T IH NG AH
+scale01a-VNT21-tickle	AH N AA K T AH P UH S
+scale01a-VNT22-shave	AH DH AH D AA G IH Z B AA R K IH NG
+scale28a-BNT01-house	HH AW S
+scale28a-BNT02-comb	K OW M
+scale28a-BNT03-toothbrush	G R AW N HH AA S
+scale28a-BNT05-bench	G IH F T IH K AH L
+scale28a-BNT06-volcano	W AH T DH AH AH M W AH T DH AH W AH T
+scale28a-BNT07-canoe	G OW F EH CH
+scale28a-BNT08-beaver	AH W W AA CH IH NG <spn>
+scale28a-BNT10-hammock	G EY V OW L EH T S AH G EY V OW L EH T S
+scale28a-BNT11-stethoscope	V AA L K AE N OW
+scale28a-BNT12-unicorn	HH AO R S
+scale28a-BNT14-sphinx	K AH N UW
+scale28a-VNT01-cut	G EY V OW L EH T S AH G EY V OW L EH T S <sil> AH P EY P ER
+scale28a-VNT02-bark	V OW K AA
+scale28a-VNT03-put	V AA L K AE N OW
+scale28a-VNT04-send	V AE L K EY N OW
+scale28a-VNT05-drive	K AA K T AH P UH S
+scale28a-VNT06-wash	W AH T DH AH AH M <sil> AH M
+scale28a-VNT07-read	AH W AW W AH T DH AH K AE CH
+scale28a-VNT08-laugh	AH M AH M L AY L AE F IH NG
+scale28a-VNT09-watch	K AE T <sil> AH K AE T <spn>
+scale28a-VNT10-give	AH M AH M L AY L AE F IH NG
+scale28a-VNT11-swim	W AH DX IH NG
+scale28a-VNT12-stir	AH M AH M L AY L AE F IH NG
+scale28a-VNT13-pinch	AH HH AW S
+scale28a-VNT14-crawl	AH M <sil> OW AH M <sil> OW AH
+scale28a-VNT16-pour	W AA CH IH NG
+scale28a-VNT18-throw	V AE K AO R IH N OW
+scale28a-VNT19-bite	AH M <sil> OW AH M <sil> OW AH
+scale28a-VNT20-shove	AH HH AE M AH K
+scale28a-VNT21-tickle	W AA CH IH NG
+scale28a-VNT22-shave	SH EY V IH NG
+star03a-BNT02-comb	W AH T DH AH AH M
+star03a-BNT03-toothbrush	W AH T DH AH AH M
+star03a-BNT07-canoe	V EH L OW
+star03a-BNT08-beaver	K R AO L
+star03a-BNT09-cactus	K AH N UW
+star03a-BNT10-hammock	W AH T DH AH AH M <sil> W AH T DH AH W AH T DH AH W AH T DH AH
+star03a-BNT11-stethoscope	AH M AH M L AY L AE F IH NG
+star03a-BNT12-unicorn	G EY V IH NG
+star03a-BNT13-tripod	K R AA L K R AA L
+star03a-BNT14-sphinx	G EY V IH NG
+star03a-VNT01-cut	AH HH IY IH Z DH AH K AH T IH NG
+star03a-VNT02-bark	W AA CH IH NG
+star03a-VNT03-put	AH DH IH S AH DH IH S HH IY Z AH DH IH S IH Z L AY L AE F IH NG W AH T IH Z DH IH S IH NG W AH T IH Z DH IH S IH NG W AH T IH Z
+star03a-VNT04-send	AH M AH M L AY L AE F IH NG
+star03a-VNT05-drive	AH M AE N EY D AA GG AH M <sil> AH P L EY IH NG
+star03a-VNT06-wash	AH M <sil> OW AH M <sil> OW AH
+star03a-VNT07-read	UH L UH L UH L UH L UH L IY L IY L IY L IY M IY N L IY L IY M IY N
+star03a-VNT08-laugh	AY L AE F IH NG
+star03a-VNT09-watch	AH DH AH D AA G IH Z B AA R K IH NG
+star03a-VNT10-give	G AH L IH DX AH L B EY B IY IH Z L AE F IH NG HH IH M
+star03a-VNT11-swim	AH M HH IY IH Z AH DH AH L EH DX ER AE N D AH L EH DX ER
+star03a-VNT12-stir	AH M EY B IY AH M <sil> AH P L EY IH NG AH
+star03a-VNT13-pinch	AH M <sil> OW AH M <sil> OW AH
+star03a-VNT14-crawl	DH EY R Z AH S EY S ER
+star03a-VNT15-deliver	AH DH AH D AA G IH Z B AA R K IH NG AO R AH M <sil> AH P AE K IH JH
+star03a-VNT16-pour	AH HH AH NG HH IH M AE T DH AH D AA G IH Z B EY NG K IH NG
+star03a-VNT17-howl	AH DH IH S IH Z L UH K IH NG T UW DH IY AH DH ER DH IH S IH Z L UH K IH NG
+star03a-VNT18-throw	DH AH M AE N IH Z L AE F IH NG AH B EY B IY IH Z L AE F IH NG DH AH D AA G
+star03a-VNT19-bite	AH N AA K T AH P UH S
+star03a-VNT20-shove	AH DH EY R HH IY Z SH EY V IH NG AH P EY P ER P EY P ER
+star03a-VNT21-tickle	AH M EY B IY AH P L EY IH NG AH P L EY IH NG <sil> AH P L EY IH NG
+star03a-VNT22-shave	AH M <sil> OW AH M <sil> OW AH
+tap14a-BNT02-comb	K OW M
+tap14a-BNT05-bench	AH W W AA CH IH NG <spn>
+tap14a-BNT14-sphinx	AH W W AA CH IH NG <spn>
+tap14a-BNT15-palette	CH EY R
+tap14a-VNT01-cut	K AH T
+tap14a-VNT03-put	K OW M
+tap14a-VNT04-send	AH S T EH F AH K
+tap14a-VNT05-drive	G R IH F T IH NG
+tap14a-VNT06-wash	AH W W AA CH IH NG <spn>
+tap14a-VNT07-read	V EH T IH NG
+tap14a-VNT08-laugh	HH IY Z L AE F IH NG
+tap14a-VNT09-watch	OW K EY DH AE T OW OW AH M
+tap14a-VNT10-give	HH IH TH B R AH SH
+tap14a-VNT11-swim	W AH T DH AH AH M <sil> W AH T DH AH W AH T DH AH W AH T DH AH
+tap14a-VNT12-stir	K EY N OW
+tap14a-VNT13-pinch	V AE L K EY N OW
+tap14a-VNT14-crawl	TH EH S AH S K OW P
+tap14a-VNT15-deliver	AH W W AA CH IH NG <spn>
+tap14a-VNT16-pour	AH B IY V ER
+tap14a-VNT18-throw	HH IY Z D R AY V IH NG
+tap14a-VNT19-bite	V AE L K EY N OW
+tap14a-VNT20-shove	W AH T DH AH AH M <sil> W AH T DH AH
+tap14a-VNT21-tickle	CH EY R CH EY R
+thompson05a-BNT02-comb	K R AO L
+thompson05a-BNT03-toothbrush	G R AW N HH AA S
+thompson05a-BNT07-canoe	K AH N UW
+thompson05a-BNT09-cactus	V AE L K EY N OW
+thompson05a-BNT12-unicorn	HH AO R S
+thompson05a-VNT01-cut	AH M AH M L AY L AE F IH NG
+thompson05a-VNT02-bark	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+thompson05a-VNT03-put	AH M AH M L AY L AE F IH NG
+thompson05a-VNT04-send	AH M AH M L AY L AE F IH NG
+thompson05a-VNT05-drive	AH M S AH M <sil> AH P L EY IH NG P L EY IH NG
+thompson05a-VNT06-wash	AH <sil> W AH T DH AH AH M <sil> W AH T DH AH W AH T DH AH OW F R IY Z IH NG
+thompson05a-VNT07-read	AH M <sil> OW AH M <sil> OW AH
+thompson05a-VNT08-laugh	V AE L K EY N OW IH R AH P T IH NG
+thompson05a-VNT09-watch	AH M S OW AH M <sil> AY TH IH NG K DH IH S
+thompson05a-VNT10-give	AH M K EY DH IY AH M <sil> AH P L EY IH NG
+thompson05a-VNT11-swim	AH S T EH TH S AH S T IH K OW P
+thompson05a-VNT12-stir	AH M <sil> OW AH M <sil> OW AH
+thompson05a-VNT13-pinch	AH HH EY R AH M <sil> AH P AE L AH T
+thompson05a-VNT14-crawl	W AA CH IH NG
+thompson05a-VNT15-deliver	OW K EY DH AE T S AH SH EY V IH NG AH P EY JH
+thompson05a-VNT16-pour	AH M <sil> OW AH M <sil> OW AH
+thompson05a-VNT17-howl	OW K EY DH AE T OW AH M <sil> AH P AE K IH JH
+thompson05a-VNT18-throw	Y AE AH HH IY IH Z AH DH AH L EH DX ER
+thompson05a-VNT19-bite	AH M <sil> OW AH M <sil> OW AH
+thompson05a-VNT20-shove	AE N D EY P UH SH IH NG W AH T DH AH D AA G IH Z B AY DX IH NG
+thompson05a-VNT21-tickle	G EY V OW L EH T S S IY
+thompson05a-VNT22-shave	Y AE AH HH IY IH Z AH DH AH L EH DX ER
+whiteside10a-BNT01-house	AH HH AW S
+whiteside10a-BNT05-bench	CH EY R
+whiteside10a-BNT11-stethoscope	V AE L K EY N OW
+whiteside10a-VNT01-cut	AH P L EY IH NG AH P L EY IH NG <sil> AH P L EY IH NG
+whiteside10a-VNT02-bark	W AA SH IH NG
+whiteside10a-VNT03-put	Y AE AH HH IY IH Z AH DH AH L EH DX ER
+whiteside10a-VNT04-send	CH EY R
+whiteside10a-VNT05-drive	K OW M
+whiteside10a-VNT06-wash	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+whiteside10a-VNT07-read	R IY D IH NG
+whiteside10a-VNT08-laugh	TH AE T IH Z
+whiteside10a-VNT09-watch	OW K EY DH AE T OW AH M W AH T DH AH D AA G IH Z B AY DX IH NG
+whiteside10a-VNT10-give	G IH F T IH K AH L
+whiteside10a-VNT11-swim	G IH F T IH NG
+whiteside10a-VNT12-stir	AH DH AH M AE N W AH T DH AH D AA G IH Z B AY DX IH NG
+whiteside10a-VNT13-pinch	HH AE M AH K
+whiteside10a-VNT14-crawl	G EY V IH NG
+whiteside10a-VNT15-deliver	AH T S T ER <sil> AH P L EY T S T IH K OW Z <sil> AH P L EY T S
+whiteside10a-VNT16-pour	AH T IY V IY AH M <sil> AH P L EY IH NG
+whiteside10a-VNT18-throw	G AH N OW N OW N OW N OW N OW W AH T DH AH D AA G IH Z B AA R T S <sil> AY D OW N OW
+whiteside10a-VNT19-bite	W AH DX IH NG
+whiteside10a-VNT20-shove	R AH S IY AY D OW N OW R AH S IY AY D OW N OW W AH T DH AH AH M <sil> R AH S IY AY D OW N OW
+whiteside10a-VNT21-tickle	AH L AE F IH NG N OW SH IY Z AH L AE F IH NG
+whiteside10a-VNT22-shave	K AH DX IH NG AH P IY S AH P EY P ER
+whiteside17a-BNT01-house	AH HH AW S
+whiteside17a-BNT02-comb	K OW M
+whiteside17a-BNT03-toothbrush	HH IH TH B R AH SH
+whiteside17a-BNT05-bench	AH HH EH M AH K
+whiteside17a-BNT06-volcano	V AA L K EY N OW
+whiteside17a-BNT07-canoe	AH V AA L K AE N OW
+whiteside17a-BNT09-cactus	K AE K T AH S
+whiteside17a-BNT10-hammock	HH AE M AH K
+whiteside17a-BNT11-stethoscope	TH AE T AH S K OW P
+whiteside17a-BNT12-unicorn	AH N AA K T AH P UH S
+whiteside17a-BNT13-tripod	G R AE B AH K AA R
+whiteside17a-BNT15-palette	CH EY R CH EY R
+whiteside17a-VNT01-cut	AH N AA K T AH P UH S
+whiteside17a-VNT02-bark	V AA L K EY N OW IH R AH P T IH NG
+whiteside17a-VNT03-put	K AH DX IH NG
+whiteside17a-VNT04-send	AH HH EY L IH NG
+whiteside17a-VNT05-drive	G R AY IH NG
+whiteside17a-VNT06-wash	AH T EY K IH NG
+whiteside17a-VNT07-read	R IY D IH NG
+whiteside17a-VNT08-laugh	AH T EY B IY NG
+whiteside17a-VNT09-watch	W AA CH IH NG
+whiteside17a-VNT10-give	G R AE B IH NG D R AY V IH NG
+whiteside17a-VNT11-swim	W AH T DH AH AH M IH NG
+whiteside17a-VNT12-stir	G IH F T IH NG
+whiteside17a-VNT13-pinch	AH DH AH D AA G IH Z B AA R T S IH NG AH D AA G IH Z
+whiteside17a-VNT14-crawl	TH R OW IH NG
+whiteside17a-VNT16-pour	K AO R IH NG
+whiteside17a-VNT17-howl	V AA L K AE N OW IH NG
+whiteside17a-VNT18-throw	TH R OW IH NG
+whiteside17a-VNT19-bite	W AY W W AY W W AY IH NG
+whiteside17a-VNT20-shove	W AA SH IH NG
+whiteside17a-VNT21-tickle	K IH K AH DX IH NG
+whiteside17a-VNT22-shave	SH EY V IH NG
+williamson02a-BNT01-house	HH AW S
+williamson02a-BNT02-comb	K OW M
+williamson02a-BNT03-toothbrush	G IH F T ER
+williamson02a-BNT04-octopus	AA K T AH P UH S
+williamson02a-BNT05-bench	AH HH AE M AH K
+williamson02a-BNT06-volcano	V AE L K EY N OW
+williamson02a-BNT07-canoe	K AH N UW
+williamson02a-BNT08-beaver	G EY V
+williamson02a-BNT10-hammock	AH M AH M L AE F IH NG
+williamson02a-BNT11-stethoscope	TH AE T AH S K OW P
+williamson02a-BNT12-unicorn	Y UW N IH K AO R N
+williamson02a-BNT13-tripod	G R AY B AH G R IY N OW
+williamson02a-BNT14-sphinx	G EY V IH NG
+williamson02a-BNT15-palette	HH AW S
+williamson02a-VNT01-cut	AH M AH M L AY L AE F IH NG
+williamson02a-VNT02-bark	AH M AH M L AY L AE F
+williamson02a-VNT03-put	AH G EY V IH NG
+williamson02a-VNT04-send	AH W W AA CH IH NG <spn>
+williamson02a-VNT05-drive	G R AE B IH NG
+williamson02a-VNT06-wash	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+williamson02a-VNT07-read	W AH T DH AH AH M
+williamson02a-VNT08-laugh	W AE SH IH NG
+williamson02a-VNT09-watch	W AH T DH AH K AE CH IH NG N OW W AH T DH AH K AE CH IH NG
+williamson02a-VNT10-give	AH IH T IH Z D R AY V IH NG DH AH D R AY V IH NG
+williamson02a-VNT11-swim	AH S W IH M IH NG
+williamson02a-VNT12-stir	AH S T EH TH AH S K OW P
+williamson02a-VNT13-pinch	G IH F IH NG
+williamson02a-VNT14-crawl	K R AO L IH NG
+williamson02a-VNT15-deliver	G IH V IH NG AH P IY S AH P EY P ER
+williamson02a-VNT16-pour	W AH T DH AH AH M <sil> W AH T DH AH W AH T DH AH OW F R IY Z IH NG W AH T DH AH
+williamson02a-VNT17-howl	V AE L K EY N OW IH R AH P T IH NG
+williamson02a-VNT19-bite	AH B AA K S AO R AH M <sil> AH P AE K IH JH
+williamson02a-VNT20-shove	AH W W AA CH IH NG <spn>
+williamson02a-VNT21-tickle	G IH F T IH NG
+williamson02a-VNT22-shave	AH M S T ER IH NG
+williamson15a-BNT01-house	HH OW R S
+williamson15a-BNT02-comb	AH W W AA CH IH NG <spn>
+williamson15a-BNT03-toothbrush	K AH T IH NG P EY P ER
+williamson15a-BNT04-octopus	HH AE M AH K
+williamson15a-BNT05-bench	AH HH AE M AH K
+williamson15a-BNT06-volcano	V AE K AO R IH N OW
+williamson15a-BNT07-canoe	K AH N UW
+williamson15a-BNT08-beaver	AH W W AA CH IH NG <spn>
+williamson15a-BNT09-cactus	K AH T IH Z
+williamson15a-BNT10-hammock	V AE L K EY N OW
+williamson15a-BNT11-stethoscope	JH EH TH B R AH SH
+williamson15a-BNT12-unicorn	G EY V OW L EH T S AH HH IY R Z
+williamson15a-BNT13-tripod	HH AW AH L K AA R P UH SH
+williamson15a-BNT14-sphinx	AH G EY V
+williamson15a-BNT15-palette	V EH L OW
+williamson15a-VNT01-cut	K AH N UW
+williamson15a-VNT02-bark	V AE L K EY N OW IH R AH P T IH NG
+williamson15a-VNT03-put	AH P UH T DH AH AH P UH T DH AH L EH DX ER
+williamson15a-VNT04-send	G R IH NG K IH NG
+williamson15a-VNT05-drive	V AH K EY N OW
+williamson15a-VNT06-wash	W AA SH IH NG
+williamson15a-VNT07-read	R IY D N IH N
+williamson15a-VNT08-laugh	V AE L K EY N OW
+williamson15a-VNT09-watch	V AE L K EY N OW V AE L K EY N OW
+williamson15a-VNT10-give	G IH F T IH NG AH P EY P ER IH N T UW
+williamson15a-VNT11-swim	G IH F T IH N
+williamson15a-VNT12-stir	K R AO L IH NG
+williamson15a-VNT13-pinch	AH HH AE M AH K
+williamson15a-VNT14-crawl	K R AO L IH NG <sil> AY D OW N OW
+williamson15a-VNT15-deliver	G R AE B IH NG AO R AH M <sil> AH P L EY IH NG
+williamson15a-VNT16-pour	HH OW R AO L IH NG
+williamson15a-VNT17-howl	G IH F T IY Z AH M <sil> G IH F T IY Z AH M
+williamson15a-VNT18-throw	K R AO L IH NG
+williamson15a-VNT19-bite	CH EY R CH EY R
+williamson15a-VNT20-shove	SH EY V IH NG
+williamson15a-VNT21-tickle	AH W W AA CH IH NG <spn>
+williamson15a-VNT22-shave	SH EY V IH NG
+williamson19a-BNT01-house	HH AW S
+williamson19a-BNT02-comb	K OW M
+williamson19a-BNT03-toothbrush	SH EY V IH NG
+williamson19a-BNT04-octopus	G IH F T IH K AH L
+williamson19a-BNT05-bench	AH S F IH NG K S
+williamson19a-BNT06-volcano	K AA K S AH P EY P ER
+williamson19a-BNT08-beaver	G EY V IY
+williamson19a-BNT09-cactus	HH AE M AH K
+williamson19a-BNT12-unicorn	K OW M
+williamson19a-VNT01-cut	CH EY R AH K EY N Y UW
+williamson19a-VNT02-bark	V AA L K EY N OW IH NG
+williamson19a-VNT03-put	K AE K T AH S
+williamson19a-VNT04-send	V AE L K EY N OW
+williamson19a-VNT05-drive	W AH T DH AH AH M <sil> W AH T DH AH
+williamson19a-VNT06-wash	W AA SH IH NG
+williamson19a-VNT07-read	G R EY IH NG
+williamson19a-VNT08-laugh	K L IY N IH NG
+williamson19a-VNT09-watch	W AA CH IH NG T IY V IY
+williamson19a-VNT10-give	G R IH M AH K R IY D
+williamson19a-VNT11-swim	W AA SH IH NG
+williamson19a-VNT12-stir	G IH F T IH NG
+williamson19a-VNT13-pinch	G IH F T IH NG
+williamson19a-VNT14-crawl	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+williamson19a-VNT15-deliver	G R AE B IH T
+williamson19a-VNT16-pour	OW K EY DH AE T IH Z L UH K IH NG
+williamson19a-VNT17-howl	AH V AA L K AE N OW
+williamson19a-VNT18-throw	TH AE T AH S K OW P
+williamson19a-VNT21-tickle	V AE L K EY N OW IH R AH P T IH NG
+williamson19a-VNT22-shave	R EY Z IH NG
+williamson21a-BNT05-bench	K OW M
+williamson21a-BNT08-beaver	AH HH AE M AH K
+williamson21a-BNT09-cactus	G AH N UW
+williamson21a-VNT01-cut	AH M AH M L AY L AE F IH NG
+williamson21a-VNT02-bark	OW K EY DH AE T OW AH M <sil> OW K EY DH AE T OW AH M
+williamson21a-VNT03-put	K OW M
+williamson21a-VNT04-send	V AE L K EY N OW
+williamson21a-VNT05-drive	V AE L K EY N OW D R AY V IH NG
+williamson21a-VNT07-read	AH <sil> TH R OW IH NG
+williamson21a-VNT08-laugh	K AH N UW
+williamson21a-VNT09-watch	Y UW N IH K AO R N
+williamson21a-VNT10-give	W AA SH IH NG D IH SH AH Z DH AH D IH SH AH Z
+williamson21a-VNT11-swim	K OW M
+williamson21a-VNT12-stir	K R AO L IH NG
+williamson21a-VNT13-pinch	G AY S IY G EY V
+williamson21a-VNT14-crawl	HH OW L D IH NG
+williamson21a-VNT15-deliver	HH IY Z D R AY V IH NG AH P AE K IH JH
+williamson21a-VNT17-howl	AH M AH M L AY L AE F IH NG
+williamson21a-VNT19-bite	V AE K AO R IH N OW SH EY V IH NG
+williamson21a-VNT20-shove	W AH T DH AH K AE CH IH NG N OW W AH T DH AH D AA G
+williamson21a-VNT21-tickle	HH AH NG G R IY N OW AY G EH S N AA T
+williamson21a-VNT22-shave	K OW M
+wozniak05a-BNT01-house	V AE L K EY N OW
+wozniak05a-BNT02-comb	K OW M
+wozniak05a-BNT03-toothbrush	G R IH M AH S
+wozniak05a-BNT05-bench	AH EH TH AH S K OW P
+wozniak05a-BNT06-volcano	V AA L K EY N OW
+wozniak05a-BNT07-canoe	K AH N UW
+wozniak05a-BNT08-beaver	AH N AA K T AH P UH S
+wozniak05a-BNT09-cactus	K AE K T AH S
+wozniak05a-BNT11-stethoscope	TH EH S AH S K OW P
+wozniak05a-BNT12-unicorn	HH OW R S
+wozniak05a-BNT14-sphinx	AH S P AE NG K S
+wozniak05a-BNT15-palette	CH EY R
+wozniak05a-VNT01-cut	K AH DX IH NG N OW P
+wozniak05a-VNT02-bark	R AH S IY V IH NG
+wozniak05a-VNT03-put	G EY V IH NG N OW G EY V IH NG
+wozniak05a-VNT04-send	AH V AA L K AE N OW Z EY AH <sil> DH AH D AA G
+wozniak05a-VNT05-drive	G R IH NG K IH NG
+wozniak05a-VNT06-wash	G OW F EH CH IH NG
+wozniak05a-VNT07-read	HH IY Z D R IH NG K IH NG
+wozniak05a-VNT08-laugh	V AE L K AE N OW
+wozniak05a-VNT09-watch	K AE K T AH S
+wozniak05a-VNT10-give	K AH T IH T AH S EY V IH N
+wozniak05a-VNT11-swim	W AA SH IH NG
+wozniak05a-VNT13-pinch	HH IY Z AH TH R OW IH NG
+wozniak05a-VNT14-crawl	K R AO L IH NG
+wozniak05a-VNT15-deliver	K AE T IH Z AH K AE T IH Z AH K AE T IH Z
+wozniak05a-VNT16-pour	G R IH NG K IH NG T IY V IY
+wozniak05a-VNT17-howl	HH OW R AO L IH N
+wozniak05a-VNT18-throw	TH R OW IH NG
+wozniak05a-VNT19-bite	K AH T IH Z B AY DX IH NG W AH T DH AH D AA G
+wozniak05a-VNT21-tickle	AH HH EY R HH IY R Z AH HH AE M AH K
+wozniak05a-VNT22-shave	SH EY V IH NG
+wozniak07a-BNT03-toothbrush	Y UW N IH K AO R N
+wozniak07a-BNT04-octopus	AH K AE K T AH P UH S
+wozniak07a-BNT05-bench	K AH T AA P UH S
+wozniak07a-BNT06-volcano	V AA L K EY N OW
+wozniak07a-BNT07-canoe	V OW K AA
+wozniak07a-BNT08-beaver	K AH DX IH NG
+wozniak07a-BNT09-cactus	K AE K T AH S
+wozniak07a-BNT10-hammock	AH HH AE M AH K
+wozniak07a-BNT11-stethoscope	G AH N UW
+wozniak07a-BNT12-unicorn	Y UW N IH K AO R N
+wozniak07a-BNT13-tripod	K AH N UW
+wozniak07a-BNT14-sphinx	Y UW N IH K AO R N
+wozniak07a-BNT15-palette	G EY V OW L EH T S AH HH OW M
+wozniak07a-VNT02-bark	AH M AH M L AY L AE F IH NG
+wozniak07a-VNT03-put	OW AH M <sil> EY R IY D Z DH AH D AA G IH Z B AA R K IH NG
+wozniak07a-VNT04-send	K AH N UW IH NG
+wozniak07a-VNT05-drive	G R IH NG K IH NG
+wozniak07a-VNT06-wash	AH W W AA CH IH NG <spn>
+wozniak07a-VNT07-read	AH M B EY B IY IH Z D R AY V IH NG
+wozniak07a-VNT08-laugh	AH W W AA CH IH NG <spn>
+wozniak07a-VNT09-watch	AH M AH M L AY L AE F IH NG
+wozniak07a-VNT10-give	AH M <sil> AH P L EY T S IH NG AH P L EY T S IH NG AH <sil> P L EY T S IH NG AH P L EY T S IH NG AH <sil> P L EY T S IH NG AH P L EY T S IH NG AH
+wozniak07a-VNT11-swim	AH S W IH M IH NG <sil> AH W EH L HH IY R Z
+wozniak07a-VNT12-stir	G IH F T IH NG
+wozniak07a-VNT13-pinch	AH M <sil> AH P L EY IH N B R AH SH <sil> AH P L EY IH N
+wozniak07a-VNT14-crawl	K AH T IH NG N OW P
+wozniak07a-VNT15-deliver	G IH F T IH NG AH P R IH K AH P R IH K IH NG
+wozniak07a-VNT16-pour	AH <sil> P AO R IH NG
+wozniak07a-VNT17-howl	AH S T EH TH AH S K OW P
+wozniak07a-VNT18-throw	AH M <sil> OW AH M <sil> OW AH
+wozniak07a-VNT19-bite	AH M AH M L AY L AE F IH NG
+wozniak07a-VNT20-shove	HH IY Z AH TH R OW IH NG HH IY Z AH TH R OW IH NG
+wozniak07a-VNT21-tickle	W AH T DH AH AH M <sil> AH P AE K IH JH
+wozniak07a-VNT22-shave	SH EY V IH NG
+wright201a-BNT01-house	AH HH AW S
+wright201a-BNT02-comb	K OW M
+wright201a-BNT03-toothbrush	Y UW N IH K AO R N
+wright201a-BNT07-canoe	K AH N UW
+wright201a-BNT08-beaver	TH R OW IH NG
+wright201a-BNT09-cactus	K AE K T AH S
+wright201a-BNT11-stethoscope	AA K T AH P UH S
+wright201a-BNT12-unicorn	HH AO R S
+wright201a-BNT14-sphinx	G IH F T IH NG
+wright201a-VNT01-cut	K AH T IH NG
+wright201a-VNT02-bark	K R AO L IH NG
+wright201a-VNT03-put	AH M AH M L AY L AE F IH NG
+wright201a-VNT04-send	DH EY R <sil> SH EY V IH NG
+wright201a-VNT05-drive	R AY D IH NG W AH T DH AH D R AY V IH NG
+wright201a-VNT06-wash	V AE K AO R IH N OW
+wright201a-VNT07-read	OW K EY DH AE T OW AH M <sil> R IH S IY V IH NG
+wright201a-VNT08-laugh	W AH T DH AH AH N Y UW S
+wright201a-VNT09-watch	G IY Z D IY W AH T DH AE T S AH SH IY Z K R AO L IH N
+wright201a-VNT10-give	AH P R IH K AH P R IH K IH N
+wright201a-VNT11-swim	AH S W IH M IH NG
+wright201a-VNT12-stir	CH EY R
+wright201a-VNT13-pinch	G IH F T IH K AH L IH NG
+wright201a-VNT14-crawl	W AA CH IH NG
+wright201a-VNT15-deliver	AH M EY B IY AH M <sil> AH P AE K IH JH
+wright201a-VNT16-pour	CH EY R
+wright201a-VNT17-howl	AH M P AE K IH JH AH M P OW S T IH NG AH P OW S T IH NG AH
+wright201a-VNT18-throw	AH K AE T <sil> AH P AE K IH JH
+wright201a-VNT19-bite	K AE T IH Z L AE F IH NG AH P AE K IH JH
+wright201a-VNT20-shove	SH UW TH B R AH SH
+wright201a-VNT21-tickle	W AH T DH AH K AE CH IH NG W AH T DH AH D AA G IH Z B AE CH IH NG
+wright201a-VNT22-shave	R AY D IH NG W AH T DH AH D R EY V IH NG

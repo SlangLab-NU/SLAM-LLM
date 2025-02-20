@@ -1,0 +1,42 @@
+dataset_config:
+  prompt: 'Transcribe speech to text. '
+  normalize: true
+  dataset: speech_dataset
+  train_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/ami-10h/ami_train.jsonl
+  val_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/ami-10h/ami_validation.jsonl
+  input_type: raw
+model_config:
+  llm_name: TinyLlama
+  llm_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/models/TinyLlama-1.1B-Chat-v1.0
+  llm_dim: 2048
+  encoder_name: w2v2
+  normalize: true
+  encoder_projector_ds_rate: 5
+  encoder_path: vitouphy/wav2vec2-xls-r-300m-timit-phoneme
+  encoder2_name: ''
+  encoder2_path: ''
+  encoder2_dim: 0
+  encoder_dim: 1024
+  encoder_projector: linear
+train_config:
+  model_name: asr
+  num_epochs: 3
+  freeze_encoder: true
+  freeze_encoder2: ''
+  freeze_llm: true
+  batching_strategy: custom
+  warmup_steps: 1000
+  total_steps: 100000
+  lr: 0.0001
+  validation_interval: 1000
+  batch_size_training: 1
+  val_batch_size: 1
+  num_workers_dataloader: 1
+  output_dir: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/ami-10h_w2v2_TinyLlama_linear_phoneme_unfreeze
+  use_fp16: true
+  use_peft: true
+log_config:
+  use_wandb: false
+  wandb_exp_name: ami-10h_w2v2_TinyLlama_linear_phoneme_unfreeze
+ckpt_path: ''
+metric: acc

@@ -1,0 +1,141 @@
+[2025-02-16 03:00:38,488][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 2, 'resume_step': 0, 'resume_epoch': 1, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 3000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_seperate_whisper_llama32_1b_linear_peft_seed_42', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 03:00:38,489][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 03:00:38,489][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'ami_phoneme_seperate_whisper_llama32_1b_linear_peft_seed_42'}
+[2025-02-16 03:00:38,489][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'ami_phoneme_seperate_whisper_llama32_1b_linear_peft_seed_42', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_03-00-37.txt', 'log_interval': 5}
+[2025-02-16 03:01:25,841][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 03:01:25,843][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 03:01:25,846][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 03:01:25,847][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 03:01:35,631][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 03:01:35,633][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 03:01:35,633][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 03:01:35,957][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 03:01:35,960][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 03:01:36,080][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 03:01:36,080][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 03:01:36,081][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 03:01:36,085][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 03:01:37,882][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/ami_phoneme_seperate/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/ami_phoneme_seperate/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 03:01:39,846][root][INFO] - --> Training Set Length = 133363
+[2025-02-16 03:01:39,933][root][INFO] - --> Validation Set Length = 16697
+[2025-02-16 03:01:39,934][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 03:01:39,934][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 03:08:50,390][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 4, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 2, 'resume_step': 0, 'resume_epoch': 1, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 3000, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 4, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/ami_phoneme_seperate_whisper_llama32_1b_linear_peft_seed_42', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 03:08:50,390][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 03:08:50,391][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'ami_phoneme_seperate_whisper_llama32_1b_linear_peft_seed_42'}
+[2025-02-16 03:08:50,391][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'ami_phoneme_seperate_whisper_llama32_1b_linear_peft_seed_42', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_03-08-49.txt', 'log_interval': 5}
+[2025-02-16 03:09:27,135][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 03:09:27,138][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 03:09:27,140][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 03:09:27,141][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 03:09:29,900][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 03:09:29,901][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 03:09:29,901][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 03:09:30,239][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 03:09:30,242][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 03:09:30,377][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 03:09:30,377][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 03:09:30,378][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 03:09:30,382][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 03:09:32,200][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/ami_phoneme_seperate/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/ami_phoneme_seperate/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 03:09:33,242][root][INFO] - --> Training Set Length = 133363
+[2025-02-16 03:09:33,349][root][INFO] - --> Validation Set Length = 16697
+[2025-02-16 03:09:33,350][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 03:09:33,350][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 03:09:36,117][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:37,075][root][INFO] - Training Epoch: 1/2, step 0/33340 completed (loss: 6.745698928833008, acc: 0.05882352963089943)
+[2025-02-16 03:09:37,490][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:37,803][root][INFO] - Training Epoch: 1/2, step 1/33340 completed (loss: 6.009402751922607, acc: 0.04716981202363968)
+[2025-02-16 03:09:38,228][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:38,567][root][INFO] - Training Epoch: 1/2, step 2/33340 completed (loss: 6.191405773162842, acc: 0.07853402942419052)
+[2025-02-16 03:09:38,979][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:39,438][root][INFO] - Training Epoch: 1/2, step 3/33340 completed (loss: 5.731351375579834, acc: 0.0903225839138031)
+[2025-02-16 03:09:39,864][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:40,189][root][INFO] - Training Epoch: 1/2, step 4/33340 completed (loss: 6.252689361572266, acc: 0.07096774131059647)
+[2025-02-16 03:09:40,595][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:40,911][root][INFO] - Training Epoch: 1/2, step 5/33340 completed (loss: 6.867963790893555, acc: 0.043795619159936905)
+[2025-02-16 03:09:41,340][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:41,667][root][INFO] - Training Epoch: 1/2, step 6/33340 completed (loss: 6.148250579833984, acc: 0.10497237741947174)
+[2025-02-16 03:09:42,083][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:42,407][root][INFO] - Training Epoch: 1/2, step 7/33340 completed (loss: 6.026557445526123, acc: 0.08737864345312119)
+[2025-02-16 03:09:42,814][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:43,106][root][INFO] - Training Epoch: 1/2, step 8/33340 completed (loss: 6.582925796508789, acc: 0.03539822995662689)
+[2025-02-16 03:09:43,527][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:43,879][root][INFO] - Training Epoch: 1/2, step 9/33340 completed (loss: 5.261581897735596, acc: 0.14393939077854156)
+[2025-02-16 03:09:44,294][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:44,607][root][INFO] - Training Epoch: 1/2, step 10/33340 completed (loss: 6.860156536102295, acc: 0.029126213863492012)
+[2025-02-16 03:09:45,014][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:45,358][root][INFO] - Training Epoch: 1/2, step 11/33340 completed (loss: 5.71611213684082, acc: 0.09604519605636597)
+[2025-02-16 03:09:45,765][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:46,048][root][INFO] - Training Epoch: 1/2, step 12/33340 completed (loss: 6.756363868713379, acc: 0.03999999910593033)
+[2025-02-16 03:09:46,461][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:46,792][root][INFO] - Training Epoch: 1/2, step 13/33340 completed (loss: 5.546103000640869, acc: 0.10000000149011612)
+[2025-02-16 03:09:47,201][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:47,509][root][INFO] - Training Epoch: 1/2, step 14/33340 completed (loss: 6.03849458694458, acc: 0.12380952388048172)
+[2025-02-16 03:09:47,939][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:48,221][root][INFO] - Training Epoch: 1/2, step 15/33340 completed (loss: 7.257409572601318, acc: 0.06896551698446274)
+[2025-02-16 03:09:48,636][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:48,929][root][INFO] - Training Epoch: 1/2, step 16/33340 completed (loss: 5.501376152038574, acc: 0.14423076808452606)
+[2025-02-16 03:09:49,356][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:49,719][root][INFO] - Training Epoch: 1/2, step 17/33340 completed (loss: 5.159741401672363, acc: 0.16872428357601166)
+[2025-02-16 03:09:50,126][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:50,475][root][INFO] - Training Epoch: 1/2, step 18/33340 completed (loss: 5.113998889923096, acc: 0.2181818187236786)
+[2025-02-16 03:09:50,893][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:51,189][root][INFO] - Training Epoch: 1/2, step 19/33340 completed (loss: 5.847161769866943, acc: 0.11340206116437912)
+[2025-02-16 03:09:51,595][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:51,894][root][INFO] - Training Epoch: 1/2, step 20/33340 completed (loss: 5.7944183349609375, acc: 0.15068493783473969)
+[2025-02-16 03:09:52,309][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:52,635][root][INFO] - Training Epoch: 1/2, step 21/33340 completed (loss: 5.242334842681885, acc: 0.1607142835855484)
+[2025-02-16 03:09:53,058][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:53,383][root][INFO] - Training Epoch: 1/2, step 22/33340 completed (loss: 5.054248809814453, acc: 0.20000000298023224)
+[2025-02-16 03:09:53,804][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:54,119][root][INFO] - Training Epoch: 1/2, step 23/33340 completed (loss: 5.182023048400879, acc: 0.16535432636737823)
+[2025-02-16 03:09:54,534][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:54,859][root][INFO] - Training Epoch: 1/2, step 24/33340 completed (loss: 4.724608898162842, acc: 0.14606741070747375)
+[2025-02-16 03:09:55,274][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:55,627][root][INFO] - Training Epoch: 1/2, step 25/33340 completed (loss: 4.475022792816162, acc: 0.2288135588169098)
+[2025-02-16 03:09:56,048][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:56,399][root][INFO] - Training Epoch: 1/2, step 26/33340 completed (loss: 4.722283840179443, acc: 0.18478260934352875)
+[2025-02-16 03:09:56,809][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:57,111][root][INFO] - Training Epoch: 1/2, step 27/33340 completed (loss: 5.206704616546631, acc: 0.15189872682094574)
+[2025-02-16 03:09:57,527][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:57,829][root][INFO] - Training Epoch: 1/2, step 28/33340 completed (loss: 5.454100608825684, acc: 0.1265822798013687)
+[2025-02-16 03:09:58,243][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:58,582][root][INFO] - Training Epoch: 1/2, step 29/33340 completed (loss: 4.552529335021973, acc: 0.20952381193637848)
+[2025-02-16 03:09:59,024][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:09:59,378][root][INFO] - Training Epoch: 1/2, step 30/33340 completed (loss: 4.520113468170166, acc: 0.22127659618854523)
+[2025-02-16 03:09:59,785][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:00,112][root][INFO] - Training Epoch: 1/2, step 31/33340 completed (loss: 4.601963520050049, acc: 0.19298245012760162)
+[2025-02-16 03:10:00,526][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:00,843][root][INFO] - Training Epoch: 1/2, step 32/33340 completed (loss: 5.418965816497803, acc: 0.10144927352666855)
+[2025-02-16 03:10:01,263][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:01,549][root][INFO] - Training Epoch: 1/2, step 33/33340 completed (loss: 6.651673793792725, acc: 0.1304347813129425)
+[2025-02-16 03:10:01,988][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:02,319][root][INFO] - Training Epoch: 1/2, step 34/33340 completed (loss: 4.774704456329346, acc: 0.15228426456451416)
+[2025-02-16 03:10:02,734][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:03,034][root][INFO] - Training Epoch: 1/2, step 35/33340 completed (loss: 5.483618259429932, acc: 0.095238097012043)
+[2025-02-16 03:10:03,447][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:03,824][root][INFO] - Training Epoch: 1/2, step 36/33340 completed (loss: 4.409862995147705, acc: 0.2083333283662796)
+[2025-02-16 03:10:04,244][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:04,557][root][INFO] - Training Epoch: 1/2, step 37/33340 completed (loss: 4.89105224609375, acc: 0.1472868174314499)
+[2025-02-16 03:10:04,964][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:05,284][root][INFO] - Training Epoch: 1/2, step 38/33340 completed (loss: 4.5118560791015625, acc: 0.17307692766189575)
+[2025-02-16 03:10:05,691][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:06,023][root][INFO] - Training Epoch: 1/2, step 39/33340 completed (loss: 4.46055269241333, acc: 0.18390804529190063)
+[2025-02-16 03:10:06,453][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:06,811][root][INFO] - Training Epoch: 1/2, step 40/33340 completed (loss: 4.351651191711426, acc: 0.21400777995586395)
+[2025-02-16 03:10:07,250][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 03:10:07,611][root][INFO] - Training Epoch: 1/2, step 41/33340 completed (loss: 4.1329264640808105, acc: 0.2478991597890854)
+[2025-02-16 03:10:08,026][slam_llm.models.slam_model][INFO] - modality encoder

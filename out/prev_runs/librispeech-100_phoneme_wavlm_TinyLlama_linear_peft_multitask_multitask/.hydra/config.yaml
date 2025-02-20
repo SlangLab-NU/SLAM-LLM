@@ -1,0 +1,41 @@
+dataset_config:
+  prompt: 'Transcribe speech to text. '
+  normalize: true
+  dataset: speech_dataset
+  train_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/librispeech-100_phoneme/librispeech-100_phoneme_train.jsonl
+  file: examples/asr_librispeech/dataset/multitask_speech_dataset.py:get_speech_dataset
+  val_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/librispeech-100_phoneme/librispeech-100_phoneme_val.jsonl
+  input_type: raw
+model_config:
+  llm_name: TinyLlama
+  llm_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/models/TinyLlama-1.1B-Chat-v1.0
+  llm_dim: 2048
+  encoder_name: wavlm
+  normalize: true
+  encoder_projector_ds_rate: 5
+  encoder_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/models/WavLM-Large.pt
+  encoder2_name: ''
+  encoder2_path: ''
+  encoder_dim: 1024
+  encoder_projector: linear
+train_config:
+  model_name: asr
+  num_epochs: 2
+  freeze_encoder: true
+  freeze_llm: false
+  batching_strategy: custom
+  warmup_steps: 1000
+  total_steps: 100000
+  lr: 0.0001
+  validation_interval: 1000
+  batch_size_training: 4
+  val_batch_size: 1
+  num_workers_dataloader: 1
+  output_dir: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/train/librispeech-100_phoneme_wavlm_TinyLlama_linear_unfreeze_multitask_multitask
+  use_fp16: true
+  use_peft: true
+  resume_epoch: 0
+  resume_step: 0
+log_config:
+  use_wandb: true
+  wandb_exp_name: librispeech-100_phoneme_wavlm_TinyLlama_linear_unfreeze_multitask

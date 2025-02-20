@@ -1,0 +1,539 @@
+[2025-02-15 19:21:28,871][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 3, 'resume_step': 0, 'resume_epoch': 1, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-15 19:21:28,871][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-15 19:21:28,871][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-15 19:21:28,871][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-15_19-21-28.txt', 'log_interval': 5}
+[2025-02-15 19:22:07,707][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-15 19:22:07,709][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-15 19:22:07,712][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-15 19:22:07,713][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-15 19:22:11,696][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-15 19:22:11,697][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-15 19:22:11,697][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-15 19:22:12,028][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-15 19:22:12,030][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-15 19:22:12,168][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-15 19:22:12,168][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-15 19:22:12,169][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-15 19:22:12,173][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-15 19:22:14,650][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-15 19:22:14,897][root][INFO] - --> Training Set Length = 4
+[2025-02-15 19:22:14,899][root][INFO] - --> Validation Set Length = 2
+[2025-02-15 19:22:14,900][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-15 19:22:14,900][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-15 19:22:16,788][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:17,425][root][INFO] - Training Epoch: 1/3, step 0/4 completed (loss: 6.401942729949951, acc: 0.0)
+[2025-02-15 19:22:18,110][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:18,324][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:18,802][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(14225.8857, device='cuda:0') eval_epoch_loss=tensor(9.5628, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:18,805][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:18,806][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:19,167][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_1_step_1_loss_9.56281852722168/model.pt
+[2025-02-15 19:22:19,169][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:19,170][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 1 is 9.56281852722168
+[2025-02-15 19:22:19,171][slam_llm.utils.train_utils][INFO] - best eval acc on epoch 1 is 0.0714285746216774
+[2025-02-15 19:22:19,298][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:19,513][root][INFO] - Training Epoch: 1/3, step 1/4 completed (loss: 15.052152633666992, acc: 0.0)
+[2025-02-15 19:22:20,074][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:20,287][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:20,664][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(14225.8857, device='cuda:0') eval_epoch_loss=tensor(9.5628, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:20,672][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:20,673][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:21,048][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_1_step_2_loss_9.56281852722168/model.pt
+[2025-02-15 19:22:21,058][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:21,178][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:21,379][root][INFO] - Training Epoch: 1/3, step 2/4 completed (loss: 7.170293807983398, acc: 0.0)
+[2025-02-15 19:22:21,936][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:22,165][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:22,532][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(14225.8857, device='cuda:0') eval_epoch_loss=tensor(9.5628, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:22,537][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:22,539][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:22,862][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_1_step_3_loss_9.56281852722168/model.pt
+[2025-02-15 19:22:22,873][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:22,994][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:23,389][root][INFO] - Training Epoch: 1/3, step 3/4 completed (loss: 7.076799392700195, acc: 0.0)
+[2025-02-15 19:22:24,007][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:24,234][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:24,662][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(14009.2207, device='cuda:0') eval_epoch_loss=tensor(9.5475, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:24,670][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:24,671][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:25,441][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_1_step_4_loss_9.547471046447754/model.pt
+[2025-02-15 19:22:25,450][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:25,452][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 1 is 9.547471046447754
+[2025-02-15 19:22:25,795][slam_llm.utils.train_utils][INFO] - Epoch 1: train_perplexity=7519.8149, train_epoch_loss=8.9253, epoch time 10.88825516588986s
+[2025-02-15 19:22:25,795][slam_llm.utils.train_utils][INFO] - Max CUDA memory allocated was 8 GB
+[2025-02-15 19:22:25,795][slam_llm.utils.train_utils][INFO] - Max CUDA memory reserved was 8 GB
+[2025-02-15 19:22:25,796][slam_llm.utils.train_utils][INFO] - Peak active CUDA memory was 8 GB
+[2025-02-15 19:22:25,796][slam_llm.utils.train_utils][INFO] - Cuda Malloc retires : 0
+[2025-02-15 19:22:25,796][slam_llm.utils.train_utils][INFO] - CPU Total Peak Memory consumed during the train (max): 8 GB
+[2025-02-15 19:22:26,257][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:26,515][root][INFO] - Training Epoch: 2/3, step 0/4 completed (loss: 6.394528388977051, acc: 0.0)
+[2025-02-15 19:22:27,182][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:27,397][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:27,776][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(13368.0234, device='cuda:0') eval_epoch_loss=tensor(9.5006, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:27,781][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:27,782][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:28,501][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_2_step_1_loss_9.50062084197998/model.pt
+[2025-02-15 19:22:28,515][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:28,522][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 2 is 9.50062084197998
+[2025-02-15 19:22:28,657][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:28,895][root][INFO] - Training Epoch: 2/3, step 1/4 completed (loss: 15.213669776916504, acc: 0.0)
+[2025-02-15 19:22:29,550][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:29,761][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:30,146][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(13368.0234, device='cuda:0') eval_epoch_loss=tensor(9.5006, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:30,149][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:30,150][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:30,887][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_2_step_2_loss_9.50062084197998/model.pt
+[2025-02-15 19:22:30,890][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:31,016][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:31,264][root][INFO] - Training Epoch: 2/3, step 2/4 completed (loss: 7.138611793518066, acc: 0.0)
+[2025-02-15 19:22:31,843][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:32,053][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:32,431][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(11915.8291, device='cuda:0') eval_epoch_loss=tensor(9.3856, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:32,436][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:32,437][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:33,358][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_2_step_3_loss_9.38562297821045/model.pt
+[2025-02-15 19:22:33,365][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:33,367][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 2 is 9.38562297821045
+[2025-02-15 19:22:33,494][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:33,692][root][INFO] - Training Epoch: 2/3, step 3/4 completed (loss: 6.758213520050049, acc: 0.0)
+[2025-02-15 19:22:34,314][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:34,525][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:34,920][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(10804.6328, device='cuda:0') eval_epoch_loss=tensor(9.2877, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:34,923][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:34,923][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:35,604][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_2_step_4_loss_9.28773021697998/model.pt
+[2025-02-15 19:22:35,613][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:35,614][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 2 is 9.28773021697998
+[2025-02-15 19:22:35,908][slam_llm.utils.train_utils][INFO] - Epoch 2: train_perplexity=7159.9341, train_epoch_loss=8.8763, epoch time 10.111264796927571s
+[2025-02-15 19:22:35,909][slam_llm.utils.train_utils][INFO] - Max CUDA memory allocated was 8 GB
+[2025-02-15 19:22:35,909][slam_llm.utils.train_utils][INFO] - Max CUDA memory reserved was 8 GB
+[2025-02-15 19:22:35,909][slam_llm.utils.train_utils][INFO] - Peak active CUDA memory was 8 GB
+[2025-02-15 19:22:35,909][slam_llm.utils.train_utils][INFO] - Cuda Malloc retires : 0
+[2025-02-15 19:22:35,909][slam_llm.utils.train_utils][INFO] - CPU Total Peak Memory consumed during the train (max): 8 GB
+[2025-02-15 19:22:36,478][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:36,741][root][INFO] - Training Epoch: 3/3, step 0/4 completed (loss: 6.039631366729736, acc: 0.0)
+[2025-02-15 19:22:37,389][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:37,604][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:37,995][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(9740.5186, device='cuda:0') eval_epoch_loss=tensor(9.1840, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:37,999][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:38,005][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:38,787][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_3_step_1_loss_9.184049606323242/model.pt
+[2025-02-15 19:22:38,791][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:38,791][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 3 is 9.184049606323242
+[2025-02-15 19:22:38,918][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:39,112][root][INFO] - Training Epoch: 3/3, step 1/4 completed (loss: 14.395657539367676, acc: 0.0)
+[2025-02-15 19:22:39,714][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:39,936][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:40,326][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(9740.5186, device='cuda:0') eval_epoch_loss=tensor(9.1840, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:40,340][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:40,341][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:41,125][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_3_step_2_loss_9.184049606323242/model.pt
+[2025-02-15 19:22:41,127][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:41,245][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:41,440][root][INFO] - Training Epoch: 3/3, step 2/4 completed (loss: 6.825835704803467, acc: 0.0)
+[2025-02-15 19:22:42,054][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:42,263][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:42,656][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(8322.3584, device='cuda:0') eval_epoch_loss=tensor(9.0267, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:42,664][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:42,664][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:43,382][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_3_step_3_loss_9.026700973510742/model.pt
+[2025-02-15 19:22:43,388][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:43,390][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 3 is 9.026700973510742
+[2025-02-15 19:22:43,514][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:43,742][root][INFO] - Training Epoch: 3/3, step 3/4 completed (loss: 6.397943496704102, acc: 0.1111111119389534)
+[2025-02-15 19:22:44,330][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:44,575][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-15 19:22:44,973][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(7394.6299, device='cuda:0') eval_epoch_loss=tensor(8.9085, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-15 19:22:44,974][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-15 19:22:44,974][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-15 19:22:45,697][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_3_step_4_loss_8.908509254455566/model.pt
+[2025-02-15 19:22:45,710][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-15 19:22:45,712][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 3 is 8.908509254455566
+[2025-02-15 19:22:46,060][slam_llm.utils.train_utils][INFO] - Epoch 3: train_perplexity=4513.2251, train_epoch_loss=8.4148, epoch time 10.150345223024487s
+[2025-02-15 19:22:46,061][slam_llm.utils.train_utils][INFO] - Max CUDA memory allocated was 8 GB
+[2025-02-15 19:22:46,061][slam_llm.utils.train_utils][INFO] - Max CUDA memory reserved was 8 GB
+[2025-02-15 19:22:46,061][slam_llm.utils.train_utils][INFO] - Peak active CUDA memory was 8 GB
+[2025-02-15 19:22:46,061][slam_llm.utils.train_utils][INFO] - Cuda Malloc retires : 0
+[2025-02-15 19:22:46,061][slam_llm.utils.train_utils][INFO] - CPU Total Peak Memory consumed during the train (max): 8 GB
+[2025-02-15 19:22:46,065][root][INFO] - Key: avg_train_prep, Value: 6397.658203125
+[2025-02-15 19:22:46,066][root][INFO] - Key: avg_train_loss, Value: 8.738773345947266
+[2025-02-15 19:22:46,066][root][INFO] - Key: avg_train_acc, Value: 0.009259259328246117
+[2025-02-15 19:22:46,067][root][INFO] - Key: avg_eval_prep, Value: 11778.44921875
+[2025-02-15 19:22:46,067][root][INFO] - Key: avg_eval_loss, Value: 9.351153373718262
+[2025-02-15 19:22:46,067][root][INFO] - Key: avg_eval_acc, Value: 0.071428582072258
+[2025-02-15 19:22:46,067][root][INFO] - Key: avg_epoch_time, Value: 10.383288395280639
+[2025-02-15 19:22:46,068][root][INFO] - Key: avg_checkpoint_time, Value: 0.6683963638109466
+[2025-02-16 00:06:28,552][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 4, 'resume_epoch': 3, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 00:06:28,552][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 00:06:28,552][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 00:06:28,552][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_00-06-28.txt', 'log_interval': 5}
+[2025-02-16 00:07:08,468][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 00:07:08,471][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 00:07:08,473][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 00:07:08,474][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 00:07:12,250][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 00:07:12,252][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 00:07:12,252][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 00:07:12,594][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 00:07:12,597][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 00:07:12,723][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 00:07:12,724][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 00:07:12,724][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_3_step_4_loss_8.908509254455566/model.pt
+[2025-02-16 00:07:12,990][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 00:07:12,991][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 00:07:12,994][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 00:07:15,464][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 00:07:15,727][root][INFO] - --> Training Set Length = 4
+[2025-02-16 00:07:15,730][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 00:07:15,730][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 00:07:15,731][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 00:07:18,051][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:18,701][root][INFO] - Training Epoch: 3/4, step 4/4 completed (loss: 5.534223556518555, acc: 0.13333334028720856)
+[2025-02-16 00:07:19,372][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:19,592][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:20,078][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(7394.6299, device='cuda:0') eval_epoch_loss=tensor(8.9085, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-16 00:07:20,080][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-16 00:07:20,081][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-16 00:07:20,439][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_3_step_5_loss_8.908509254455566/model.pt
+[2025-02-16 00:07:20,443][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-16 00:07:20,444][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 3 is 8.908509254455566
+[2025-02-16 00:07:20,445][slam_llm.utils.train_utils][INFO] - best eval acc on epoch 3 is 0.0714285746216774
+[2025-02-16 00:07:20,802][slam_llm.utils.train_utils][INFO] - Epoch 3: train_perplexity=3.9891, train_epoch_loss=1.3836, epoch time 4.922445982694626s
+[2025-02-16 00:07:20,803][slam_llm.utils.train_utils][INFO] - Max CUDA memory allocated was 7 GB
+[2025-02-16 00:07:20,803][slam_llm.utils.train_utils][INFO] - Max CUDA memory reserved was 8 GB
+[2025-02-16 00:07:20,803][slam_llm.utils.train_utils][INFO] - Peak active CUDA memory was 7 GB
+[2025-02-16 00:07:20,803][slam_llm.utils.train_utils][INFO] - Cuda Malloc retires : 0
+[2025-02-16 00:07:20,803][slam_llm.utils.train_utils][INFO] - CPU Total Peak Memory consumed during the train (max): 8 GB
+[2025-02-16 00:07:21,305][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:21,528][root][INFO] - Training Epoch: 4/4, step 0/4 completed (loss: 5.536043643951416, acc: 0.13333334028720856)
+[2025-02-16 00:07:22,122][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:22,331][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:22,714][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(7394.6299, device='cuda:0') eval_epoch_loss=tensor(8.9085, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-16 00:07:22,716][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-16 00:07:22,716][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-16 00:07:23,004][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_1_loss_8.908509254455566/model.pt
+[2025-02-16 00:07:23,009][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-16 00:07:23,149][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:23,358][root][INFO] - Training Epoch: 4/4, step 1/4 completed (loss: 13.381646156311035, acc: 0.0)
+[2025-02-16 00:07:23,959][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:24,183][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:24,585][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(7394.6299, device='cuda:0') eval_epoch_loss=tensor(8.9085, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-16 00:07:24,590][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-16 00:07:24,591][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-16 00:07:24,920][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_2_loss_8.908509254455566/model.pt
+[2025-02-16 00:07:24,922][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-16 00:07:25,040][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:25,426][root][INFO] - Training Epoch: 4/4, step 2/4 completed (loss: 6.540177345275879, acc: 0.0)
+[2025-02-16 00:07:25,982][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:26,207][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:26,620][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(6920.4531, device='cuda:0') eval_epoch_loss=tensor(8.8422, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-16 00:07:26,622][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-16 00:07:26,622][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-16 00:07:27,261][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_3_loss_8.842236518859863/model.pt
+[2025-02-16 00:07:27,269][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-16 00:07:27,271][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 4 is 8.842236518859863
+[2025-02-16 00:07:27,393][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:27,594][root][INFO] - Training Epoch: 4/4, step 3/4 completed (loss: 6.283730506896973, acc: 0.1111111119389534)
+[2025-02-16 00:07:28,147][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:28,353][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 00:07:28,752][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(6719.7559, device='cuda:0') eval_epoch_loss=tensor(8.8128, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-16 00:07:28,765][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-16 00:07:28,765][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-16 00:07:29,424][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_4_loss_8.812807083129883/model.pt
+[2025-02-16 00:07:29,432][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-16 00:07:29,433][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 4 is 8.812807083129883
+[2025-02-16 00:07:29,769][slam_llm.utils.train_utils][INFO] - Epoch 4: train_perplexity=2794.4736, train_epoch_loss=7.9354, epoch time 8.96524122916162s
+[2025-02-16 00:07:29,770][slam_llm.utils.train_utils][INFO] - Max CUDA memory allocated was 8 GB
+[2025-02-16 00:07:29,770][slam_llm.utils.train_utils][INFO] - Max CUDA memory reserved was 8 GB
+[2025-02-16 00:07:29,770][slam_llm.utils.train_utils][INFO] - Peak active CUDA memory was 8 GB
+[2025-02-16 00:07:29,770][slam_llm.utils.train_utils][INFO] - Cuda Malloc retires : 0
+[2025-02-16 00:07:29,770][slam_llm.utils.train_utils][INFO] - CPU Total Peak Memory consumed during the train (max): 8 GB
+[2025-02-16 00:07:29,773][root][INFO] - Key: avg_train_prep, Value: 1399.2313232421875
+[2025-02-16 00:07:29,773][root][INFO] - Key: avg_train_loss, Value: 4.659477233886719
+[2025-02-16 00:07:29,773][root][INFO] - Key: avg_train_acc, Value: 0.04722222685813904
+[2025-02-16 00:07:29,773][root][INFO] - Key: avg_eval_prep, Value: 7164.8203125
+[2025-02-16 00:07:29,773][root][INFO] - Key: avg_eval_loss, Value: 8.876113891601562
+[2025-02-16 00:07:29,774][root][INFO] - Key: avg_eval_acc, Value: 0.0714285746216774
+[2025-02-16 00:07:29,776][root][INFO] - Key: avg_epoch_time, Value: 6.943843605928123
+[2025-02-16 00:07:29,777][root][INFO] - Key: avg_checkpoint_time, Value: 0.46140972077846526
+[2025-02-16 01:06:10,743][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 4, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 01:06:10,743][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 01:06:10,744][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 01:06:10,744][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_01-06-10.txt', 'log_interval': 5}
+[2025-02-16 01:06:50,427][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 01:06:50,430][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 01:06:50,433][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 01:06:50,434][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 01:06:54,533][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 01:06:54,534][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 01:06:54,535][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 01:06:54,887][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 01:06:54,890][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 01:06:55,019][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 01:06:55,019][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 01:06:55,020][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_4_loss_8.812807083129883/model.pt
+[2025-02-16 01:06:55,533][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 01:06:55,533][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 01:06:55,536][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 01:06:57,761][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 01:06:58,286][root][INFO] - --> Training Set Length = 4
+[2025-02-16 01:06:58,290][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 01:06:58,291][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 01:06:58,293][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 01:07:03,510][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 01:07:04,533][root][INFO] - Training Epoch: 4/4, step 4/4 completed (loss: 5.506877422332764, acc: 0.13333334028720856)
+[2025-02-16 01:07:05,679][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 01:07:06,050][slam_llm.models.slam_model][INFO] - modality encoder
+[2025-02-16 01:07:07,054][slam_llm.utils.train_utils][INFO] -  eval_ppl=tensor(6719.7559, device='cuda:0') eval_epoch_loss=tensor(8.8128, device='cuda:0') eval_epoch_acc=tensor(0.0714, device='cuda:0')
+[2025-02-16 01:07:07,057][slam_llm.utils.train_utils][INFO] - we are about to save the PEFT modules
+[2025-02-16 01:07:07,058][slam_llm.utils.checkpoint_handler][INFO] - --> saving model checkpoint...
+[2025-02-16 01:07:07,607][slam_llm.utils.checkpoint_handler][INFO] - Checkpoint saved at /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 01:07:07,612][slam_llm.utils.train_utils][INFO] - PEFT modules are saved in /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft directory
+[2025-02-16 01:07:07,613][slam_llm.utils.train_utils][INFO] - best eval loss on epoch 4 is 8.812807083129883
+[2025-02-16 01:07:07,613][slam_llm.utils.train_utils][INFO] - best eval acc on epoch 4 is 0.0714285746216774
+[2025-02-16 01:07:08,669][slam_llm.utils.train_utils][INFO] - Epoch 4: train_perplexity=3.9619, train_epoch_loss=1.3767, epoch time 8.029312409460545s
+[2025-02-16 01:07:08,670][slam_llm.utils.train_utils][INFO] - Max CUDA memory allocated was 7 GB
+[2025-02-16 01:07:08,670][slam_llm.utils.train_utils][INFO] - Max CUDA memory reserved was 8 GB
+[2025-02-16 01:07:08,671][slam_llm.utils.train_utils][INFO] - Peak active CUDA memory was 7 GB
+[2025-02-16 01:07:08,671][slam_llm.utils.train_utils][INFO] - Cuda Malloc retires : 0
+[2025-02-16 01:07:08,671][slam_llm.utils.train_utils][INFO] - CPU Total Peak Memory consumed during the train (max): 8 GB
+[2025-02-16 01:07:08,674][root][INFO] - Key: avg_train_prep, Value: 3.9618825912475586
+[2025-02-16 01:07:08,675][root][INFO] - Key: avg_train_loss, Value: 1.376719355583191
+[2025-02-16 01:07:08,675][root][INFO] - Key: avg_train_acc, Value: 0.03333333507180214
+[2025-02-16 01:07:08,675][root][INFO] - Key: avg_eval_prep, Value: 6719.755859375
+[2025-02-16 01:07:08,676][root][INFO] - Key: avg_eval_loss, Value: 8.812807083129883
+[2025-02-16 01:07:08,676][root][INFO] - Key: avg_eval_acc, Value: 0.0714285746216774
+[2025-02-16 01:07:08,676][root][INFO] - Key: avg_epoch_time, Value: 8.029312409460545
+[2025-02-16 01:07:08,677][root][INFO] - Key: avg_checkpoint_time, Value: 0.5553707107901573
+[2025-02-16 02:04:45,181][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:04:45,182][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:04:45,182][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:04:45,182][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-04-44.txt', 'log_interval': 5}
+[2025-02-16 02:05:26,426][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:05:26,430][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:05:26,433][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:05:26,434][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:05:31,689][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:05:31,690][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:05:31,690][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:05:32,003][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:05:32,005][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:05:32,146][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:05:32,147][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:05:32,147][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:05:32,413][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:05:32,413][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:05:32,417][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:05:33,891][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:05:34,625][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:05:34,628][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:05:34,629][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:05:34,630][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:07:14,472][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:07:14,472][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:07:14,472][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:07:14,472][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-07-13.txt', 'log_interval': 5}
+[2025-02-16 02:07:58,765][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:07:58,768][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:07:58,770][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:07:58,771][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:08:04,352][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:08:04,353][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:08:04,354][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:08:04,671][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:08:04,673][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:08:04,816][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:08:04,818][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:08:04,819][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:08:04,944][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:08:04,945][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:08:04,949][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:08:06,728][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:08:07,327][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:08:07,330][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:08:07,331][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:08:07,332][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:11:29,390][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:11:29,391][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:11:29,391][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:11:29,391][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-11-28.txt', 'log_interval': 5}
+[2025-02-16 02:12:14,407][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:12:14,412][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:12:14,414][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:12:14,415][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:12:21,139][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:12:21,141][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:12:21,141][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:12:21,460][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:12:21,462][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:12:21,606][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:12:21,607][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:12:21,607][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:12:21,733][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:12:21,733][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:12:21,737][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:12:23,524][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:12:24,153][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:12:24,157][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:12:24,158][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:12:24,160][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:20:48,005][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:20:48,005][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:20:48,005][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:20:48,006][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-20-47.txt', 'log_interval': 5}
+[2025-02-16 02:21:34,304][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:21:34,318][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:21:34,320][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:21:34,322][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:21:41,000][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:21:41,001][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:21:41,002][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:21:41,431][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:21:41,433][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:21:41,570][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:21:41,571][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:21:41,571][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:21:41,704][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:21:41,705][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:21:41,709][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:21:46,263][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:21:46,882][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:21:46,891][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:21:46,891][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:21:46,892][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:29:54,833][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:29:54,833][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:29:54,833][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:29:54,834][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-29-54.txt', 'log_interval': 5}
+[2025-02-16 02:30:41,562][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:30:41,568][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:30:41,572][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:30:41,574][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:30:48,107][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:30:48,109][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:30:48,110][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:30:48,514][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:30:48,516][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:30:48,654][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:30:48,655][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:30:48,655][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:30:48,780][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:30:48,781][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:30:48,784][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:30:51,573][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:30:52,260][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:30:52,267][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:30:52,268][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:30:52,269][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:30:52,369][root][INFO] - Current learning rate: 1.0000000000000001e-07
+[2025-02-16 02:36:56,622][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:36:56,622][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:36:56,623][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:36:56,623][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-36-56.txt', 'log_interval': 5}
+[2025-02-16 02:37:39,617][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:37:39,621][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:37:39,624][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:37:39,625][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:37:45,215][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:37:45,217][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:37:45,217][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:37:45,536][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:37:45,538][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:37:45,676][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:37:45,677][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:37:45,677][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:37:45,814][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:37:45,814][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:37:45,818][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:37:47,599][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:37:48,229][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:37:48,235][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:37:48,236][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:37:48,239][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:37:48,325][root][INFO] - Current learning rate: 1.0000000000000001e-07
+[2025-02-16 02:44:56,133][root][INFO] - train_config: {'model_name': 'asr', 'enable_ddp': False, 'enable_deepspeed': False, 'enable_fsdp': False, 'low_cpu_fsdp': False, 'run_validation': True, 'batch_size_training': 1, 'batching_strategy': 'custom', 'context_length': 4096, 'gradient_accumulation_steps': 1, 'num_epochs': 4, 'resume_step': 5, 'resume_epoch': 4, 'num_workers_dataloader': 1, 'warmup_steps': 1000, 'total_steps': 100000, 'validation_interval': 2, 'lr': 0.0001, 'weight_decay': 0.0, 'gamma': 0.85, 'seed': 42, 'use_fp16': True, 'mixed_precision': True, 'val_batch_size': 1, 'use_peft': True, 'peft_config': {'peft_method': 'lora', 'r': 8, 'lora_alpha': 32, 'target_modules': ['q_proj', 'k_proj', 'v_proj', 'o_proj', 'up_proj', 'gate_proj', 'down_proj'], 'bias': 'none', 'task_type': 'CAUSAL_LM', 'lora_dropout': 0.05, 'inference_mode': False}, 'output_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft', 'freeze_layers': False, 'num_freeze_layers': 1, 'quantization': False, 'one_gpu': False, 'save_model': True, 'dist_checkpoint_root_folder': 'PATH/to/save/FSDP/model', 'dist_checkpoint_folder': 'fine-tuned', 'save_optimizer': False, 'use_fast_kernels': False, 'run_test_during_validation': False, 'run_test_during_validation_file': 'test.wav', 'run_test_during_validation_prompt': '<|ASR|>', 'freeze_llm': False, 'freeze_encoder': True, 'freeze_encoder2': True, 'save_embedding': False, 'test_flag': True}
+[2025-02-16 02:44:56,134][root][INFO] - fsdp_config: {'mixed_precision': True, 'use_fp16': True, 'sharding_strategy': <ShardingStrategy.NO_SHARD: 3>, 'checkpoint_type': 'SHARDED_STATE_DICT', 'fsdp_activation_checkpointing': True, 'fsdp_cpu_offload': False, 'pure_bf16': False, 'optimizer': 'AdamW'}
+[2025-02-16 02:44:56,134][root][INFO] - model_config: {'file': 'examples/asr_librispeech/model/slam_model_asr.py:model_factory', 'llm_name': 'llama32_1b', 'llm_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-3.2-1B-Instruct', 'llm_type': 'decoder_only', 'llm_dim': 2048, 'llm_inference_config': 'repetition_penalty', 'encoder_name': 'whisper', 'encoder_ds_rate': 2, 'encoder_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Whisper/large-v3.pt', 'encoder_dim': 1280, 'encoder_projector': 'linear', 'encoder_projector_ds_rate': 5, 'qformer_layers': 8, 'modal': 'audio', 'normalize': True, 'encoder_type': 'finetune', 'encoder2_name': '', 'encoder2_dim': 1024, 'encoder2_path': '', 'identifier': 'test_run_whisper_llama32_1b_linear_peft'}
+[2025-02-16 02:44:56,134][root][INFO] - log_config: {'use_wandb': True, 'wandb_dir': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log', 'wandb_entity_name': 'jindaz-work', 'wandb_project_name': 'SLAM-LLM', 'wandb_exp_name': 'test_run_whisper_llama32_1b_linear_peft', 'log_file': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/2025-02-16_02-44-55.txt', 'log_interval': 5}
+[2025-02-16 02:45:39,197][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:45:39,200][slam_llm.utils.train_utils][INFO] - --> whisper has 635.04896 Million params
+
+[2025-02-16 02:45:39,202][slam_llm.utils.train_utils][INFO] - --> Module whisper
+[2025-02-16 02:45:39,203][slam_llm.utils.train_utils][INFO] - --> whisper has 0.0 Million params
+
+[2025-02-16 02:45:43,860][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:45:43,861][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 1235.8144 Million params
+
+[2025-02-16 02:45:43,861][slam_llm.models.slam_model][INFO] - setup peft...
+[2025-02-16 02:45:44,186][slam_llm.utils.train_utils][INFO] - --> Module llama32_1b
+[2025-02-16 02:45:44,190][slam_llm.utils.train_utils][INFO] - --> llama32_1b has 5.636096 Million params
+
+[2025-02-16 02:45:44,356][slam_llm.utils.train_utils][INFO] - --> Module linear
+[2025-02-16 02:45:44,356][slam_llm.utils.train_utils][INFO] - --> linear has 17.3056 Million params
+
+[2025-02-16 02:45:44,357][slam_model_asr.py][INFO] - loading other parts from: /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/test_run_whisper_llama32_1b_linear_peft/asr_epoch_4_step_5_loss_8.812807083129883/model.pt
+[2025-02-16 02:45:44,475][slam_model_asr.py][INFO] - Model loaded successfully from checkpoint.
+[2025-02-16 02:45:44,475][slam_llm.utils.train_utils][INFO] - --> Model asr
+[2025-02-16 02:45:44,479][slam_llm.utils.train_utils][INFO] - --> asr has 22.941696 Million params
+
+[2025-02-16 02:45:46,271][root][INFO] - dataset_config: {'dataset': 'speech_dataset', 'file': 'src/slam_llm/datasets/speech_dataset.py:get_speech_dataset', 'train_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/train.jsonl', 'val_data_path': '/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/data/test_run/validation.jsonl', 'train_split': 'train', 'test_split': 'validation', 'prompt': None, 'data_path': None, 'max_words': None, 'max_mel': None, 'fix_length_audio': -1, 'inference_mode': False, 'input_type': 'mel', 'mel_size': 128, 'normalize': True}
+[2025-02-16 02:45:46,703][root][INFO] - --> Training Set Length = 4
+[2025-02-16 02:45:46,710][root][INFO] - --> Validation Set Length = 2
+[2025-02-16 02:45:46,711][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:45:46,713][slam_llm.utils.config_utils][INFO] - Using batching strategy: custom
+[2025-02-16 02:45:46,797][root][INFO] - Current learning rate: 1.0000000000000001e-07
+[2025-02-16 02:45:46,797][root][INFO] - Current scheduler step (last_epoch): 1

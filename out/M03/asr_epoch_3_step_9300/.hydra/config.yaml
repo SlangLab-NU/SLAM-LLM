@@ -1,0 +1,27 @@
+dataset_config:
+  prompt: 'Transcribe speech to text. '
+  dataset: speech_dataset
+  val_data_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/data/ami-10h/ami_test.jsonl
+  input_type: mel
+  mel_size: 128
+  inference_mode: true
+model_config:
+  llm_name: tinyllama
+  llm_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/models/TinyLlama-1.1B-Chat-v1.0
+  llm_dim: 2048
+  encoder_name: wav2p
+  encoder_projector_ds_rate: 5
+  encoder_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/models/WavLM-Large.pt
+  encoder_dim: 1024
+  encoder_projector: linear
+train_config:
+  model_name: asr
+  freeze_encoder: true
+  freeze_llm: true
+  batching_strategy: custom
+  num_epochs: 1
+  val_batch_size: 1
+  num_workers_dataloader: 2
+  output_dir: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/tllama-pho-20240816/M03
+decode_log: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/tllama-pho-20240816/M03/decode__test_ami_wavlm_mono_beam4
+ckpt_path: /work/van-speech-nlp/jindaznb/jslpnb/mllm_expriments/slam-llm/out/tllama-pho-20240816/M03/asr_epoch_3_step_9300/model.pt
