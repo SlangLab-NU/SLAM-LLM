@@ -30,7 +30,7 @@ bash train_eval.sh \
     --llm_name llama32_1b \
     --task train \
     --encoder_config whisper-mono \
-    --num_epochs 4 \
+    --num_epochs 5 \
     --batch_size_training 2 \
     --use_peft true \
     --train_data_folder test_run \

@@ -198,41 +198,22 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                         )
                                 elif fsdp_config.sharding_strategy == ShardingStrategy.NO_SHARD:
                                     if rank==0:
-                                        if train_config.test_flag:
-                                            save_model_checkpoint_peft_new(
-                                                model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
-                                            )
-                                        else:
-                                            save_model_checkpoint_peft(
-                                                model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                            )
+                                        save_model_checkpoint_peft_new(
+                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                        )
+
                                     dist.barrier()
                             elif train_config.enable_ddp:
                                 if rank==0:
-                                    if train_config.test_flag:
-                                        save_model_checkpoint_peft_new(
-                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
-                                        )
-                                    else:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
-                                dist.barrier()
-                            else:
-                                # model.save_pretrained(train_config.output_dir)
-                                if train_config.test_flag:
                                     save_model_checkpoint_peft_new(
                                         model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
                                     )
-                                else:
-                                    if train_config.test_flag:
-                                        save_model_checkpoint_peft_new(
-                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
-                                        )
-                                    else:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
+                                dist.barrier()
+                            else:
+                                # model.save_pretrained(train_config.output_dir)
+                                save_model_checkpoint_peft_new(
+                                    model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                )
                             if train_config.enable_fsdp or train_config.enable_ddp:
                                 if rank==0:
                                     logger.info(f"PEFT modules are saved in {train_config.output_dir} directory")
@@ -249,37 +230,24 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                 elif fsdp_config.sharding_strategy == ShardingStrategy.NO_SHARD:
                                     if rank==0:
                                         # model.save_pretrained(train_config.output_dir)
-                                        if train_config.test_flag:
-                                            save_model_checkpoint_peft_new(
-                                                model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
-                                            )
-                                        else:
-                                            save_model_checkpoint_peft(
-                                                model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                            )
-                                    dist.barrier()
-                            elif train_config.enable_ddp:
-                                if rank==0:
-                                # model.save_pretrained(train_config.output_dir)
-                                    if train_config.test_flag:
                                         save_model_checkpoint_peft_new(
                                             model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
                                         )
-                                    else:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
-                                dist.barrier()
-                            else:
-                                # model.save_pretrained(train_config.output_dir)
-                                if train_config.test_flag:
+                                  
+                                    dist.barrier()
+                            elif train_config.enable_ddp:
+                                if rank==0:
                                     save_model_checkpoint_peft_new(
                                         model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
                                     )
-                                else:
-                                    save_model_checkpoint_peft(
-                                        model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                    )
+
+                                dist.barrier()
+                            else:
+                                # model.save_pretrained(train_config.output_dir)
+                                save_model_checkpoint_peft_new(
+                                    model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                )
+                  
 
                         else:
                             if train_config.enable_fsdp:
@@ -312,9 +280,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                 dist.barrier()
                                     
                             else:
-                                save_model_checkpoint_peft(
-                                        model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                    )
+                                save_model_checkpoint_peft_new(
+                                    model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                )
                                 
                         if train_config.enable_fsdp or train_config.enable_ddp:
                             dist.barrier()
