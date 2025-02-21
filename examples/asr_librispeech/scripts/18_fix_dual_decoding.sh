@@ -77,13 +77,13 @@ bash train_eval.sh \
 
 
 
-# bash train_eval.sh \
-#     --task all \
-#     --encoder_config w2p-wavlm-dual \
-#     --num_epochs 2 \
-#     --batch_size_training 2 \
-#     --use_peft true \
-#     --train_data_folder librispeech-100 \
+bash train_eval.sh \
+    --task all \
+    --encoder_config w2p-wavlm-dual \
+    --num_epochs 2 \
+    --batch_size_training 2 \
+    --use_peft true \
+    --train_data_folder librispeech-100 \
 
 
 

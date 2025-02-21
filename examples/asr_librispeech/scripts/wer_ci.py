@@ -3,7 +3,7 @@ import glob
 import os
 import numpy as np
 from jiwer import wer
-from random import choices
+from random import choices, seed
 
 def read_and_process_file(file_path):
     with open(file_path, 'r') as file:
@@ -60,6 +60,10 @@ def bootstrap_ci(gt, pred, n_bootstrap=1000, ci=95):
     return lower_bound, upper_bound
 
 def main(folder, separate, file):
+    # Set seed for reproducibility
+    seed(42)  # For random choices
+    np.random.seed(42)  # If needed for numpy-based randomness
+    
     asr_wer = None  # Initialize asr_wer here
     
     if file:
@@ -91,17 +95,32 @@ def main(folder, separate, file):
     if separate:
         asr_wer = calculate_wer(gt_asr, pred_asr, "ASR")
         phoneme_wer = calculate_wer(gt_phoneme, pred_phoneme, "Phoneme")
+        
+        # Calculate bootstrap CI for ASR WER
+        if asr_wer is not None:
+            ci_lower_asr, ci_upper_asr = bootstrap_ci(gt_asr, pred_asr)
+            margin_of_error_asr = (ci_upper_asr - ci_lower_asr) / 2
+            asr_wer_percent = asr_wer * 100
+            margin_of_error_asr_percent = margin_of_error_asr * 100
+            print(f"ASR WER: {asr_wer_percent:.2f} $\pm$ {margin_of_error_asr_percent:.2f}")
+        
+        # Calculate bootstrap CI for Phoneme WER
+        if phoneme_wer is not None:
+            ci_lower_phoneme, ci_upper_phoneme = bootstrap_ci(gt_phoneme, pred_phoneme)
+            margin_of_error_phoneme = (ci_upper_phoneme - ci_lower_phoneme) / 2
+            phoneme_wer_percent = phoneme_wer * 100
+            margin_of_error_phoneme_percent = margin_of_error_phoneme * 100
+            print(f"Phoneme WER: {phoneme_wer_percent:.2f} $\pm$ {margin_of_error_phoneme_percent:.2f}")
     else:
         gt_combined = gt_asr + gt_phoneme
         pred_combined = pred_asr + pred_phoneme
         combined_wer = calculate_wer(gt_combined, pred_combined, "Combined")
         asr_wer = combined_wer
         
-    # Calculate bootstrap CI for ASR WER
-    if asr_wer is not None:
-        ci_lower, ci_upper = bootstrap_ci(gt_asr, pred_asr)
+    # Calculate bootstrap CI for combined ASR WER if not separate
+    if asr_wer is not None and not separate:
+        ci_lower, ci_upper = bootstrap_ci(gt_asr, pred_asr, n_bootstrap=1000)
         margin_of_error = (ci_upper - ci_lower) / 2
-        # Convert WER and CI to percentages
         asr_wer_percent = asr_wer * 100
         margin_of_error_percent = margin_of_error * 100
         print(f"{asr_wer_percent:.2f} $\pm$ {margin_of_error_percent:.2f}")

@@ -570,8 +570,8 @@ if [[ $task_flag == "test" || $task_flag == "all" ]]; then
     eval $command
 
     if [[ "$train_data_folder" == *"phoneme_seperate"* ]]; then
-        python "$code_dir/scripts/wer.py" --folder "$output_dir" --separate
+        python "$code_dir/scripts/wer_ci.py" --folder "$output_dir" --separate
     else
-        python "$code_dir/scripts/wer.py" --folder "$output_dir"
+        python "$code_dir/scripts/wer_ci.py" --folder "$output_dir"
     fi
 fi
