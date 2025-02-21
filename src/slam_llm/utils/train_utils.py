@@ -386,9 +386,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     avg_train_loss = sum(train_loss)/len(train_loss)
     avg_train_acc = sum(train_acc)/len(train_acc)
     if train_config.run_validation:
-        avg_eval_prep = sum(val_prep)/len(val_prep)
-        avg_eval_loss = sum(val_loss)/len(val_loss)
-        avg_eval_acc = sum(val_acc)/len(val_acc)
+        avg_eval_prep = sum(val_prep)/len(val_prep) if len(val_prep) > 0 else 0
+        avg_eval_loss = sum(val_loss)/len(val_loss) if len(val_loss) > 0 else 0
+        avg_eval_acc = sum(val_acc)/len(val_acc) if len(val_acc) > 0 else 0
 
     results['avg_train_prep'] = avg_train_prep
     results['avg_train_loss'] = avg_train_loss
