@@ -284,6 +284,8 @@ examples/st_covost2/test_st.jsonl
 .git/objects/pack/pack-f977660cc43708116d192b9633c2897f124125d5.pack
 .git/objects/pack/tmp_pack_Hv0PsG
 .hydra
+debug.ipynb
+debug.sh
 .idea/*
 .ipynb_checkpoints
 jpn.tsv
@@ -4021,6 +4023,7 @@ out/psst_whisper_llama32_1b_linear_peft/asr_epoch_9_step_413_loss_0.888345420360
 out/psst_whisper_llama32_1b_linear_peft/asr_epoch_9_step_556_loss_0.9544915556907654/model.pt
 **/*.output
 outputs/
+<<<<<<< HEAD
 out-RESTORED/out/ami-10h_w2v2_ph2_linear_phoneme_freeze/asr_epoch_0_step_10116/model.pt
 out-RESTORED/out/ami-10h_w2v2_ph2_linear_phoneme_freeze/asr_epoch_0_step_11116/model.pt
 out-RESTORED/out/ami-10h_w2v2_ph2_linear_phoneme_freeze/asr_epoch_0_step_1116/model.pt
@@ -4861,3 +4864,17 @@ transformers/.git/objects/pack/pack-4ed9c805d662e902b09dd826cce41193070fd1ad.pac
 **/*.txt
 .vscode
 wandb/
+=======
+data/
+jobs/
+debug/
+audio/
+
+examples/s2s/scripts/debug
+examples/vsr_LRS3/scripts/decode_avhubert_vo_vicuna_7b_noself.sh
+examples/asr_librispeech/scripts/decode_hubert_xtralarge_linear_vicuna_7b_copy.sh
+examples/vsr_LRS3/scripts/decode_avhubert_vo_vicuna_7b_copy.sh
+scripts_all
+examples/hotwords_librispeech
+examples/asr_librispeech/scripts/decode_hubert_xtralarge_linear_vicuna_7b_debug.sh
+>>>>>>> 918668f471a49ab206fa7beef33fe43e076f9f84
