@@ -26,16 +26,6 @@ which python
 exec > >(tee -a last_slam_run.txt) 2>&1
 
 
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task train \
-#     --encoder_config w2p-wavlm-dual \
-#     --num_epochs 2 \
-#     --batch_size_training 2 \
-#     --use_peft true \
-#     --train_data_folder test_run \
-
-
 bash train_eval.sh \
     --llm_name llama32_1b \
     --task train \
@@ -43,8 +33,18 @@ bash train_eval.sh \
     --num_epochs 2 \
     --batch_size_training 2 \
     --use_peft true \
-    --freeze_encoder2 false \
     --train_data_folder test_run \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task train \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --freeze_encoder2 false \
+#     --train_data_folder test_run \
 
 
 

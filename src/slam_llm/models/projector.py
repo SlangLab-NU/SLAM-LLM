@@ -32,7 +32,7 @@ class EncoderProjectorDualConcat(nn.Module):
 
         # Downsample the sequence
         x = x.contiguous()
-        x = x.view(batch_size, seq_len // self.k, -1)  # Concatenating the features for the two encoders
+        x = x.view(batch_size, seq_len // self.k, dim * self.k)  # Concatenating the features for the two encoders
 
         # Apply the first linear layer
         if gradient_checkpoint:
