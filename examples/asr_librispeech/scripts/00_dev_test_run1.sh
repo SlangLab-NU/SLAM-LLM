@@ -44,5 +44,26 @@ bash train_eval.sh \
     --batch_size_training 2 \
     --use_peft true \
     --freeze_encoder2 false \
-    --debug true \
     --train_data_folder test_run \
+
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task test \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --test_run true \
+#     --train_data_folder ami_phoneme \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task train \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --train_data_folder test_run \

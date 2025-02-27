@@ -25,7 +25,129 @@ source activate /work/van-speech-nlp/jindaznb/slamenv/
 which python
 
 
+# no lora
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft false \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100 \
 
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft false \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100_phoneme \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft false \
+#     --eval_ckpt best \
+#     --train_data_folder ami \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft false \
+#     --eval_ckpt best \
+#     --train_data_folder ami_phoneme \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft false \
+#     --eval_ckpt best \
+#     --train_data_folder aphasia \
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft false \
+#     --eval_ckpt best \
+#     --train_data_folder aphasia_phoneme \
+
+
+
+
+# no projector
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-dual-none \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100 \
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-dual-none \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100_phoneme \
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-dual-none \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder ami \
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-dual-none \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder ami_phoneme \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-dual-none \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder aphasia \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-dual-none \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder aphasia_phoneme \
+
+
+
+
+# no Wavlm
 # bash train_eval.sh \
 #     --task all \
 #     --encoder_config w2p-mono \
@@ -44,8 +166,6 @@ which python
 #     --use_peft true \
 #     --eval_ckpt best \
 #     --train_data_folder librispeech-100_phoneme \
-
-
 
 # bash train_eval.sh \
 #     --task all \
@@ -68,7 +188,7 @@ which python
 
 
 # bash train_eval.sh \
-#     --task all \
+#     --task test \
 #     --encoder_config w2p-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \

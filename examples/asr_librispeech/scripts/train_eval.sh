@@ -244,6 +244,17 @@ if [ "$encoder_config" == "w2p-wavlm-dual" ]; then
     encoder_projector=dual
     encoder2_dim=${encoder2_dim:-0}
 fi
+if [ "$encoder_config" == "w2p-dual-none" ]; then
+    encoder_name=wavlm
+    encoder_dim=1024
+    input_type=raw
+    speech_encoder_path=${RUN_DIR}/models/WavLM-Large.pt
+    encoder2_name=w2v2
+    encoder2_dim=1024
+    speech_encoder2_path=vitouphy/wav2vec2-xls-r-300m-timit-phoneme
+    encoder_projector=None
+    encoder2_dim=${encoder2_dim:-0}
+fi
 if [ "$encoder_config" == "whisper-dual" ]; then
     encoder_name=whisper
     encoder_dim=1280

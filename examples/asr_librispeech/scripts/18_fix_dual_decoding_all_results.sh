@@ -25,6 +25,9 @@ which python
 exec > >(tee -a last_slam_run.txt) 2>&1
 
 
+
+
+
 # bash train_eval.sh \
 #     --task all \
 #     --encoder_config w2p-wavlm-dual \
@@ -32,7 +35,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --batch_size_training 2 \
 #     --use_peft true \
 #     --eval_ckpt best \
-#     --freeze_encoder2 false \
 #     --train_data_folder aphasia \
 
 
@@ -43,7 +45,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --num_epochs 2 \
 #     --batch_size_training 2 \
 #     --use_peft true \
-#     --freeze_encoder2 false \
 #     --train_data_folder aphasia_phoneme \
 
 
@@ -55,7 +56,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --num_epochs 2 \
 #     --batch_size_training 2 \
 #     --use_peft true \
-#     --freeze_encoder2 false \
 #     --train_data_folder librispeech-100 \
 
 
@@ -65,7 +65,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --num_epochs 2 \
 #     --batch_size_training 2 \
 #     --use_peft true \
-#     --freeze_encoder2 false \
 #     --train_data_folder librispeech-100_phoneme \
 
 
@@ -75,15 +74,13 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --num_epochs 2 \
 #     --batch_size_training 2 \
 #     --use_peft true \
-#     --freeze_encoder2 false \
 #     --train_data_folder ami \
 
 
-bash train_eval.sh \
-    --task all \
-    --encoder_config w2p-wavlm-dual \
-    --num_epochs 2 \
-    --batch_size_training 2 \
-    --use_peft true \
-    --freeze_encoder2 false \
-    --train_data_folder ami_phoneme \
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --train_data_folder ami_phoneme \
