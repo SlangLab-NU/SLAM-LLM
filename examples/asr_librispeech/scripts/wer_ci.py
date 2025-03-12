@@ -20,6 +20,13 @@ def read_and_process_file(file_path):
             else:  # Phoneme recognition lines (odd index rows)
                 phoneme_lines.append(parts[1].strip())
 
+    # Print the first 2 lines of asr_lines and phoneme_lines
+    print("\nFirst 2 lines of ASR GT:")
+    print(asr_lines[:2])
+    
+    print("\nFirst 2 lines of Phoneme GT:")
+    print(phoneme_lines[:2])
+    
     return asr_lines, phoneme_lines
 
 def remove_empty_lines(gt, pred):
@@ -119,7 +126,7 @@ def main(folder, separate, file):
         
     # Calculate bootstrap CI for combined ASR WER if not separate
     if asr_wer is not None and not separate:
-        ci_lower, ci_upper = bootstrap_ci(gt_asr, pred_asr, n_bootstrap=1000)
+        ci_lower, ci_upper = bootstrap_ci(gt_combined, pred_combined, n_bootstrap=1000)
         margin_of_error = (ci_upper - ci_lower) / 2
         asr_wer_percent = asr_wer * 100
         margin_of_error_percent = margin_of_error * 100

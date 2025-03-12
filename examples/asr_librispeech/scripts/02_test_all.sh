@@ -52,7 +52,7 @@ bash train_eval.sh \
     --batch_size_training 4 \
     --use_peft true \
     --eval_ckpt best \
-    --train_data_folder librispeech-100_phoneme_seperate \
+    --train_data_folder librispeech-100_phoneme_separate \
 
 
 
@@ -81,7 +81,7 @@ bash train_eval.sh \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
-#     --train_data_folder ami_phoneme_seperate \
+#     --train_data_folder ami_phoneme_separate \
 
 
 # bash train_eval.sh \
@@ -138,7 +138,7 @@ bash train_eval.sh \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
-#     --train_data_folder aphasia_phoneme_seperate \
+#     --train_data_folder aphasia_phoneme_separate \
 
 
 

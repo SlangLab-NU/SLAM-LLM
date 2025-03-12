@@ -62,7 +62,7 @@ llm_inference_config="repetition_penalty"
 while true; do
     case "$1" in
         -t|--task)
-            task_flag=$2
+            task=$2
             shift 2
             ;;
         -c|--encoder_config)
@@ -151,6 +151,7 @@ while true; do
     esac
 done
 
+
 # If test_data_folder is not provided, default it to train_data_folder
 if [ -z "$test_data_folder" ]; then
     test_data_folder=$train_data_folder
@@ -159,7 +160,7 @@ fi
 : '
 Print out configurations.
 '
-echo "task_flag: $task_flag"
+echo "task: $task"
 echo "train_data_folder: $train_data_folder"
 echo "test_data_folder: $test_data_folder"
 echo "use_peft: $use_peft"
@@ -185,14 +186,12 @@ dataset_file="src/slam_llm/datasets/speech_dataset.py:get_speech_dataset"
 : '
 Set up Data Path for train and eval.
 '
-
 train_data_path="${RUN_DIR}/data/${train_data_folder}/train.jsonl"
 val_data_path="${RUN_DIR}/data/${train_data_folder}/validation.jsonl"
 test_data_path="${RUN_DIR}/data/${test_data_folder}/test.jsonl"
 if [[ "$test_run" == true ]]; then
     test_data_path="${RUN_DIR}/data/${test_data_folder}/test_small.jsonl"
 fi
-
 if [[ ! -f "$train_data_path" ]]; then
     echo "Error: Train data path not found at $train_data_path"
     exit 1
@@ -203,7 +202,6 @@ elif [[ ! -f "$test_data_path" ]]; then
     echo "Error: Test data path not found at $test_data_path"
     exit 1
 fi
-
 
 
 : '
@@ -319,62 +317,90 @@ if [[ $encoder_projector_ds_rate -ne 5 ]]; then
     identifier+="_ds_rate_${encoder_projector_ds_rate}"
 fi
 
+
 echo "----------"
 echo "----------"
 echo "Final identifier: $identifier"
 output_dir=${RUN_DIR}/out/${identifier}
 split="test"
 timestamp=$(date +"%Y%m%d_%H%M%S")  # Format: YearMonthDay_HourMinuteSecond
-decode_log="${output_dir}/decode_${split}_beam4"  # test decode log with timestamp
+decode_log="${output_dir}/decode_${identifier}_beam4"  # test decode log with timestamp
 
 
-: '
-find last checkpoint to resume
-'
-# Check if the output_dir exists
-if [ -d "$output_dir" ]; then
-    # Find the latest checkpoint folder
-    latest_ckpt_folder=$(ls "$output_dir" | grep "asr_epoch" | sort -V | tail -n 1)
-    
-    # Check if a checkpoint folder was found
-    if [ -n "$latest_ckpt_folder" ]; then
-        ckpt_path=$output_dir/$latest_ckpt_folder/model.pt
+ckpt_path=""
+resume_epoch=0
+resume_step=0
+find_last_checkpoint() {
+    local output_dir=$1
+    # Check if the output_dir exists
+    if [ -d "$output_dir" ]; then
+        # Find the latest checkpoint folder
+        latest_ckpt_folder=$(ls "$output_dir" | grep "asr_epoch" | sort -V | tail -n 1)
+        
+        # Check if a checkpoint folder was found
+        if [ -n "$latest_ckpt_folder" ]; then
+            ckpt_path="$output_dir/$latest_ckpt_folder/model.pt"
+        else
+            echo "No checkpoint found in $output_dir"
+            return 1
+        fi
     else
-        echo "No checkpoint found in $output_dir"
+        echo "$output_dir does not exist"
+        return 1
     fi
+
+    # Construct the full checkpoint folder path
+    local ckpt_folder="$output_dir/$latest_ckpt_folder"
+    echo "ckpt_folder: $ckpt_folder"
+
+    # Extract the epoch and step using regex or set to default values if extraction fails
+    if [[ $latest_ckpt_folder =~ asr_epoch_([0-9]+)_step_([0-9]+) ]]; then
+        resume_epoch=${BASH_REMATCH[1]}
+        resume_step=${BASH_REMATCH[2]}
+    else
+        resume_epoch=1
+        resume_step=0
+    fi
+
+    return 0  # Success return code
+}
+
+find_last_checkpoint "$output_dir"
+# Output the results
+if [ $? -eq 0 ]; then
+    echo "Resuming from epoch: $resume_epoch, step: $resume_step"
+    echo "Checkpoint Path: $ckpt_path"
 else
-    echo "$output_dir does not exist"
+    echo "Failed to find the latest checkpoint."
 fi
 
-ckpt_folder="$output_dir/$latest_ckpt_folder"
-echo "ckpt_folder: $ckpt_folder"
 
-# Extract the epoch and step using sed or set to 0 if extraction fails
-if [[ $latest_ckpt_folder =~ asr_epoch_([0-9]+)_step_([0-9]+) ]]; then
-    resume_epoch=${BASH_REMATCH[1]}
-    resume_step=${BASH_REMATCH[2]}
-else
-    resume_epoch=1
-    resume_step=0
-fi
+
 
 : '
 Update configs for transfer learning settings.
 '
 # If transfer learning flag is true, set resume_epoch and resume_step to 1 and 0
 if [[ "$projector_transfer_learning" == "true" ]]; then
-    resume_epoch=1
-    resume_step=0
     train_data_path="${RUN_DIR}/data/${transfer_data_folder}/train.jsonl"
     if [ -f "${RUN_DIR}/data/${transfer_data_folder}/validation.jsonl" ]; then
         val_data_path="${RUN_DIR}/data/${transfer_data_folder}/validation.jsonl"
     elif [ -f "${RUN_DIR}/data/${transfer_data_folder}/val.jsonl" ]; then
         val_data_path="${RUN_DIR}/data/${transfer_data_folder}/val.jsonl"
     fi
-    test_data_path="${RUN_DIR}/data/${transfer_data_folder}/test.jsonl"
+
+    # Only reassign test_data_path if it does NOT contain "separate"
+    if [[ "$test_data_path" != *separate* ]]; then
+        test_data_path="${RUN_DIR}/data/${transfer_data_folder}/test.jsonl"
+    fi
+
     identifier+="_transfer_${transfer_data_folder}"
-    output_dir=${RUN_DIR}/out/${identifier}
-    decode_log="${output_dir}/decode_${split}_beam4"  # update decode dir for projector transfer learningf
+    output_dir="${RUN_DIR}/out/${identifier}"
+    if find "$output_dir" -type d -name "*epoch*" | grep -q .; then
+        echo "Finding checkpoints inside transfer folder"
+        find_last_checkpoint "$output_dir"
+    fi
+    decode_log="${output_dir}/decode_${identifier}_beam4"  # update decode dir for projector transfer learning
 
     # Print transfer learning information
     echo -e "\n\n\n----- Transfer Learning Information -----"
@@ -390,16 +416,12 @@ if [[ "$projector_transfer_learning" == "true" ]]; then
 fi
 
 
-# Output the values for debugging or use
-echo "Resume epoch: $resume_epoch"
-echo "Resume step: $resume_step"
-
 
 : '
 Start Training
 '
 # -m debugpy --listen 5678 --wait-for-client
-if [[ $task_flag == "train" || $task_flag == "all" ]]; then
+if [[ $task == "train" || $task == "all" ]]; then
     # Define the base command
     if [[ "$debug" == true ]]; then
     command="python -m debugpy --listen 5678 --wait-for-client \
@@ -522,7 +544,7 @@ echo "ckpt_folder $ckpt_folder"
 Start Inference
 '
 # -m debugpy --listen 5678 --wait-for-client
-if [[ $task_flag == "test" || $task_flag == "all" ]]; then
+if [[ $task == "test" || $task == "all" ]]; then
     if [[ "$debug" == true ]]; then
     command="python -m debugpy --listen 5678 --wait-for-client \
         $code_dir/inference_asr_batch.py"
@@ -580,7 +602,7 @@ if [[ $task_flag == "test" || $task_flag == "all" ]]; then
 
     eval $command
 
-    if [[ "$train_data_folder" == *"phoneme_seperate"* ]]; then
+    if [[ "$test_data_folder" == *"phoneme_separate"* ]]; then
         python "$code_dir/scripts/wer_ci.py" --folder "$output_dir" --separate
     else
         python "$code_dir/scripts/wer_ci.py" --folder "$output_dir"

@@ -35,7 +35,7 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --use_peft true \
 #     --eval_ckpt best \
 #     --seed 42 \
-#     --train_data_folder aphasia_phoneme_seperate \
+#     --train_data_folder aphasia_phoneme_separate \
 
 # bash train_eval.sh \
 #     --task all \
@@ -45,7 +45,7 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --use_peft true \
 #     --eval_ckpt best \
 #     --seed 42 \
-#     --train_data_folder aphasia_phoneme_seperate \
+#     --train_data_folder aphasia_phoneme_separate \
 
 
 # bash train_eval.sh \
@@ -56,7 +56,7 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --use_peft true \
 #     --eval_ckpt best \
 #     --seed 42 \
-#     --train_data_folder ami_phoneme_seperate \
+#     --train_data_folder ami_phoneme_separate \
 
 
 
@@ -85,13 +85,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --train_data_folder aphasia_phoneme \
 
 
-
-
-
-
-
-
-
 # bash train_eval.sh \
 #     --task all \
 #     --encoder_config wavlm-mono \
@@ -113,10 +106,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --eval_ckpt best \
 #     --seed 42 \
 #     --train_data_folder ami_phoneme \
-
-
-
-
 
 
 

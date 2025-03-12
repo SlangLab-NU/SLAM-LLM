@@ -75,6 +75,7 @@ which python
 #     --eval_ckpt best \
 #     --train_data_folder aphasia \
 
+
 # bash train_eval.sh \
 #     --task all \
 #     --encoder_config w2p-wavlm-dual \
@@ -205,4 +206,3 @@ which python
 #     --use_peft true \
 #     --eval_ckpt best \
 #     --train_data_folder aphasia_phoneme \
-

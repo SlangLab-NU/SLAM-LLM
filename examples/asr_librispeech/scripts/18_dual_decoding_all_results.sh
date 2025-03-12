@@ -25,17 +25,14 @@ which python
 exec > >(tee -a last_slam_run.txt) 2>&1
 
 
-
-
-
-# bash train_eval.sh \
-#     --task all \
-#     --encoder_config w2p-wavlm-dual \
-#     --num_epochs 2 \
-#     --batch_size_training 2 \
-#     --use_peft true \
-#     --eval_ckpt best \
-#     --train_data_folder aphasia \
+bash train_eval.sh \
+    --task all \
+    --encoder_config w2p-wavlm-dual \
+    --num_epochs 2 \
+    --batch_size_training 2 \
+    --use_peft true \
+    --eval_ckpt best \
+    --train_data_folder aphasia \
 
 
 
@@ -77,10 +74,10 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --train_data_folder ami \
 
 
-bash train_eval.sh \
-    --task all \
-    --encoder_config w2p-wavlm-dual \
-    --num_epochs 2 \
-    --batch_size_training 2 \
-    --use_peft true \
-    --train_data_folder ami_phoneme \
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 2 \
+#     --use_peft true \
+#     --train_data_folder ami_phoneme \

@@ -32,7 +32,7 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --eval_ckpt best \
-#     --train_data_folder librispeech-100_phoneme_seperate \
+#     --train_data_folder librispeech-100_phoneme_separate \
 
 
 bash train_eval.sh \
@@ -42,4 +42,4 @@ bash train_eval.sh \
     --batch_size_training 4 \
     --use_peft true \
     --eval_ckpt last \
-    --train_data_folder librispeech-100_phoneme_seperate \
+    --train_data_folder librispeech-100_phoneme_separate \

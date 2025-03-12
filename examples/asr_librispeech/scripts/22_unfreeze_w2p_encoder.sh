@@ -47,8 +47,6 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 #     --train_data_folder aphasia_phoneme \
 
 
-
-
 # bash train_eval.sh \
 #     --task all \
 #     --encoder_config w2p-wavlm-dual \

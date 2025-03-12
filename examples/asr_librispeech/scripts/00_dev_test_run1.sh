@@ -27,10 +27,9 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 
 
 bash train_eval.sh \
-    --llm_name llama32_1b \
-    --task train \
+    --task all \
     --encoder_config w2p-wavlm-dual \
-    --num_epochs 2 \
+    --num_epochs 3 \
     --batch_size_training 2 \
     --use_peft true \
     --train_data_folder test_run \

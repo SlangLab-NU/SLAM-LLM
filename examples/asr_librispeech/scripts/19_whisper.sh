@@ -43,3 +43,43 @@ bash train_eval.sh \
     --use_peft true \
     --eval_ckpt best \
     --train_data_folder aphasia_phoneme \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config whisper-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100 \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config whisper-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100_phoneme \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config whisper-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder ami \
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config whisper-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder ami_phoneme \

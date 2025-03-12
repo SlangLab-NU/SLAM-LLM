@@ -25,6 +25,88 @@ which python
 # exec > >(tee -a last_slam_run.txt) 2>&1
 
 
+
+
+# ablation:
+bash train_eval.sh \
+    --llm_name llama32_1b \
+    --task all \
+    --encoder_config wavlm-mono \
+    --num_epochs 2 \
+    --batch_size_training 4 \
+    --train_data_folder aphasia \
+    --projector_transfer_learning true \
+    --use_peft false \
+    --transfer_data_folder ami \
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder aphasia \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder librispeech-100 \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder ami \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder librispeech-100 \
+
+
+# 46547215
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task test \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder ami \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder aphasia \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task test \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder librispeech-100 \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder aphasia \
+
+# # 46519154
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task test \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder librispeech-100 \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder ami \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder ami \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder aphasia \
+
+
+# non-ablation
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task all \

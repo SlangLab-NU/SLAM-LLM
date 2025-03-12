@@ -22,29 +22,8 @@ module load ffmpeg/20190305
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 which python
 
-# exec > >(tee -a last_slam_run.txt) 2>&1
+# exec > >(tee -a last_slam_run.txt) 2>&1 
 
-
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder aphasia_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder psst_phoneme \
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder psst_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder ami_phoneme \
 
 
 # bash train_eval.sh \
@@ -55,26 +34,7 @@ which python
 #     --batch_size_training 4 \
 #     --train_data_folder ami_phoneme \
 #     --projector_transfer_learning true \
-#     --transfer_data_folder librispeech-100_phoneme \
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder psst_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder librispeech-100_phoneme \
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder aphasia_phoneme \
-#     --projector_transfer_learning true \
+#     --use_peft false \
 #     --transfer_data_folder librispeech-100_phoneme \
 
 
@@ -86,49 +46,21 @@ which python
 #     --batch_size_training 4 \
 #     --train_data_folder aphasia_phoneme \
 #     --projector_transfer_learning true \
+#     --use_peft false \
+#     --transfer_data_folder librispeech-100_phoneme \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder aphasia_phoneme \
+#     --projector_transfer_learning true \
+#     --use_peft false \
 #     --transfer_data_folder ami_phoneme \
 
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder aphasia_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder ami_phoneme \
-
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder aphasia_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder psst_phoneme \
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder ami_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder psst_phoneme \
-
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder librispeech-100_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder psst_phoneme \
 
 
 # bash train_eval.sh \
@@ -138,6 +70,7 @@ which python
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --train_data_folder librispeech-100_phoneme \
+#     --use_peft false \
 #     --projector_transfer_learning true \
 #     --transfer_data_folder ami_phoneme \
 
@@ -151,7 +84,64 @@ which python
 #     --batch_size_training 4 \
 #     --train_data_folder librispeech-100_phoneme \
 #     --projector_transfer_learning true \
+#     --use_peft false \
 #     --transfer_data_folder aphasia_phoneme \
+
+
+bash train_eval.sh \
+    --llm_name llama32_1b \
+    --task test \
+    --encoder_config wavlm-mono \
+    --num_epochs 2 \
+    --batch_size_training 4 \
+    --train_data_folder ami_phoneme \
+    --projector_transfer_learning true \
+    --use_peft false \
+    --transfer_data_folder aphasia_phoneme \
+
+
+
+
+
+
+
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder ami \
+#     --projector_transfer_learning true \
+#     --use_peft false \
+#     --transfer_data_folder librispeech-100 \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder aphasia \
+#     --projector_transfer_learning true \
+#     --use_peft false \
+#     --transfer_data_folder librispeech-100 \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder aphasia \
+#     --projector_transfer_learning true \
+#     --use_peft false \
+#     --transfer_data_folder ami \
+
 
 
 # bash train_eval.sh \
@@ -160,9 +150,10 @@ which python
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
-#     --train_data_folder ami_phoneme \
+#     --train_data_folder librispeech-100 \
+#     --use_peft false \
 #     --projector_transfer_learning true \
-#     --transfer_data_folder aphasia_phoneme \
+#     --transfer_data_folder ami \
 
 
 
@@ -172,6 +163,19 @@ which python
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
-#     --train_data_folder psst_phoneme \
+#     --train_data_folder librispeech-100 \
 #     --projector_transfer_learning true \
-#     --transfer_data_folder aphasia_phoneme \
+#     --use_peft false \
+#     --transfer_data_folder aphasia \
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task test \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder ami \
+#     --projector_transfer_learning true \
+#     --use_peft false \
+#     --transfer_data_folder aphasia \

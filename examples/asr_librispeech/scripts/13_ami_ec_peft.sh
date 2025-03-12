@@ -24,11 +24,10 @@ which python
 
 exec > >(tee -a last_slam_run.txt) 2>&1
 
-# 46463121 2 is OOM
 bash train_eval.sh \
     --llm_name llama32_1b \
     --task all \
-    --encoder_config wavlm-mono \
+    --encoder_config whisper-mono \
     --num_epochs 2 \
     --batch_size_training 1 \
     --use_peft true \

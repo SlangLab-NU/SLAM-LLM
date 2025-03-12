@@ -47,4 +47,4 @@ bash train_eval.sh \
     --num_epochs 2 \
     --batch_size_training 4 \
     --use_peft true \
-    --train_data_folder librispeech-100_phoneme_seperate \
+    --train_data_folder librispeech-100_phoneme_separate \

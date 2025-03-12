@@ -188,21 +188,29 @@ class MusicFMEncoder(nn.Module):
 
 # j: add a new encoder
 class Wav2Vec2Encoder(nn.Module):
-    def __init__(self, config, model):
+    def __init__(self, model):
         super().__init__()
-        self.config = config
         self.model = model
 
     @classmethod
     def load(cls, model_config):
-        from transformers import Wav2Vec2Model
+        from transformers import Wav2Vec2Model, Wav2Vec2Config
+
+        # Load the model configuration
         if not model_config.encoder2_name:
-            # Load the feature extractor and model
-            model = Wav2Vec2Model.from_pretrained(model_config.encoder_path)
+            config = Wav2Vec2Config.from_pretrained(model_config.encoder_path)
         else:
-            # Load the feature extractor and model
-            model = Wav2Vec2Model.from_pretrained(model_config.encoder2_path)
-        return cls(model_config, model)
+            config = Wav2Vec2Config.from_pretrained(model_config.encoder2_path)
+
+        # Adjust the mask_time_length parameter
+        config.mask_time_length = 2  # Set this to a value smaller than your shortest sequence length
+
+        if not model_config.encoder2_name:
+            model = Wav2Vec2Model.from_pretrained(model_config.encoder_path, config=config) # for sequence length issue
+        else:
+            model = Wav2Vec2Model.from_pretrained(model_config.encoder2_path, config=config)
+
+        return cls(model)
 
     def extract_features(self, source, attention_mask):
         assert source is not None, "Input source is None."
@@ -212,6 +220,7 @@ class Wav2Vec2Encoder(nn.Module):
         # Return the last hidden state as the extracted features
         return outputs.last_hidden_state
         
+
 class Emotion2vecEncoder:
 
     @classmethod

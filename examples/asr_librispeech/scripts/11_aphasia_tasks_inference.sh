@@ -74,7 +74,7 @@ bash train_eval.sh \
     --num_epochs 2 \
     --batch_size_training 4 \
     --use_peft true \
-    --train_data_folder aphasia_phoneme_seperate \
+    --train_data_folder aphasia_phoneme_separate \
 
 
 # bash train_eval.sh \
@@ -84,4 +84,4 @@ bash train_eval.sh \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
-#     --train_data_folder aphasia_phoneme_seperate \
+#     --train_data_folder aphasia_phoneme_separate \

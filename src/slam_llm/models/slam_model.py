@@ -446,7 +446,6 @@ class slam_model(nn.Module):
                 encoder_outs = self.encoder.extract_features(audio, None)[
                     'x']  # bs*seq*dim
     
-
             # j: concat embeddings
             if self.encoder2 is not None:
                 if self.model_config.encoder2_name == 'w2v2':
