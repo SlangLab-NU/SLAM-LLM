@@ -23,43 +23,6 @@ source activate /work/van-speech-nlp/jindaznb/slamenv/
 which python
 
 
-bash train_eval.sh \
-    --llm_name llama32_1b \
-    --task all \
-    --encoder_config wavlm-mono \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --train_data_folder aphasia_phoneme \
-    --projector_transfer_learning true \
-    --transfer_data_folder aphasia \
-    --test_data_folder aphasia_phoneme_separate
-
-
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder ami_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder ami \
-#     --test_data_folder ami_phoneme_separate
-
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --train_data_folder librispeech-100_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder librispeech-100 \
-#     --test_data_folder librispeech-100_phoneme_separate
-
-
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
@@ -70,7 +33,18 @@ bash train_eval.sh \
 #     --separate \
 #     --train_data_folder aphasia_phoneme \
 #     --projector_transfer_learning true \
-#     --transfer_data_folder aphasia_phoneme_separate \
+#     --transfer_data_folder aphasia \
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --separate \
+#     --train_data_folder aphasia_phoneme \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder aphasia \
 
 
 # bash train_eval.sh \
@@ -79,19 +53,45 @@ bash train_eval.sh \
 #     --encoder_config whisper-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
+#     --separate \
+#     --train_data_folder librispeech-100_phoneme \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder librispeech-100 \
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --separate \
+#     --train_data_folder librispeech-100_phoneme \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder librispeech-100 \
+
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config whisper-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --separate \
 #     --train_data_folder ami_phoneme \
 #     --projector_transfer_learning true \
 #     --transfer_data_folder ami \
-#     --test_data_folder ami_phoneme_separate
 
 
-bash train_eval.sh \
-    --llm_name llama32_1b \
-    --task all \
-    --encoder_config whisper-mono \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --train_data_folder librispeech-100_phoneme \
-    --projector_transfer_learning true \
-    --transfer_data_folder librispeech-100 \
-    --test_data_folder librispeech-100_phoneme_separate
+
+
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --separate \
+#     --train_data_folder ami_phoneme \
+#     --projector_transfer_learning true \
+#     --transfer_data_folder ami \

@@ -25,7 +25,6 @@ which python
 # exec > >(tee -a last_slam_run.txt) 2>&1 
 
 
-
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task all \
@@ -88,16 +87,16 @@ which python
 #     --transfer_data_folder aphasia_phoneme \
 
 
-bash train_eval.sh \
-    --llm_name llama32_1b \
-    --task test \
-    --encoder_config wavlm-mono \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --train_data_folder ami_phoneme \
-    --projector_transfer_learning true \
-    --use_peft false \
-    --transfer_data_folder aphasia_phoneme \
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task test \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --train_data_folder ami_phoneme \
+#     --projector_transfer_learning true \
+#     --use_peft false \
+#     --transfer_data_folder aphasia_phoneme \
 
 
 

@@ -98,10 +98,11 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
             total_loss = 0.0
             total_acc = 0.0
             total_length = len(train_dataloader)//gradient_accumulation_steps
-            validation_interval = total_length // 4 # j: For each epoch, validation 4 times
+            validation_interval = len(train_dataloader) // 4 # j: For each epoch, validate 4 times
             # j: If validation_interval is 0, reset it to train_config.validation_interval
             if validation_interval == 0:
                 validation_interval = train_config.validation_interval
+            print(f"validation interval {validation_interval}")
             start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0 # j, resume from steps.
             pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True,initial=start_step) # update tqdm bar
             for step, batch in enumerate(train_dataloader,start=start_step):

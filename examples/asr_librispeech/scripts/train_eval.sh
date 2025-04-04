@@ -3,6 +3,8 @@
 : '
 Set up Argument Parser
 '
+source ./utils.sh
+
 usage() {
     echo "Usage: $0 [options]"
     echo ""
@@ -38,7 +40,7 @@ usage() {
 }
 
 # Parse arguments using getopt
-OPTIONS=$(getopt -o t:c:e:b:f:p:s:l: --long task:,encoder_config:,num_epochs:,batch_size_training:,train_data_folder:,test_data_folder:,use_peft:,debug:,test_run,llm_name:,seed:,freeze_encoder:,freeze_encoder2:,eval_ckpt:,encoder_projector:,encoder_projector_ds_rate:,save_embedding:,projector_transfer_learning:,transfer_data_folder:,llm_inference_config:,help -- "$@")
+OPTIONS=$(getopt -o t:c:e:b:f:p:s:l: --long task:,encoder_config:,num_epochs:,batch_size_training:,train_data_folder:,test_data_folder:,use_peft:,debug:,test_run,llm_name:,seed:,freeze_encoder:,freeze_encoder2:,eval_ckpt:,encoder_projector:,encoder_projector_ds_rate:,save_embedding:,projector_transfer_learning:,transfer_data_folder:,llm_inference_config:,separate,help -- "$@")
 if [ $? -ne 0 ]; then
     echo "Failed to parse arguments."
     exit 1
@@ -144,6 +146,10 @@ while true; do
         --help)
             usage
             ;;
+        --separate)
+            separate=true
+            shift 1
+            ;;
         --)
             shift
             break
@@ -156,6 +162,7 @@ done
 if [ -z "$test_data_folder" ]; then
     test_data_folder=$train_data_folder
 fi
+
 
 : '
 Print out configurations.
@@ -174,6 +181,7 @@ echo "transfer_data_folder: $transfer_data_folder"
 echo "llm_inference_config: $llm_inference_config"
 echo "eval_ckpt: $eval_ckpt"
 
+
 : '
 Set up folders and directories
 '
@@ -189,19 +197,11 @@ Set up Data Path for train and eval.
 train_data_path="${RUN_DIR}/data/${train_data_folder}/train.jsonl"
 val_data_path="${RUN_DIR}/data/${train_data_folder}/validation.jsonl"
 test_data_path="${RUN_DIR}/data/${test_data_folder}/test.jsonl"
-if [[ "$test_run" == true ]]; then
-    test_data_path="${RUN_DIR}/data/${test_data_folder}/test_small.jsonl"
-fi
-if [[ ! -f "$train_data_path" ]]; then
-    echo "Error: Train data path not found at $train_data_path"
-    exit 1
-elif [[ ! -f "$val_data_path" ]]; then
-    echo "Error: Validation data path not found at $val_data_path"
-    exit 1
-elif [[ ! -f "$test_data_path" ]]; then
-    echo "Error: Test data path not found at $test_data_path"
-    exit 1
-fi
+
+echo "train_data_path: $train_data_path"
+echo "val_data_path: $val_data_path"
+echo "test_data_path: $test_data_path"
+
 
 
 : '
@@ -264,108 +264,47 @@ if [ "$encoder_config" == "whisper-dual" ]; then
     encoder2_dim=${encoder2_dim:-0}
 fi
 
+
 : '
 Read the llm config for model setup.
 '
-if [[ "$llm_name" == "TinyLlama" ]]; then
-    llm_dim=2048
-    llm_path="${RUN_DIR}/models/TinyLlama-1.1B-Chat-v1.0"
-fi
-if [[ "$llm_name" == "llama32_1b" ]]; then
-    llm_dim=2048
-    llm_path="${RUN_DIR}/models/Llama-3.2-1B-Instruct"
-fi
-if [[ "$llm_name" == "phi35" ]]; then
-    llm_dim=3072
-    llm_path="${RUN_DIR}/models/Phi-3.5-mini-instruct"
-fi
-if [[ "$llm_name" == "vicuna7b" ]]; then
-    llm_dim=4096
-    llm_path="${RUN_DIR}/models/vicuna-7b-v1.5"
-fi
-if [ "$use_peft" = true ]; then
-    freeze_llm=false
-else
-    freeze_llm=true
-fi
+params=$(set_llm_params "$llm_name" "$RUN_DIR" "$use_peft")
+# Parse the returned parameters
+llm_dim=$(echo $params | cut -d ' ' -f 1)
+llm_path=$(echo $params | cut -d ' ' -f 2)
+freeze_llm=$(echo $params | cut -d ' ' -f 3)
+# Output the results
+echo "LLM Dim: $llm_dim"
+echo "LLM Path: $llm_path"
+echo "Freeze LLM: $freeze_llm"
+
 
 : '
 Initial identifier for folder
 '
-identifier="${train_data_folder}_${encoder_name}_${llm_name}_${encoder_projector}"
-# Add "_freeze" if use_peft is false
-if [[ $use_peft == "false" ]]; then
-    identifier+="_freeze_llm"
-fi
-if [[ $use_peft == "true" ]]; then
-    identifier+="_peft"
-fi
-# Check if encoder_name or encoder2_name is "w2p" and add "phoneme_encoder" to the identifier
-if [[ $encoder_name == "w2p" || $encoder2_name == "w2p" ]]; then
-    identifier+="_phoneme_encoder"
-fi
-if [[ -n $seed ]]; then
-    identifier+="_seed_${seed}"
-fi
-if [[ $freeze_encoder == "false" ]]; then
-    identifier+="_unfreeze_encoder"
-fi
-if [[ $freeze_encoder2 == "false" ]]; then
-    identifier+="_unfreeze_encoder2"
-fi
-if [[ $encoder_projector_ds_rate -ne 5 ]]; then
-    identifier+="_ds_rate_${encoder_projector_ds_rate}"
-fi
+identifier=$(generate_identifier "$train_data_folder" "$encoder_name" "$llm_name" "$encoder_projector" \
+                                "$use_peft" "$encoder2_name" "$seed" "$freeze_encoder" \
+                                "$freeze_encoder2" "$encoder_projector_ds_rate")
 
-
-echo "----------"
-echo "----------"
+printf '%*s\n' 50 | tr ' ' '-'
 echo "Final identifier: $identifier"
+printf '%*s\n' 50 | tr ' ' '-'
+
+
+
+: '
+Setup output folder
+'
 output_dir=${RUN_DIR}/out/${identifier}
 split="test"
 timestamp=$(date +"%Y%m%d_%H%M%S")  # Format: YearMonthDay_HourMinuteSecond
 decode_log="${output_dir}/decode_${identifier}_beam4"  # test decode log with timestamp
 
-
 ckpt_path=""
 resume_epoch=0
 resume_step=0
-find_last_checkpoint() {
-    local output_dir=$1
-    # Check if the output_dir exists
-    if [ -d "$output_dir" ]; then
-        # Find the latest checkpoint folder
-        latest_ckpt_folder=$(ls "$output_dir" | grep "asr_epoch" | sort -V | tail -n 1)
-        
-        # Check if a checkpoint folder was found
-        if [ -n "$latest_ckpt_folder" ]; then
-            ckpt_path="$output_dir/$latest_ckpt_folder/model.pt"
-        else
-            echo "No checkpoint found in $output_dir"
-            return 1
-        fi
-    else
-        echo "$output_dir does not exist"
-        return 1
-    fi
-
-    # Construct the full checkpoint folder path
-    local ckpt_folder="$output_dir/$latest_ckpt_folder"
-    echo "ckpt_folder: $ckpt_folder"
-
-    # Extract the epoch and step using regex or set to default values if extraction fails
-    if [[ $latest_ckpt_folder =~ asr_epoch_([0-9]+)_step_([0-9]+) ]]; then
-        resume_epoch=${BASH_REMATCH[1]}
-        resume_step=${BASH_REMATCH[2]}
-    else
-        resume_epoch=1
-        resume_step=0
-    fi
-
-    return 0  # Success return code
-}
-
 find_last_checkpoint "$output_dir"
+
 # Output the results
 if [ $? -eq 0 ]; then
     echo "Resuming from epoch: $resume_epoch, step: $resume_step"
@@ -396,6 +335,19 @@ if [[ "$projector_transfer_learning" == "true" ]]; then
 
     identifier+="_transfer_${transfer_data_folder}"
     output_dir="${RUN_DIR}/out/${identifier}"
+
+    # Try to find the last checkpoint
+    if ! find_last_checkpoint "$output_dir"; then
+        # If no checkpoint found, set default values
+        resume_epoch=1
+        resume_step=0
+        echo "No checkpoint found in transfer learning folder, starting from epoch 1, step 0"
+    else
+        # If checkpoint found, print the path
+        echo "Found checkpoint at transfer learning folder: $ckpt_path"
+    fi
+
+
     if find "$output_dir" -type d -name "*epoch*" | grep -q .; then
         echo "Finding checkpoints inside transfer folder"
         find_last_checkpoint "$output_dir"
@@ -602,7 +554,7 @@ if [[ $task == "test" || $task == "all" ]]; then
 
     eval $command
 
-    if [[ "$test_data_folder" == *"phoneme_separate"* ]]; then
+    if [[ "$test_data_folder" == *"phoneme_separate"* || "$separate" == true ]]; then
         python "$code_dir/scripts/wer_ci.py" --folder "$output_dir" --separate
     else
         python "$code_dir/scripts/wer_ci.py" --folder "$output_dir"

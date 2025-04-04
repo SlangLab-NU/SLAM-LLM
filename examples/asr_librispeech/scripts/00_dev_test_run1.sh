@@ -29,7 +29,7 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 bash train_eval.sh \
     --task all \
     --encoder_config w2p-wavlm-dual \
-    --num_epochs 3 \
+    --num_epochs 100 \
     --batch_size_training 2 \
     --use_peft true \
     --train_data_folder test_run \
