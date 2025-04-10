@@ -2,6 +2,13 @@ from dataclasses import dataclass, field
 from typing import Optional, List
 import os
 import time
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+RUN_DIR = os.getenv('RUN_DIR')
+if not RUN_DIR:
+    raise ValueError("RUN_DIR environment variable not set in .env file")
 
 # Get the current time
 current_time = time.strftime("%Y-%m-%d_%H-%M-%S")
@@ -158,10 +165,10 @@ class FSDPConfig:
 
 @dataclass
 class LogConfig:
-    use_wandb: bool = True # # Determines whether to use Weights & Biases (wandb) for logging. If True, wandb is used.
-    wandb_dir: str = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/wandb_log"
+    use_wandb: bool = True
+    wandb_dir: str = os.path.join(RUN_DIR, "out/log/wandb_log")
     wandb_entity_name: str = "jindaz-work"
     wandb_project_name: str = "SLAM-LLM"
     wandb_exp_name: str = "exp_name"
-    log_file: str = f"/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/log/{current_time}.txt"
+    log_file: str = os.path.join(RUN_DIR, f"out/log/{current_time}.txt")
     log_interval: int = 5

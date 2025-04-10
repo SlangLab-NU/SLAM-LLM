@@ -1,5 +1,16 @@
 #!/bin/bash -l
-run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm
+# Load environment variables from .env
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_ROOT="$SCRIPT_DIR/../../../.."
+
+if [ -f "$PROJECT_ROOT/.env" ]; then
+    source "$PROJECT_ROOT/.env"
+else
+    echo "Error: .env file not found in project root: $PROJECT_ROOT/.env"
+    exit 1
+fi
+
+run_dir=$RUN_DIR
 code_dir=examples/asr_librispeech
 
 

@@ -19,6 +19,7 @@ import json
 import hydra
 from omegaconf import DictConfig, ListConfig, OmegaConf
 import time
+from dotenv import load_dotenv
 
 # Get the current timestamp
 current_time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
@@ -57,6 +58,11 @@ def main_hydra(cfg: DictConfig):
 
 
 def main(kwargs: DictConfig):
+    # Load environment variables
+    load_dotenv()
+    RUN_DIR = os.getenv('RUN_DIR')
+    if not RUN_DIR:
+        raise ValueError("RUN_DIR environment variable not set in .env file")
 
     # Update the configuration for the training and sharding process
     # train_config, fsdp_config, model_config, log_config = TRAIN_CONFIG(), FSDP_CONFIG(), MODEL_CONFIG(), LOG_CONFIG()
@@ -143,12 +149,12 @@ def main(kwargs: DictConfig):
     # Get the current timestamp in a readable format (e.g., YYYYMMDD_HHMMSS)
     timestamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
     logger.info("=====================================")
-    pred_path = f"{kwargs.get('decode_log')}_pred_{model_config.identifier}_{timestamp}"
-    gt_path = f"{kwargs.get('decode_log')}_gt_{model_config.identifier}_{timestamp}"
+    pred_path = kwargs.get('decode_log') + "_pred_" + timestamp
+    gt_path = kwargs.get('decode_log') + "_gt_" + timestamp
     
     with open(pred_path, "w") as pred, open(gt_path, "w") as gt:
         # j: read llm inference configs
-        llm_config_folder = "/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/llm_config"
+        llm_config_folder = os.path.join(RUN_DIR, "examples/asr_librispeech/scripts/llm_config")
         llm_config_path = os.path.join(
             llm_config_folder, f"{model_config.llm_inference_config}.json")
         llm_config = load_config(llm_config_path)

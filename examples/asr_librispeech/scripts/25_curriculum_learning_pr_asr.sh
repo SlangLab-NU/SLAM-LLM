@@ -35,6 +35,7 @@ which python
 #     --projector_transfer_learning true \
 #     --transfer_data_folder aphasia \
 
+
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task all \
@@ -69,8 +70,6 @@ which python
 #     --projector_transfer_learning true \
 #     --transfer_data_folder librispeech-100 \
 
-
-
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task all \
@@ -82,16 +81,13 @@ which python
 #     --projector_transfer_learning true \
 #     --transfer_data_folder ami \
 
-
-
-
-# bash train_eval.sh \
-#     --llm_name llama32_1b \
-#     --task all \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --separate \
-#     --train_data_folder ami_phoneme \
-#     --projector_transfer_learning true \
-#     --transfer_data_folder ami \
+bash train_eval.sh \
+    --llm_name llama32_1b \
+    --task all \
+    --encoder_config wavlm-mono \
+    --num_epochs 2 \
+    --batch_size_training 4 \
+    --separate \
+    --train_data_folder ami_phoneme \
+    --projector_transfer_learning true \
+    --transfer_data_folder ami \

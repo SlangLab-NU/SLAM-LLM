@@ -1,14 +1,18 @@
 #!/bin/bash -l
 
-# export PYTHONPATH=/root/whisper:$PYTHONPATH
-export CUDA_VISIBLE_DEVICES=0
-export TOKENIZERS_PARALLELISM=false
-# export CUDA_LAUNCH_BLOCKING=1
-export OMP_NUM_THREADS=1
-export HYDRA_FULL_ERROR=1
 
+# Load environment variables from .env
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_ROOT="$SCRIPT_DIR/../../../.."
 
-run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm
+if [ -f "$PROJECT_ROOT/.env" ]; then
+    source "$PROJECT_ROOT/.env"
+else
+    echo "Error: .env file not found in project root: $PROJECT_ROOT/.env"
+    exit 1
+fi
+
+run_dir=$RUN_DIR
 code_dir=examples/asr_librispeech
 
 
