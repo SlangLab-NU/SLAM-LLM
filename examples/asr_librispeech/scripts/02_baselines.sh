@@ -26,125 +26,123 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --eval_ckpt best \
+#     --seed 42 \
 #     --train_data_folder librispeech-100 \
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --eval_ckpt best \
+#     --seed 42 \
 #     --train_data_folder librispeech-100_phoneme \
 
 
-bash train_eval.sh \
-    --task test \
-    --encoder_config wavlm-mono \
-    --num_epochs 2 \
-    --batch_size_training 4 \
-    --use_peft true \
-    --eval_ckpt best \
-    --train_data_folder librispeech-100_phoneme_separate \
-
-
-
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
+#     --eval_ckpt best \
+#     --seed 42 \
+#     --train_data_folder librispeech-100_phoneme_separate \
+
+
+
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config wavlm-mono \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder ami \
 
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder ami_phoneme \
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder ami_phoneme_separate \
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder ami_ec \
 
 
 
+
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
-#     --train_data_folder psst \
-
-
-# bash train_eval.sh \
-#     --task test \
-#     --encoder_config whsiper-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --use_peft true \
-#     --train_data_folder psst \
-
-
-
-# bash train_eval.sh \
-#     --task test \
-#     --encoder_config wavlm-mono \
-#     --num_epochs 2 \
-#     --batch_size_training 4 \
-#     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder aphasia \
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder aphasia_phoneme \
 
 
 
 # bash train_eval.sh \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
+#     --seed 42 \
 #     --train_data_folder aphasia_phoneme_separate \
+
+
+
+#
+#
+#
 
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -155,7 +153,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -165,7 +163,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -176,7 +174,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -186,7 +184,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -197,7 +195,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -209,7 +207,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -220,7 +218,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -230,7 +228,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -242,201 +240,201 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder ami_phoneme \
-#     --test_data_folder librispeech-100_phoneme \
+#     --all_data_folder librispeech-100_phoneme \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder psst_phoneme \
-#     --test_data_folder librispeech-100_phoneme \
+#     --all_data_folder librispeech-100_phoneme \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder aphasia_phoneme \
-#     --test_data_folder librispeech-100_phoneme \
+#     --all_data_folder librispeech-100_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder librispeech-100_phoneme \
-#     --test_data_folder ami_phoneme \
+#     --all_data_folder ami_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder psst_phoneme \
-#     --test_data_folder ami_phoneme \
+#     --all_data_folder ami_phoneme \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder aphasia_phoneme \
-#     --test_data_folder ami_phoneme \
+#     --all_data_folder ami_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder aphasia_phoneme \
-#     --test_data_folder psst_phoneme \
+#     --all_data_folder psst_phoneme \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder librispeech-100_phoneme \
-#     --test_data_folder psst_phoneme \
+#     --all_data_folder psst_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder ami_phoneme \
-#     --test_data_folder psst_phoneme \
+#     --all_data_folder psst_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder librispeech-100_phoneme \
-#     --test_data_folder aphasia_phoneme \
+#     --all_data_folder aphasia_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder ami_phoneme \
-#     --test_data_folder aphasia_phoneme \
+#     --all_data_folder aphasia_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder psst_phoneme \
-#     --test_data_folder aphasia_phoneme \
+#     --all_data_folder aphasia_phoneme \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder librispeech-100 \
-#     --test_data_folder ami \
+#     --all_data_folder ami \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder librispeech-100 \
-#     --test_data_folder aphasia \
+#     --all_data_folder aphasia \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder ami \
-#     --test_data_folder librispeech-100 \
+#     --all_data_folder librispeech-100 \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder ami \
-#     --test_data_folder aphasia \
+#     --all_data_folder aphasia \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder aphasia \
-#     --test_data_folder librispeech-100 \
+#     --all_data_folder librispeech-100 \
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
 #     --use_peft true \
 #     --train_data_folder aphasia \
-#     --test_data_folder ami \
+#     --all_data_folder ami \
 
 
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -447,7 +445,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -458,7 +456,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -469,7 +467,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -481,7 +479,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -492,7 +490,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -503,7 +501,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -514,7 +512,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -524,7 +522,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -535,7 +533,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -548,7 +546,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -559,7 +557,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -570,7 +568,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -581,7 +579,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -593,7 +591,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -604,7 +602,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -615,7 +613,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -626,7 +624,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -636,7 +634,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \
@@ -647,7 +645,7 @@ bash train_eval.sh \
 
 # bash train_eval.sh \
 #     --llm_name llama32_1b \
-#     --task test \
+#     --task all \
 #     --encoder_config wavlm-mono \
 #     --num_epochs 2 \
 #     --batch_size_training 4 \

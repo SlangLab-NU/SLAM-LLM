@@ -1,8 +1,19 @@
 #!/bin/bash
 
-: '
-Set up Argument Parser
-'
+# Source the .env file from project root
+# Load environment variables from .env
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+PROJECT_ROOT="$SCRIPT_DIR/../../.."
+
+if [ -f "$PROJECT_ROOT/.env" ]; then
+    source "$PROJECT_ROOT/.env"
+    echo "Successfully loaded RUN_DIR from .env: $RUN_DIR"
+else
+    echo "Error: .env file not found in project root: $PROJECT_ROOT/.env"
+    exit 1
+fi
+
+# Set up Argument Parser
 source ./utils.sh
 
 usage() {
@@ -60,6 +71,7 @@ save_embedding=false
 projector_transfer_learning=false
 transfer_data_folder=""
 llm_inference_config="repetition_penalty"
+separate=false
 
 while true; do
     case "$1" in
@@ -164,36 +176,25 @@ if [ -z "$test_data_folder" ]; then
 fi
 
 
-: '
-Print out configurations.
-'
+# Print out configurations.
 echo "task: $task"
 echo "train_data_folder: $train_data_folder"
 echo "test_data_folder: $test_data_folder"
 echo "use_peft: $use_peft"
-echo "seed: $seed"
-echo "debug: $debug"
-echo "Is test_run? $test_run"
 echo "freeze_encoder: $freeze_encoder"
-echo "Is save_embedding? $save_embedding"
 echo "projector_transfer_learning: $projector_transfer_learning"
 echo "transfer_data_folder: $transfer_data_folder"
 echo "llm_inference_config: $llm_inference_config"
 echo "eval_ckpt: $eval_ckpt"
 
 
-: '
-Set up folders and directories
-'
-RUN_DIR=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm
+# Set up folders and directories
 cd $RUN_DIR
 code_dir=examples/asr_librispeech
 dataset_file="src/slam_llm/datasets/speech_dataset.py:get_speech_dataset"
 
 
-: '
-Set up Data Path for train and eval.
-'
+# Set up Data Path for train and eval.
 train_data_path="${RUN_DIR}/data/${train_data_folder}/train.jsonl"
 val_data_path="${RUN_DIR}/data/${train_data_folder}/validation.jsonl"
 test_data_path="${RUN_DIR}/data/${test_data_folder}/test.jsonl"
@@ -204,9 +205,7 @@ echo "test_data_path: $test_data_path"
 
 
 
-: '
-Read the encoder config for model setup.
-'
+# Read the encoder config for model setup.
 # Main script
 if [ "$encoder_config" == "w2p-mono" ]; then
     encoder_name="w2v2"
@@ -265,9 +264,7 @@ if [ "$encoder_config" == "whisper-dual" ]; then
 fi
 
 
-: '
-Read the llm config for model setup.
-'
+# Read the llm config for model setup.
 params=$(set_llm_params "$llm_name" "$RUN_DIR" "$use_peft")
 # Parse the returned parameters
 llm_dim=$(echo $params | cut -d ' ' -f 1)
@@ -279,10 +276,8 @@ echo "LLM Path: $llm_path"
 echo "Freeze LLM: $freeze_llm"
 
 
-: '
-Initial identifier for folder
-'
-identifier=$(generate_identifier "$train_data_folder" "$encoder_name" "$llm_name" "$encoder_projector" \
+# Initial identifier for folder
+identifier=$(generate_identifier "$encoder_name" "$llm_name" "$encoder_projector" \
                                 "$use_peft" "$encoder2_name" "$seed" "$freeze_encoder" \
                                 "$freeze_encoder2" "$encoder_projector_ds_rate")
 
@@ -292,10 +287,8 @@ printf '%*s\n' 50 | tr ' ' '-'
 
 
 
-: '
-Setup output folder
-'
-output_dir=${RUN_DIR}/out/${identifier}
+# Setup output folder
+output_dir=${RUN_DIR}/out/${train_data_folder}/${identifier}
 split="test"
 timestamp=$(date +"%Y%m%d_%H%M%S")  # Format: YearMonthDay_HourMinuteSecond
 decode_log="${output_dir}/decode_${identifier}_beam4"  # test decode log with timestamp
@@ -316,9 +309,7 @@ fi
 
 
 
-: '
-Update configs for transfer learning settings.
-'
+# Update configs for transfer learning settings.
 # If transfer learning flag is true, set resume_epoch and resume_step to 1 and 0
 if [[ "$projector_transfer_learning" == "true" ]]; then
     train_data_path="${RUN_DIR}/data/${transfer_data_folder}/train.jsonl"
@@ -334,7 +325,7 @@ if [[ "$projector_transfer_learning" == "true" ]]; then
     fi
 
     identifier+="_transfer_${transfer_data_folder}"
-    output_dir="${RUN_DIR}/out/${identifier}"
+    output_dir="${RUN_DIR}/out/${train_data_folder}/${identifier}"
 
     # Try to find the last checkpoint
     if ! find_last_checkpoint "$output_dir"; then
@@ -369,17 +360,25 @@ fi
 
 
 
-: '
-Start Training
-'
+# Start Training
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $task == "train" || $task == "all" ]]; then
+    # Get number of available GPUs
+    n_gpus=$(nvidia-smi --query-gpu=gpu_name --format=csv,noheader | wc -l)
+    echo "Detected $n_gpus GPUs available"
+
+    # ========== Start time ==========
+    start_time=$(date +%s)
+    echo "Start time: $(date)"
+
     # Define the base command
     if [[ "$debug" == true ]]; then
-    command="python -m debugpy --listen 5678 --wait-for-client \
-        $code_dir/finetune_asr.py"
+        command="python -m debugpy --listen 5678 --wait-for-client \
+            $code_dir/finetune_asr.py"
     else
-        command="python \
+        command="torchrun \
+            --nnodes 1 \
+            --nproc_per_node $n_gpus \
             $code_dir/finetune_asr.py"
     fi
     command+=" \
@@ -442,13 +441,18 @@ if [[ $task == "train" || $task == "all" ]]; then
     fi
     # Execute the command
     eval $command
+
+    # ========== End time and duration ==========
+    end_time=$(date +%s)
+    echo "End time: $(date)"
+
+    elapsed=$((end_time - start_time))
+    echo "Total run time: ${elapsed}s"
 fi
 
 
 
-: '
-check output dir exists and find best checkpoint to infernce
-'
+# check output dir exists and find best checkpoint to infernce
 # Check if the output_dir exists
 if [ -d "$output_dir" ]; then
     if [ "$eval_ckpt" = "best" ]; then
@@ -492,9 +496,7 @@ ckpt_folder="$output_dir/$latest_ckpt_folder"
 echo "ckpt_folder $ckpt_folder"
 
 
-: '
-Start Inference
-'
+# Start Inference
 # -m debugpy --listen 5678 --wait-for-client
 if [[ $task == "test" || $task == "all" ]]; then
     if [[ "$debug" == true ]]; then

@@ -36,19 +36,18 @@ find_last_checkpoint() {
 
 
 generate_identifier() {
-    local train_data_folder="$1"
-    local encoder_name="$2"
-    local llm_name="$3"
-    local encoder_projector="$4"
-    local use_peft="$5"
-    local encoder2_name="$6"
-    local seed="$7"
-    local freeze_encoder="$8"
-    local freeze_encoder2="$9"
-    local encoder_projector_ds_rate="${10}"
+    local encoder_name="$1"
+    local llm_name="$2"
+    local encoder_projector="$3"
+    local use_peft="$4"
+    local encoder2_name="$5"
+    local seed="$6"
+    local freeze_encoder="$7"
+    local freeze_encoder2="$8"
+    local encoder_projector_ds_rate="$9"
 
-    # Initialize identifier with the basic parts
-    local identifier="${train_data_folder}_${encoder_name}_${llm_name}_${encoder_projector}"
+    # Initialize identifier with the basic parts without train_data_folder
+    local identifier="${encoder_name}_${llm_name}_${encoder_projector}"
 
     # Add "_freeze" if use_peft is false
     if [[ $use_peft == "false" ]]; then

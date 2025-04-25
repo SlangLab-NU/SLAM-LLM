@@ -37,15 +37,15 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 
 
 
-bash train_eval.sh \
-    --task all \
-    --encoder_config wavlm-mono \
-	--llm_name vicuna7b \
-    --num_epochs 2 \
-    --batch_size_training 1 \
-    --use_peft true \
-    --eval_ckpt best \
-    --train_data_folder librispeech-100_phoneme \
+# bash train_eval.sh \
+#     --task all \
+#     --encoder_config wavlm-mono \
+# 	--llm_name vicuna7b \
+#     --num_epochs 2 \
+#     --batch_size_training 1 \
+#     --use_peft true \
+#     --eval_ckpt best \
+#     --train_data_folder librispeech-100_phoneme \
 
 
 # bash train_eval.sh \

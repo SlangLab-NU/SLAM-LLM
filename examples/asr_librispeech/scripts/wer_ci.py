@@ -5,10 +5,15 @@ import numpy as np
 from jiwer import wer
 from random import choices, seed
 
-def read_and_process_file(file_path):
+def read_file(file_path):
+    """Read the file and return its contents."""
     with open(file_path, 'r') as file:
         lines = file.readlines()
+    
+    return lines
 
+def process_file_contents(lines):
+    """Process the file contents into ASR and phoneme lines."""
     asr_lines = []
     phoneme_lines = []
 
@@ -19,15 +24,12 @@ def read_and_process_file(file_path):
                 asr_lines.append(parts[1].strip())
             else:  # Phoneme recognition lines (odd index rows)
                 phoneme_lines.append(parts[1].strip())
-
-    # Print the first 2 lines of asr_lines and phoneme_lines
-    print("\nFirst 2 lines of ASR GT:")
-    print(asr_lines[:2])
-    
-    print("\nFirst 2 lines of Phoneme GT:")
-    print(phoneme_lines[:2])
-    
     return asr_lines, phoneme_lines
+
+def read_and_process_file(file_path):
+    """Combined function that reads and processes the file."""
+    lines = read_file(file_path)
+    return process_file_contents(lines)
 
 def remove_empty_lines(gt, pred):
     gt_non_empty, pred_non_empty = [], []
@@ -77,14 +79,14 @@ def main(folder, separate, file):
         print(f"Using specified GT file: {file}")
         pred_file_path = file.replace('gt', 'pred')
     else:
-        gt_file_pattern = os.path.join(folder, "decode_test_beam4_gt_*")
+        gt_file_pattern = os.path.join(folder, "decode_*_gt_*")
         file = get_latest_file(gt_file_pattern)
         if not file:
             print("Missing GT file.")
             return
         print(f"Using GT file: {file}")
 
-        pred_file_pattern = os.path.join(folder, "decode_test_beam4_pred_*")
+        pred_file_pattern = os.path.join(folder, "decode_*_pred_*")
         pred_file_path = get_latest_file(pred_file_pattern)
 
         if not pred_file_path:
@@ -118,19 +120,17 @@ def main(folder, separate, file):
             phoneme_wer_percent = phoneme_wer * 100
             margin_of_error_phoneme_percent = margin_of_error_phoneme * 100
             print(f"Phoneme WER: {phoneme_wer_percent:.2f} $\pm$ {margin_of_error_phoneme_percent:.2f}")
-    else:
+            
+    elif not separate:
         gt_combined = gt_asr + gt_phoneme
         pred_combined = pred_asr + pred_phoneme
         combined_wer = calculate_wer(gt_combined, pred_combined, "Combined")
-        asr_wer = combined_wer
-        
-    # Calculate bootstrap CI for combined ASR WER if not separate
-    if asr_wer is not None and not separate:
+
         ci_lower, ci_upper = bootstrap_ci(gt_combined, pred_combined, n_bootstrap=1000)
         margin_of_error = (ci_upper - ci_lower) / 2
-        asr_wer_percent = asr_wer * 100
+        combined_wer_percent = combined_wer * 100
         margin_of_error_percent = margin_of_error * 100
-        print(f"{asr_wer_percent:.2f} $\pm$ {margin_of_error_percent:.2f}")
+        print(f"{combined_wer_percent:.2f} $\pm$ {margin_of_error_percent:.2f}")
 
 
 if __name__ == "__main__":
