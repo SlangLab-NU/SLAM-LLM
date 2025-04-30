@@ -8,7 +8,7 @@ from contextlib import nullcontext
 from pathlib import Path
 # from pkg_resources import packaging
 import packaging
-
+from torch.distributed.algorithms.join import Join
 
 import torch
 import torch.cuda.nccl as nccl
@@ -93,20 +93,24 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     best_val_acc = 0.0
     for epoch in range(train_config.resume_epoch-1, train_config.num_epochs): # j: resume_epoch
         epoch_start_time = time.perf_counter()
-        with MemoryTrace() as memtrace:  # track the memory usage
+        with MemoryTrace() as memtrace,Join([model,optimizer]):  # track the memory usage
             model.train()
             total_loss = 0.0
             total_acc = 0.0
-            total_length = len(train_dataloader)//gradient_accumulation_steps
-            validation_interval = len(train_dataloader) // 4 # j: For each epoch, validate 4 times
-            # j: If validation_interval is 0, reset it to train_config.validation_interval
-            if validation_interval == 0:
-                validation_interval = train_config.validation_interval
-            print(f"validation interval {validation_interval}")
-            start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0 # j, resume from steps.
-            pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True,initial=start_step) # update tqdm bar
-            for step, batch in enumerate(train_dataloader,start=start_step):
-                if step > len(train_dataloader): # j: fix steps
+            if train_config.batching_strategy != "dynamic":
+                total_length = len(train_dataloader) // gradient_accumulation_steps
+                validation_interval = len(train_dataloader) // 4  # For each epoch, validate 4 times
+                # If validation_interval is 0, reset it to train_config.validation_interval
+                if validation_interval == 0:
+                    validation_interval = train_config.validation_interval
+                print(f"validation interval {validation_interval}")
+                start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0  # Resume from steps.
+                pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True, initial=start_step)  # Update tqdm bar
+            else:
+                pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", dynamic_ncols=True)
+
+            for step, batch in enumerate(train_dataloader, start=start_step):
+                if step > len(train_dataloader):  # Fix steps
                     break  # Move to the next epoch
                 for key in batch.keys():
                     if train_config.enable_fsdp or train_config.enable_ddp:
@@ -130,16 +134,16 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                 if log_config.use_wandb and step % log_config.log_interval == 0:
                     if train_config.enable_fsdp or train_config.enable_ddp:
                         if rank==0:
-                            wandb.log({"train_inner/train_inner_loss":loss, "train_inner/train_inner_accuracy":acc}, step=(epoch * total_length + step))
+                            wandb.log({"train_inner/train_inner_loss":loss, "train_inner/train_inner_accuracy":acc}, step=(epoch * total_length + step) if train_config.batching_strategy != "dynamic" else step + 1)
                     else:
-                        wandb.log({"train_inner/train_inner_loss":loss, "train_inner/train_inner_accuracy":acc}, step=(epoch * total_length + step))
-                    
+                        wandb.log({"train_inner/train_inner_loss":loss, "train_inner/train_inner_accuracy":acc}, step=(epoch * total_length + step) if train_config.batching_strategy != "dynamic" else step + 1)
                 total_loss += loss.detach().float()
                 total_acc += acc
                 if train_config.use_fp16:
                     # if fp16 is enabled, use gradient scaler to handle gradient update
                     scaler.scale(loss).backward()
-                    if (step + 1) % gradient_accumulation_steps == 0 or step == len(train_dataloader) - 1:
+
+                    if (step + 1) % gradient_accumulation_steps == 0 or (train_config.batching_strategy != "dynamic" and step == len(train_dataloader) - 1):
                         scaler.step(optimizer)
                         scaler.update()
                         if lr_scheduler is not None:
@@ -152,15 +156,15 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         if log_config.use_wandb and step % log_config.log_interval == 0:
                             if train_config.enable_fsdp or train_config.enable_ddp:
                                 if rank==0:
-                                    wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step))
+                                    wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step) if train_config.batching_strategy != "dynamic" else step + 1)
                             else:
-                                wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step))
+                                wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step) if train_config.batching_strategy != "dynamic" else step + 1)
                         optimizer.zero_grad()
                         pbar.update(1)
                 else:
                     # regular backpropagation when fp16 is not used
                     loss.backward()
-                    if (step + 1) % gradient_accumulation_steps == 0 or step == len(train_dataloader) - 1:
+                    if (step + 1) % gradient_accumulation_steps == 0 or (  train_config.batching_strategy != "dynamic" and step == len(train_dataloader) - 1):
                         optimizer.step()
                         if lr_scheduler is not None:
                             lr_scheduler.step()
@@ -172,15 +176,21 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         if log_config.use_wandb and step % log_config.log_interval == 0:
                             if train_config.enable_fsdp or train_config.enable_ddp:
                                 if rank==0:
-                                    wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step))
+                                    wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step) if train_config.batching_strategy != "dynamic" else step + 1)
                             else:
-                                wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step))
+                                wandb.log({"train_inner/lr":current_lr}, step=(epoch * total_length + step) if train_config.batching_strategy != "dynamic" else step + 1)
                         optimizer.zero_grad()
                         pbar.update(1)
 
+<<<<<<< HEAD
                 logging.info(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader)} completed (loss: {loss.detach().float()}, acc: {acc})")
                 
                 if (epoch * total_length + step + 1) % validation_interval == 0 and train_config.run_validation:
+=======
+                pbar.set_description(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader) if train_config.batching_strategy != 'dynamic' else ''} completed (loss: {loss.detach().float()}, acc: {acc})")
+                
+                if (epoch * total_length + step + 1 if train_config.batching_strategy != "dynamic" else step + 1) % train_config.validation_interval == 0 and train_config.run_validation:
+>>>>>>> 440ece648d0ae3686a1b770c0f54c46f49326073
                     eval_ppl, eval_epoch_loss, *rest = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
                     eval_epoch_acc = rest[0] if rest else -1
                     checkpoint_start_time = time.perf_counter()
@@ -343,8 +353,8 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
         if torch.cuda.device_count() > 1 and (train_config.enable_fsdp or train_config.enable_ddp):
             dist.all_reduce(total_loss, op=dist.ReduceOp.SUM)
             dist.all_reduce(total_acc, op=dist.ReduceOp.SUM)
-        train_epoch_loss = total_loss / len(train_dataloader)
-        train_epoch_acc = total_acc / len(train_dataloader)
+        train_epoch_loss = total_loss / (len(train_dataloader)  if train_config.batching_strategy != "dynamic" else (step + 1) *train_config.num_epochs)
+        train_epoch_acc = total_acc / (len(train_dataloader) if train_config.batching_strategy != "dynamic" else (step + 1) *train_config.num_epochs)
         if train_config.enable_fsdp or train_config.enable_ddp:
             train_epoch_loss = train_epoch_loss/world_size
             train_epoch_acc = train_epoch_acc/world_size
@@ -431,8 +441,11 @@ def evaluation(model,train_config, eval_dataloader, local_rank, tokenizer):
     autocast = torch.cuda.amp.autocast if train_config.use_fp16 else nullcontext # (Fix:MZY): fix expected scalar type mismatch in norm 
 
     with MemoryTrace() as memtrace:
-        total_length = len(eval_dataloader)
-        pbar = tqdm(colour="green", desc=f"Evaluating Epoch", total=total_length, dynamic_ncols=True)
+        if train_config.batching_strategy != "dynamic":
+            total_length = len(eval_dataloader)
+            pbar = tqdm(colour="green", desc=f"Evaluating Epoch", total=total_length, dynamic_ncols=True)
+        else:
+            pbar = tqdm(colour="green", desc=f"Evaluating Epoch",  dynamic_ncols=True)
         for step, batch in enumerate(eval_dataloader):
             for key in batch.keys():
                 if train_config.enable_fsdp or train_config.enable_ddp:
@@ -458,7 +471,7 @@ def evaluation(model,train_config, eval_dataloader, local_rank, tokenizer):
             except Exception:
                 pass  # vallex does not need to show it's result (we can't view any thing from abstract acoustic token)
             pbar.update(1)
-            pbar.set_description(f"step: {step+1}/{total_length}, eval_loss: {eval_loss/(step+1):.4f}, eval_acc: {eval_acc/(step+1):.4f}")
+            pbar.set_description(f"step: {step+1}/{total_length if train_config.batching_strategy != 'dynamic' else '' }, eval_loss: {eval_loss/(step+1):.4f}, eval_acc: {eval_acc/(step+1):.4f}")
 
     # If there's more than one CUDA device, reduce evaluation loss across all devices
     if torch.cuda.device_count() > 1 and train_config.enable_fsdp or train_config.enable_ddp:
@@ -466,8 +479,8 @@ def evaluation(model,train_config, eval_dataloader, local_rank, tokenizer):
         dist.all_reduce(eval_acc, op=dist.ReduceOp.SUM)
 
     # Compute average loss and perplexity
-    eval_epoch_loss = eval_loss / len(eval_dataloader)
-    eval_epoch_acc = eval_acc / len(eval_dataloader)
+    eval_epoch_loss = eval_loss / (len(eval_dataloader) if train_config.batching_strategy != "dynamic" else step + 1)
+    eval_epoch_acc = eval_acc / (len(eval_dataloader) if train_config.batching_strategy != "dynamic" else step + 1)
     if train_config.enable_fsdp or train_config.enable_ddp:
         eval_epoch_loss = eval_epoch_loss/world_size
         eval_epoch_acc = eval_epoch_acc/world_size
