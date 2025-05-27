@@ -41,6 +41,7 @@ parser.add_argument('--debug', action='store_true',
                     help='Enable debug mode (default: False)')
 parser.add_argument('--repo_suffix', type=str,
                     default='', help='Repository suffix')
+parser.add_argument('--resume', action='store_true', help='Resume training from last checkpoint if available (default: False)')
 args = parser.parse_args()
 
 # Load training configuration from JSON
@@ -432,11 +433,31 @@ logging.info(f"Train: {len(dataset['train'])} samples")
 logging.info(f"Validation: {len(dataset['validation'])} samples")
 logging.info(f"Test: {len(dataset['test'])} samples")
 
-# logging.info("\nFirst few training samples:")
-# for i in range(min(3, len(dataset['train']))):
-#     logging.info(f"Sample {i}:")
-#     logging.info(f"Input values shape: {dataset['train'][i]['input_values'].shape}")
-#     logging.info(f"Labels shape: {len(dataset['train'][i]['labels'])}")
+# Print and log detailed training info before training
+logging.info(f"Model: {args.pretrained_model}")
+logging.info(f"Dataset: {args.dataset}")
+logging.info(f"Train size: {len(dataset['train'])}")
+logging.info(f"Validation size: {len(dataset['validation'])}")
+logging.info(f"Test size: {len(dataset['test'])}")
+logging.info(f"Training arguments: {training_args_dict}")
+print(f"Model: {args.pretrained_model}")
+print(f"Dataset: {args.dataset}")
+print(f"Train size: {len(dataset['train'])}")
+print(f"Validation size: {len(dataset['validation'])}")
+print(f"Test size: {len(dataset['test'])}")
+print(f"Training arguments: {training_args_dict}")
+
+# Print a few samples after preprocessing for debugging
+print("\n==== Sampled Preprocessed Training Data ====")
+for i in range(min(3, len(dataset['train']))):
+    sample = dataset['train'][i]
+    print(f"Sample {i} input_values shape: {np.array(sample['input_values']).shape}")
+    print(f"Sample {i} labels: {sample['labels']}")
+    print(f"Sample {i} label tokens: {[processor.tokenizer.decode([x]) for x in sample['labels'] if x != -100]}")
+    logging.info(f"Sample {i} input_values shape: {np.array(sample['input_values']).shape}")
+    logging.info(f"Sample {i} labels: {sample['labels']}")
+    logging.info(f"Sample {i} label tokens: {[processor.tokenizer.decode([x]) for x in sample['labels'] if x != -100]}")
+print("===========================================\n")
 
 logging.info("\nStarting trainer.train()...")
 
@@ -460,16 +481,18 @@ train_start_time = datetime.now()
 # Check if checkpoint-* directories exist in the repository
 checkpoint_files = [f for f in os.listdir(model_local_path) if f.startswith(
     'checkpoint-') and os.path.isdir(os.path.join(model_local_path, f))]
-if len(checkpoint_files) == 0:
-    logging.info(
-        "No checkpoint found in the repository. Training from scratch.")
-    trainer.train()
-else:
+if args.resume and len(checkpoint_files) > 0:
     logging.info(
         f"Checkpoint found in the repository. Checkpoint files found: {checkpoint_files}")
     resume_from_checkpoint = f"{model_local_path}/{checkpoint_files[-1]}"
     logging.info(f"Resuming from checkpoint: {resume_from_checkpoint}\n")
     trainer.train(resume_from_checkpoint=resume_from_checkpoint)
+else:
+    if args.resume:
+        logging.info("No checkpoint found, starting training from scratch.")
+    else:
+        logging.info("--resume not set, starting training from scratch.")
+    trainer.train()
 
 train_end_time = datetime.now()
 

@@ -41,10 +41,10 @@ export HF_DATASETS_CACHE=/scratch/zhang.jinda1/temp/huggingface_cache/datasets
 # python wav2vec2.py --dataset ami
 # python wav2vec2.py --dataset aphasia
 # python wav2vec2.py --dataset librispeech-100
+# python wav2vec2.py --dataset librispeech-100_phoneme
 
 
 
-python wav2vec2.py --dataset test_run
-
+# python wav2vec2.py --dataset test_run
 
 # python multiGPU_testing.py --num_gpus 4 --compare --epochs 10

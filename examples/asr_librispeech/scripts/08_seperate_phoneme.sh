@@ -40,11 +40,23 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 
 
 
+# bash train_eval.sh \
+#     --llm_name llama32_1b \
+#     --task all \
+#     --encoder_config w2p-wavlm-dual \
+#     --num_epochs 2 \
+#     --batch_size_training 4 \
+#     --use_peft true \
+#     --train_data_folder librispeech-100_phoneme_separate \
+
+
+
 bash train_eval.sh \
     --llm_name llama32_1b \
-    --task all \
-    --encoder_config w2p-wavlm-dual \
+    --task test \
+    --encoder_config wavlm-mono \
     --num_epochs 2 \
     --batch_size_training 4 \
     --use_peft true \
+    --seed 42 \
     --train_data_folder librispeech-100_phoneme_separate \
