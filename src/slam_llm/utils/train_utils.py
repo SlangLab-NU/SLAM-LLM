@@ -6,7 +6,9 @@ import time
 import yaml
 from contextlib import nullcontext
 from pathlib import Path
-from pkg_resources import packaging
+# from pkg_resources import packaging
+import packaging
+
 from torch.distributed.algorithms.join import Join
 
 import torch
@@ -24,7 +26,8 @@ from slam_llm.utils.checkpoint_handler import (
     save_model_and_optimizer_sharded, 
     save_optimizer_checkpoint, 
     save_model_checkpoint_peft,
-    save_model_checkpoint_peft_full_shard
+    save_model_checkpoint_peft_full_shard,
+    save_model_checkpoint_peft_new
 )
 from slam_llm.policies import fpSixteen,bfSixteen_mixed, get_llama_wrapper
 from slam_llm.utils.memory_utils import MemoryTrace
@@ -74,6 +77,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     if train_config.enable_fsdp or train_config.enable_ddp:
         world_size = int(os.environ["WORLD_SIZE"])
     autocast = torch.cuda.amp.autocast if train_config.use_fp16 else nullcontext
+
+    gradient_accumulation_steps = 16 // train_config.batch_size_training
+    logger.info(f"Gradient accumulation steps: {gradient_accumulation_steps}")
     
     train_prep = []
     train_loss = []
@@ -86,18 +92,24 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     results = {}
     best_val_loss = float("inf")
     best_val_acc = 0.0
-    for epoch in range(train_config.num_epochs):
+    for epoch in range(train_config.resume_epoch-1, train_config.num_epochs): # j: resume_epoch
         epoch_start_time = time.perf_counter()
         with MemoryTrace() as memtrace,Join([model,optimizer]):  # track the memory usage
             model.train()
             total_loss = 0.0
             total_acc = 0.0
-            if train_config.batching_strategy != "dynamic":
-                total_length = len(train_dataloader)//gradient_accumulation_steps
-                pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True)
-            else:
-                pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", dynamic_ncols=True)
-            for step, batch in enumerate(train_dataloader):
+
+            total_length = len(train_dataloader)//gradient_accumulation_steps
+            validation_interval = len(train_dataloader) // 4 # j: For each epoch, validate 4 times
+            # j: If validation_interval is 0, reset it to train_config.validation_interval
+            if validation_interval == 0:
+                validation_interval = train_config.validation_interval
+            print(f"validation interval {validation_interval}")
+            start_step = train_config.resume_step if epoch == train_config.resume_epoch - 1 else 0 # j, resume from steps.
+            pbar = tqdm(colour="blue", desc=f"Training Epoch: {epoch+1}", total=total_length, dynamic_ncols=True,initial=start_step) # update tqdm bar
+            for step, batch in enumerate(train_dataloader,start=start_step):
+                if step > len(train_dataloader): # j: fix steps
+                    break  # Move to the next epoch
                 for key in batch.keys():
                     if train_config.enable_fsdp or train_config.enable_ddp:
                         batch[key] = batch[key].to(local_rank) if isinstance(batch[key], torch.Tensor) else batch[key]
@@ -168,14 +180,15 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         optimizer.zero_grad()
                         pbar.update(1)
 
-                pbar.set_description(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader) if train_config.batching_strategy != 'dynamic' else ''} completed (loss: {loss.detach().float()}, acc: {acc})")
+                logging.info(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader)} completed (loss: {loss.detach().float()}, acc: {acc})")
                 
-                if (epoch * total_length + step + 1 if train_config.batching_strategy != "dynamic" else step + 1) % train_config.validation_interval == 0 and train_config.run_validation:
+                if (epoch * total_length + step + 1) % validation_interval == 0 and train_config.run_validation:
                     eval_ppl, eval_epoch_loss, *rest = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
                     eval_epoch_acc = rest[0] if rest else -1
                     checkpoint_start_time = time.perf_counter()
-                    if train_config.save_model and (eval_epoch_loss < best_val_loss):
-                        checkpoint_name = f"{train_config.model_name}_epoch_{str(epoch+1)}_step_{step+1}"
+                    # if train_config.save_model and (eval_epoch_loss < best_val_loss):
+                    if train_config.save_model: # j: save all checkpoints
+                        checkpoint_name = f"{train_config.model_name}_epoch_{str(epoch+1)}_step_{step+1}_loss_{eval_epoch_loss}" # j: add eval loss
                         if train_config.enable_fsdp or train_config.enable_ddp:
                             dist.barrier()
                         if train_config.use_peft:
@@ -191,21 +204,22 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                         )
                                 elif fsdp_config.sharding_strategy == ShardingStrategy.NO_SHARD:
                                     if rank==0:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
+                                        save_model_checkpoint_peft_new(
+                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
                                         )
+
                                     dist.barrier()
                             elif train_config.enable_ddp:
                                 if rank==0:
-                                    save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
+                                    save_model_checkpoint_peft_new(
+                                        model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                    )
                                 dist.barrier()
                             else:
                                 # model.save_pretrained(train_config.output_dir)
-                                save_model_checkpoint_peft(
-                                        model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                    )
+                                save_model_checkpoint_peft_new(
+                                    model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                )
                             if train_config.enable_fsdp or train_config.enable_ddp:
                                 if rank==0:
                                     logger.info(f"PEFT modules are saved in {train_config.output_dir} directory")
@@ -221,20 +235,25 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                         )
                                 elif fsdp_config.sharding_strategy == ShardingStrategy.NO_SHARD:
                                     if rank==0:
-                                        save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
+                                        # model.save_pretrained(train_config.output_dir)
+                                        save_model_checkpoint_peft_new(
+                                            model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
                                         )
+                                  
                                     dist.barrier()
                             elif train_config.enable_ddp:
                                 if rank==0:
-                                    save_model_checkpoint_peft(
-                                            model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                        )
+                                    save_model_checkpoint_peft_new(
+                                        model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                    )
+
                                 dist.barrier()
                             else:
-                                save_model_checkpoint_peft(
-                                        model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                    )
+                                # model.save_pretrained(train_config.output_dir)
+                                save_model_checkpoint_peft_new(
+                                    model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                )
+                  
 
                         else:
                             if train_config.enable_fsdp:
@@ -267,9 +286,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                                 dist.barrier()
                                     
                             else:
-                                save_model_checkpoint_peft(
-                                        model, optimizer, rank, train_config, checkpoint_name=checkpoint_name
-                                    )
+                                save_model_checkpoint_peft_new(
+                                    model, optimizer, lr_scheduler, epoch, step, best_val_loss, best_val_acc, scaler, train_config, checkpoint_name=checkpoint_name
+                                )
                                 
                         if train_config.enable_fsdp or train_config.enable_ddp:
                             dist.barrier()
@@ -373,9 +392,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     avg_train_loss = sum(train_loss)/len(train_loss)
     avg_train_acc = sum(train_acc)/len(train_acc)
     if train_config.run_validation:
-        avg_eval_prep = sum(val_prep)/len(val_prep)
-        avg_eval_loss = sum(val_loss)/len(val_loss)
-        avg_eval_acc = sum(val_acc)/len(val_acc)
+        avg_eval_prep = sum(val_prep)/len(val_prep) if len(val_prep) > 0 else 0
+        avg_eval_loss = sum(val_loss)/len(val_loss) if len(val_loss) > 0 else 0
+        avg_eval_acc = sum(val_acc)/len(val_acc) if len(val_acc) > 0 else 0
 
     results['avg_train_prep'] = avg_train_prep
     results['avg_train_loss'] = avg_train_loss
@@ -481,9 +500,20 @@ def check_frozen_layers_peft_model(model):
                 logger.info(f"Layer {i}, parameter {name}: requires_grad = {param.requires_grad}")
 
 
-def setup():
+# def setup():
+#     """Initialize the process group for distributed training"""
+#     dist.init_process_group("nccl")
+
+def setup(rank=0, world_size=1):
     """Initialize the process group for distributed training"""
-    dist.init_process_group("nccl")
+    # Set device to the first (and only) GPU
+    torch.cuda.set_device(rank)
+    dist.init_process_group(
+        backend='nccl',
+        init_method='env://',  # Use environment variables for initialization
+        rank=rank,
+        world_size=world_size
+    )
 
 
 def setup_environ_flags(rank):

@@ -1,5 +1,55 @@
 import torch
 import torch.nn as nn
+from torch.utils.checkpoint import checkpoint
+
+#j: add dual encoder projector
+class EncoderProjectorDualConcat(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.k = config.encoder_projector_ds_rate
+        self.encoder_dim1 = config.encoder_dim  # Dimension of first encoder
+        self.encoder_dim2 = config.encoder2_dim  # Dimension of second encoder
+        self.llm_dim = config.llm_dim
+
+        # Calculate the combined dimension after concatenation
+        combined_dim = (self.encoder_dim1 + self.encoder_dim2) * self.k
+
+        # Define the layers for projection
+        self.linear1 = nn.Linear(combined_dim, 2048)
+        self.relu = nn.ReLU()
+        self.linear2 = nn.Linear(2048, self.llm_dim)
+
+    def forward(self, x, gradient_checkpoint=False):
+        batch_size, seq_len, dim = x.size()
+        
+        # Calculate the new sequence length after removing excess frames
+        num_frames_to_discard = x.size(1) % self.k
+        if num_frames_to_discard > 0:
+            x = x[:, :-num_frames_to_discard, :]
+
+        # Update seq_len after discarding frames
+        seq_len = x.size(1)
+
+        # Downsample the sequence
+        x = x.contiguous()
+        x = x.view(batch_size, seq_len // self.k, dim * self.k)  # Concatenating the features for the two encoders
+
+        # Apply the first linear layer
+        if gradient_checkpoint:
+            x = checkpoint(self.linear1, x)  # Use gradient checkpointing for linear1
+        else:
+            x = self.linear1(x)
+
+        # Apply ReLU activation
+        x = self.relu(x)
+
+        # Apply the second linear layer
+        if gradient_checkpoint:
+            x = checkpoint(self.linear2, x)  # Use gradient checkpointing for linear2
+        else:
+            x = self.linear2(x)
+
+        return x
 
 
 class EncoderProjectorConcat(nn.Module):
@@ -11,8 +61,9 @@ class EncoderProjectorConcat(nn.Module):
         self.linear1 = nn.Linear(self.encoder_dim * self.k, 2048)
         self.relu = nn.ReLU()
         self.linear2 = nn.Linear(2048, config.llm_dim)
+        self.saved_speech_embeddings = None # j: save embeddings 
 
-    def forward(self, x):
+    def forward(self, x, gradient_checkpoint=False):
         batch_size, seq_len, dim = x.size()
         num_frames_to_discard = seq_len % self.k
         if num_frames_to_discard > 0:
@@ -21,10 +72,19 @@ class EncoderProjectorConcat(nn.Module):
         
         x = x.contiguous()
         x = x.view(batch_size, seq_len // self.k, dim * self.k)
-        x = self.linear1(x)
+        self.saved_speech_embeddings = x.detach().cpu()
+        
+        if gradient_checkpoint:
+            x = checkpoint(self.linear1, x)
+        else:
+            x = self.linear1(x)
         x = self.relu(x)
-        x = self.linear2(x)
+        if gradient_checkpoint:
+            x = checkpoint(self.linear2, x)
+        else:
+            x = self.linear2(x)
         return x
+
 
 class EncoderProjectorCov1d(nn.Module):
     def __init__(self, config):

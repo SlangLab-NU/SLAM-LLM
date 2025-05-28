@@ -191,6 +191,52 @@ def save_model_checkpoint_peft(model, optimizer, rank, cfg, checkpoint_name="che
         state_dict = cpu_state
     torch.save(state_dict, save_full_path)
     logger.info(f"encoder saved at {save_full_path}")
+
+def save_model_checkpoint_peft_new(model, 
+    optimizer, 
+    lr_scheduler, 
+    epoch, 
+    step, 
+    best_val_loss, 
+    best_val_acc, 
+    scaler, 
+    cfg, 
+    checkpoint_name="checkpoint", 
+    save_trainable_only=True):
+    logger.info(f"--> saving model checkpoint...")
+    save_dir = os.path.join(cfg.output_dir, checkpoint_name)
+    os.makedirs(save_dir, exist_ok=True)
+    save_full_path = os.path.join(save_dir, "model.pt")
+
+    if cfg.enable_ddp:
+        model = model.module
+    cpu_state = model.state_dict()
+    if save_trainable_only:
+        state_dict = OrderedDict()
+        for name, para in model.named_parameters():
+            if para.requires_grad:
+                state_dict[name] = cpu_state[name]
+    else:
+        state_dict = cpu_state
+
+    # Save state dicts instead of objects containing lambdas
+    checkpoint = {
+        'model': state_dict,
+        'optimizer_state': optimizer.state_dict(),  # Save state dict instead of optimizer object
+        'lr_scheduler_state': lr_scheduler.state_dict(),  # Save state dict instead of scheduler object
+        'epoch': epoch,
+        'step': step,
+        'best_val_loss': best_val_loss,
+        'best_val_acc': best_val_acc,
+        'random_state': torch.get_rng_state(),
+        'cuda_random_state': torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None,
+        'config': cfg.__dict__,
+        'scaler_state': scaler.state_dict() if scaler else None,
+    }
+
+    torch.save(checkpoint, save_full_path)
+    logger.info(f"Checkpoint saved at {save_full_path}")
+    
     
 def save_model_checkpoint_peft_full_shard(model, optimizer, rank, cfg, epoch=0):
     with FSDP.state_dict_type(

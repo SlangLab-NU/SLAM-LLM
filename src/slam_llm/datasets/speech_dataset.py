@@ -109,6 +109,9 @@ class SpeechDatasetJsonl(torch.utils.data.Dataset):
         audio_pseudo = torch.full((audio_length,), -1) # placeholder
 
         prompt = self.prompt
+        if data_dict.get("prompt", None): # j: read prompt if prompt is contained in dataset. (multitask)
+            prompt = data_dict["prompt"]
+            prompt += ' ' # j: add space after prompt.
         if prompt is None:
             # prompt = random.choice(self.prompt_library)
             # prompt = "Transcribe speech to text. "
@@ -143,7 +146,7 @@ class SpeechDatasetJsonl(torch.utils.data.Dataset):
         example_ids = torch.cat((audio_pseudo, example_ids))  # [audio,prompt,answer,eos]
 
         labels_ids = copy.deepcopy(example_ids)  # [audio,prompt,answer,eos]
-        labels_ids[:audio_length + prompt_length] = -1  # [-1,-1,answer,eos];
+        labels_ids[:audio_length + prompt_length] = -1  # [-1,-1,answer,eos]
         example_mask = example_ids.ge(-1)  # FIX(GZF): [True,True,True,True]
 
         label_mask = labels_ids.ge(0)  # [False,False,True,True]

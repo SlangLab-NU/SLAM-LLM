@@ -29,13 +29,14 @@ class WhisperWrappedEncoder:
             x = self.ln_post(x)
             return x
 
-        if model_config.whisper_decode:
+        # j: Only attempt to import and use whisper if `whisper_decode` exists and is True
+        if getattr(model_config, "whisper_decode", False):
             import whisper
             whisper_model = whisper.load_model(name=model_config.encoder_path, device='cpu')
             whisper_model.encoder.extract_variable_length_features = types.MethodType(extract_variable_length_features, whisper_model.encoder)
             return whisper_model
-
-        if model_config.encoder_path_hf is not None:
+        # j: handle for other cases
+        if getattr(model_config, "encoder_path_hf", False):
             from transformers import WhisperModel
             encoder = WhisperModel.from_pretrained(model_config.encoder_path_hf,torch_dtype=torch.bfloat16).encoder
         else:
@@ -124,7 +125,9 @@ class WavLMEncoder(nn.Module):
         return cls(cfg, WavLM_model)
 
     def extract_features(self, source, padding_mask):
-        return self.model.extract_features(source, padding_mask)[0]
+        features = self.model.extract_features(source, padding_mask)[0]
+        # print(f"Shape of extracted features: {features.shape}")
+        return features
 
 class AVHubertEncoder:
 
@@ -181,6 +184,42 @@ class MusicFMEncoder(nn.Module):
         _, hidden_states = self.model.get_predictions(source)
         out = hidden_states[self.config.encoder_layer_idx]
         return out
+
+
+# j: add a new encoder
+class Wav2Vec2Encoder(nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+
+    @classmethod
+    def load(cls, model_config):
+        from transformers import Wav2Vec2Model, Wav2Vec2Config
+
+        # Load the model configuration
+        if not model_config.encoder2_name:
+            config = Wav2Vec2Config.from_pretrained(model_config.encoder_path)
+        else:
+            config = Wav2Vec2Config.from_pretrained(model_config.encoder2_path)
+
+        # Adjust the mask_time_length parameter
+        config.mask_time_length = 2  # Set this to a value smaller than your shortest sequence length
+
+        if not model_config.encoder2_name:
+            model = Wav2Vec2Model.from_pretrained(model_config.encoder_path, config=config) # for sequence length issue
+        else:
+            model = Wav2Vec2Model.from_pretrained(model_config.encoder2_path, config=config)
+
+        return cls(model)
+
+    def extract_features(self, source, attention_mask):
+        assert source is not None, "Input source is None."
+        assert len(source.shape) == 2, f"Input source must be a 2D tensor, but got shape {source.shape}."
+        # Pass the processed inputs through the Wav2Vec2 model
+        outputs = self.model(source, attention_mask=attention_mask)
+        # Return the last hidden state as the extracted features
+        return outputs.last_hidden_state
+        
 
 class Emotion2vecEncoder:
 
