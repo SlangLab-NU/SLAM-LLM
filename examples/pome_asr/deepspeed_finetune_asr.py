@@ -15,7 +15,7 @@ class RunConfig:
     log_config: LogConfig = field(default_factory=LogConfig)
     debug: bool = field(default=False, metadata={"help": "Use pdb when true"})
     metric: str = field(default="acc", metadata={"help": "The metric for evaluation"})
-    deepspeed_config: str = field(default="examples/asr_librispeech/conf/ds_config.json", metadata={"help": "The metric for evaluation"})
+    deepspeed_config: str = field(default="examples/pome_asr/conf/ds_config.json", metadata={"help": "The metric for evaluation"})
 
 
 @deepspeed_main_wrapper(config_name=None, version_base=None)

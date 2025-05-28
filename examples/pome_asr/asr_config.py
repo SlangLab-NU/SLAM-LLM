@@ -17,7 +17,7 @@ from torch.distributed.fsdp import ShardingStrategy
 
 @dataclass
 class ModelConfig:
-    file: str = "examples/asr_librispeech/model/slam_model_asr.py:model_factory"
+    file: str = "examples/pome_asr/model/slam_model_asr.py:model_factory"
     llm_name: str = "vicuna-13b-v1.5"
     llm_path: str = "PATH/to/LLAMA/7B"
     llm_type: str = "decoder_only"
