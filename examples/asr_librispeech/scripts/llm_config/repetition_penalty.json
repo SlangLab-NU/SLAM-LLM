@@ -1,0 +1,11 @@
+{
+    "max_new_tokens": 200,
+    "num_beams": 4,
+    "do_sample": false,
+    "min_length": 1,
+    "top_p": 1.0,
+    "repetition_penalty": 2.0,
+    "length_penalty": 1.0,
+    "temperature": 1.0,
+    "no_repeat_ngram_size": 1
+}
