@@ -27,12 +27,12 @@ which python
 # ========== Output logging ==========
 exec > >(tee -a last_slam_run.txt) 2>&1
 
-run_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/baselines
+run_dir=/work/van-speech-nlp/jindaznb/src/mllm_experiments/slam-llm/baselines
 cd $run_dir
 code_dir=examples/asr_librispeech
 
 speech_encoder_path=${RUN_DIR}/models/WavLM-Large.pt
-llm_path=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/models/Llama-2-7b-chat-hf
+llm_path=/work/van-speech-nlp/jindaznb/src/mllm_experiments/slam-llm/models/Llama-2-7b-chat-hf
 train_data_path=/nfs/maziyang.mzy/data/librispeech/librispeech_train_960h.jsonl
 val_data_path=/nfs/maziyang.mzy/data/librispeech/librispeech_dev_other.jsonl
 

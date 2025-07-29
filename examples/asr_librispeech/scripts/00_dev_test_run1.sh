@@ -15,11 +15,11 @@ export OMP_NUM_THREADS=1
 export HYDRA_FULL_ERROR=1
 
 nvidia-smi
-module purge
-module load discovery
-module load python/3.8.1 
-module load anaconda3/3.7 
-module load ffmpeg/20190305 
+# module purge
+# module load discovery
+module load python
+module load anaconda
+module load ffmpeg
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 which python
 

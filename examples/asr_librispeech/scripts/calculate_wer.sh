@@ -22,4 +22,4 @@ module load ffmpeg/20190305
 source activate /work/van-speech-nlp/jindaznb/slamenv/
 which python
 
-python wer_ci.py --folder /work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/out/aphasia/whisper_llama32_1b_linear_peft
+python wer_ci.py --folder /work/van-speech-nlp/jindaznb/src/mllm_experiments/slam-llm/out/aphasia/whisper_llama32_1b_linear_peft

@@ -2,7 +2,7 @@
 
 remote_user="zhang.jinda1"
 remote_host="login.discovery.neu.edu"
-remote_script_path="/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/slam_train.sh"
+remote_script_path="/work/van-speech-nlp/jindaznb/src/mllm_experiments/slam-llm/examples/asr_librispeech/scripts/slam_train.sh"
 sleep_sec=3600
 
 while true; do

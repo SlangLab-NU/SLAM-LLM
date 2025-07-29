@@ -1,6 +1,6 @@
 #!/bin/bash
 
-code_dir=/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm
+code_dir=/work/van-speech-nlp/jindaznb/src/mllm_experiments/slam-llm
 checkpoint_dir=$code_dir/data/librispeech
 g=20  # Maximum number of epochs after which the script should stop
 

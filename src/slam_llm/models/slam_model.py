@@ -348,7 +348,7 @@ class slam_model(nn.Module):
 
     def save_embeddings(self, speech_embeddings, language_embeddings):
         # Generate a unique filename (you might want to use a more sophisticated naming scheme)
-        filename = f'/work/van-speech-nlp/jindaznb/jslpnb/mllm_experiments/slam-llm/examples/asr_librispeech/plot/embeddings/{self.model_config.identifier}.pt'
+        filename = f'/work/van-speech-nlp/jindaznb/src/mllm_experiments/slam-llm/examples/asr_librispeech/plot/embeddings/{self.model_config.identifier}.pt'
 
         # Save both embeddings in a single file
         torch.save({
