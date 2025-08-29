@@ -17,16 +17,19 @@ export HYDRA_FULL_ERROR=1
 nvidia-smi
 # module purge
 # module load discovery
-module load python
-module load anaconda
-module load ffmpeg
-source activate /work/van-speech-nlp/jindaznb/slamenv/
+# module load python
+# module load anaconda3/2024.06
+# module load ffmpeg  # Comment out if not available
+source /projects/van-speech-nlp/zhang.jinda1/src/mllm_experiments/slam-llm/venv/bin/activate
 which python
+
+# Change to project root directory
+cd /projects/van-speech-nlp/zhang.jinda1/src/mllm_experiments/slam-llm/examples/asr_librispeech
 
 exec > >(tee -a last_slam_run.txt) 2>&1
 
 
-bash train_eval.sh \
+bash scripts/train_eval.sh \
     --task all \
     --encoder_config w2p-wavlm-dual \
     --num_epochs 100 \
@@ -35,7 +38,7 @@ bash train_eval.sh \
     --train_data_folder test_run \
 
 
-# bash train_eval.sh \
+# bash scripts/train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task train \
 #     --encoder_config w2p-wavlm-dual \
@@ -47,7 +50,7 @@ bash train_eval.sh \
 
 
 
-# bash train_eval.sh \
+# bash scripts/train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task test \
 #     --encoder_config w2p-wavlm-dual \
@@ -58,7 +61,7 @@ bash train_eval.sh \
 #     --train_data_folder ami_phoneme \
 
 
-# bash train_eval.sh \
+# bash scripts/train_eval.sh \
 #     --llm_name llama32_1b \
 #     --task train \
 #     --encoder_config w2p-wavlm-dual \

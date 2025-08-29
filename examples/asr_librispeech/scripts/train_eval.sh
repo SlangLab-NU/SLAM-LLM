@@ -14,7 +14,7 @@ else
 fi
 
 # Set up Argument Parser
-source ./utils.sh
+source "$SCRIPT_DIR/utils.sh"
 
 usage() {
     echo "Usage: $0 [options]"
@@ -376,7 +376,7 @@ if [[ $task == "train" || $task == "all" ]]; then
         command="python -m debugpy --listen 5678 --wait-for-client \
             $code_dir/finetune_asr.py"
     else
-        command="torchrun \
+        command="python -m torch.distributed.run \
             --nnodes 1 \
             --nproc_per_node $n_gpus \
             $code_dir/finetune_asr.py"

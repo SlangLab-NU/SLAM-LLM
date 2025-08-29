@@ -1,0 +1,51 @@
+Bootstrap: docker
+From: pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+
+%labels
+    github_repo="https://github.com/ddlBoJack/SLAM-LLM"
+
+%post
+    export DEBIAN_FRONTEND=noninteractive
+    
+    apt-get update
+    apt-get -y install wget curl man git less openssl libssl-dev unzip unar build-essential aria2 tmux vim ninja-build
+    apt-get install -y openssh-server sox libsox-fmt-all libsox-fmt-mp3 libsndfile1-dev ffmpeg
+    rm -rf /var/lib/apt/lists/*
+    apt-get clean
+
+    pip install --no-cache-dir packaging editdistance gpustat wandb einops debugpy tqdm soundfile matplotlib scipy sentencepiece pandas
+    pip install --no-cache-dir torchaudio==2.1.0 --index-url https://download.pytorch.org/whl/cu118
+
+    cd /workspace
+    
+    git clone https://github.com/huggingface/transformers.git
+    cd transformers
+    git checkout tags/v4.35.2
+    pip install --no-cache-dir -e .
+    cd ..
+
+    git clone https://github.com/huggingface/peft.git
+    cd peft
+    git checkout tags/v0.6.0
+    pip install --no-cache-dir -e .
+    cd ..
+
+    git clone https://github.com/pytorch/fairseq
+    cd fairseq
+    pip install --no-cache-dir --editable ./
+    cd ..
+
+    git clone https://github.com/ddlBoJack/SLAM-LLM.git
+    cd SLAM-LLM
+    pip install --no-cache-dir -e .
+
+%environment
+    export SHELL=/bin/bash
+    export CUDA_VISIBLE_DEVICES=0
+    export TOKENIZERS_PARALLELISM=false
+    export OMP_NUM_THREADS=1
+    export HYDRA_FULL_ERROR=1
+
+%runscript
+    cd /workspace/SLAM-LLM
+    exec "$@"
