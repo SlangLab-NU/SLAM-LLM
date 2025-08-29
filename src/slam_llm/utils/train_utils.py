@@ -93,7 +93,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
     best_val_acc = 0.0
     for epoch in range(train_config.resume_epoch-1, train_config.num_epochs): # j: resume_epoch
         epoch_start_time = time.perf_counter()
-        with MemoryTrace() as memtrace,Join([model,optimizer]):  # track the memory usage
+        with MemoryTrace() as memtrace:  # track the memory usage
             model.train()
             total_loss = 0.0
             total_acc = 0.0
@@ -182,15 +182,9 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
                         optimizer.zero_grad()
                         pbar.update(1)
 
-<<<<<<< HEAD
-                logging.info(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader)} completed (loss: {loss.detach().float()}, acc: {acc})")
-                
-                if (epoch * total_length + step + 1) % validation_interval == 0 and train_config.run_validation:
-=======
                 pbar.set_description(f"Training Epoch: {epoch+1}/{train_config.num_epochs}, step {step}/{len(train_dataloader) if train_config.batching_strategy != 'dynamic' else ''} completed (loss: {loss.detach().float()}, acc: {acc})")
                 
                 if (epoch * total_length + step + 1 if train_config.batching_strategy != "dynamic" else step + 1) % train_config.validation_interval == 0 and train_config.run_validation:
->>>>>>> 440ece648d0ae3686a1b770c0f54c46f49326073
                     eval_ppl, eval_epoch_loss, *rest = evaluation(model, train_config, eval_dataloader, local_rank, tokenizer)
                     eval_epoch_acc = rest[0] if rest else -1
                     checkpoint_start_time = time.perf_counter()

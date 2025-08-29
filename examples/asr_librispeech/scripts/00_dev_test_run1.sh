@@ -19,7 +19,7 @@ nvidia-smi
 # module load discovery
 # module load python
 # module load anaconda3/2024.06
-# module load ffmpeg  # Comment out if not available
+module load FFmpeg/7.1.1
 source /projects/van-speech-nlp/zhang.jinda1/src/mllm_experiments/slam-llm/venv/bin/activate
 which python
 
@@ -31,11 +31,12 @@ exec > >(tee -a last_slam_run.txt) 2>&1
 
 bash scripts/train_eval.sh \
     --task all \
-    --encoder_config w2p-wavlm-dual \
-    --num_epochs 100 \
+    --encoder_config w2p-mono \
+    --num_epochs 2 \
     --batch_size_training 2 \
     --use_peft true \
     --train_data_folder test_run \
+    --llm_name TinyLlama \
 
 
 # bash scripts/train_eval.sh \

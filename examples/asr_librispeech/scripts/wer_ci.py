@@ -111,7 +111,7 @@ def main(folder, separate, file):
             margin_of_error_asr = (ci_upper_asr - ci_lower_asr) / 2
             asr_wer_percent = asr_wer * 100
             margin_of_error_asr_percent = margin_of_error_asr * 100
-            print(f"ASR WER: {asr_wer_percent:.2f} $\pm$ {margin_of_error_asr_percent:.2f}")
+            print(f"ASR WER: {asr_wer_percent:.2f} $\\pm$ {margin_of_error_asr_percent:.2f}")
         
         # Calculate bootstrap CI for Phoneme WER
         if phoneme_wer is not None:

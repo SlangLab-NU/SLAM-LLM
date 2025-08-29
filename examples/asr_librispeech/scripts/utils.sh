@@ -102,11 +102,11 @@ set_llm_params() {
     case "$llm_name" in
         "TinyLlama")
             llm_dim=2048
-            llm_path="${RUN_DIR}/models/TinyLlama-1.1B-Chat-v1.0"
+            llm_path="TinyLlama/TinyLlama-1.1B-Chat-v1.0"
             ;;
         "llama32_1b")
             llm_dim=2048
-            llm_path="${RUN_DIR}/models/Llama-3.2-1B-Instruct"
+            llm_path="meta-llama/Llama-3.2-1B-Instruct"
             ;;
         "phi35")
             llm_dim=3072
