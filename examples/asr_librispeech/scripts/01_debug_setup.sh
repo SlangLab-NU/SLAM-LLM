@@ -46,3 +46,4 @@ bash train_eval.sh \
     --freeze_encoder2 false \
     --debug true \
     --train_data_folder test_run \
+    --seed 41

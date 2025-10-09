@@ -352,7 +352,7 @@ def train(model, train_dataloader,eval_dataloader, tokenizer, optimizer, lr_sche
         if train_config.enable_fsdp or train_config.enable_ddp:
             train_epoch_loss = train_epoch_loss/world_size
             train_epoch_acc = train_epoch_acc/world_size
-        train_perplexity = torch.exp(train_epoch_loss)
+        train_perplexity = torch.exp(torch.tensor(train_epoch_loss))
 
         train_prep.append(train_perplexity)
         train_loss.append(train_epoch_loss)

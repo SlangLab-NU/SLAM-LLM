@@ -119,7 +119,7 @@ def main(folder, separate, file):
             margin_of_error_phoneme = (ci_upper_phoneme - ci_lower_phoneme) / 2
             phoneme_wer_percent = phoneme_wer * 100
             margin_of_error_phoneme_percent = margin_of_error_phoneme * 100
-            print(f"Phoneme WER: {phoneme_wer_percent:.2f} $\pm$ {margin_of_error_phoneme_percent:.2f}")
+            print(f"Phoneme WER: {phoneme_wer_percent:.2f} $\\pm$ {margin_of_error_phoneme_percent:.2f}")
             
     elif not separate:
         gt_combined = gt_asr + gt_phoneme
@@ -130,7 +130,7 @@ def main(folder, separate, file):
         margin_of_error = (ci_upper - ci_lower) / 2
         combined_wer_percent = combined_wer * 100
         margin_of_error_percent = margin_of_error * 100
-        print(f"{combined_wer_percent:.2f} $\pm$ {margin_of_error_percent:.2f}")
+        print(f"{combined_wer_percent:.2f} $\\pm$ {margin_of_error_percent:.2f}")
 
 
 if __name__ == "__main__":
